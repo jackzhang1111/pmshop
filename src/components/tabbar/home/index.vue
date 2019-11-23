@@ -1,4 +1,5 @@
 <template>
+<!-- 首页 -->
     <div class="home">
         <search-header></search-header>
         <div class="big-pig pl-30 box"></div>
@@ -231,17 +232,13 @@
                         </div>
                     </div>
                 </div>
-               
-                
             </div>
         </div>
-        <tabbar-footer></tabbar-footer>
     </div>
 </template>
 
 <script>
 import searchHeader from '@/multiplexing/searchHeader'
-import tabbarFooter from '@/multiplexing/tabbarFooter'
 export default {
     props: {
 
@@ -270,7 +267,6 @@ export default {
     },
     components: {
         searchHeader,
-        tabbarFooter
     },
 };
 </script>

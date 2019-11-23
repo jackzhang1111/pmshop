@@ -1,4 +1,5 @@
 <template>
+<!-- 登录页 -->
     <div class="login">
         <div class="logo"></div>
         <div class="user-name">
@@ -23,7 +24,7 @@
             <van-button round type="info" size="large" class="load-btn">Log In</van-button>
         </div>
         <div class="remarks-option">
-            <span class="c2">Create Account</span>
+            <span class="c2" @click="toRegister">Create Account</span>
         </div>
         <div class="footer">
             <div class="line left-80"></div>
@@ -79,6 +80,9 @@ export default {
     methods: {
         toForgot(){
             this.$router.push({name:'忘记密码'})
+        },
+        toRegister(){
+            this.$router.push({name:'注册'})
         }
     },
     components: {

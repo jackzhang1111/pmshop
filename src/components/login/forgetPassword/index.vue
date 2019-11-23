@@ -1,6 +1,6 @@
 <template>
+<!-- 忘记密码 -->
   <div class="forget-password">
-      
         <navar title="Forgot Password"></navar>
         <div class="footer">
             <p>输入与您的TOSPINO账户相关联的电子邮箱地址或者手机号码</p>
@@ -17,8 +17,6 @@
             <p>您是否修改过邮箱地址或者手机号码?</p>
             <p>如果您不再使用与您的TOSPINO账户相关联的电子邮箱地址或者手机号码,可以联系客户服务帮助您恢复账号的访问.</p>
         </div>
-        
-
   </div>
 </template>
 

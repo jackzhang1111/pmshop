@@ -6,8 +6,9 @@ import router from './router'
 import Vant from 'vant';
 import 'lib-flexible/flexible'
 import '@/assets/css/reset.css'
-import 'vant/lib/index.css';
-
+import 'vant/lib/index.css'
+import '@/assets/css/common.less'
+import './assets/font/font_501137_8uegssallpv/iconfont.css'
 Vue.use(Vant);
 
 Vue.config.productionTip = false

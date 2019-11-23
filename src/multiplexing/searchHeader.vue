@@ -1,10 +1,11 @@
 <template>
-    <div class="search-header">
+<!-- 首页搜索框 -->
+    <div class="search-header c-b-gray">
         <div class="logo">
             <img src="../assets/img/tabbar/home/logo@3x.png">
         </div>
         <div class="search">
-            <van-search placeholder="请输入搜索关键词" v-model="value" />
+            <van-search placeholder="请输入搜索关键词" v-model="value" shape="round"/>
         </div>
         <div class="icons">
             <img src="../assets/img/tabbar/home/scan@3x.png" class="img1">
@@ -49,7 +50,6 @@ export default {
     width: 100%;
     height: 88px;
     position: relative;
-
     .logo{
         position: absolute;
         left:30px;
@@ -68,6 +68,9 @@ export default {
         width: 432px;
         height: 58px;
         overflow: hidden;
+        /deep/ .van-search{
+            background: #F2F3F5 !important;
+        }
     }
     .icons{
         position: absolute;

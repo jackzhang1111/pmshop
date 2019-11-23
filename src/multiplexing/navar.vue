@@ -1,5 +1,5 @@
 <template>
-    
+    <!-- 登录注册页面头部 -->
     <div class="nav-bar">
         <div class="icon">
             <img src="@/assets/img/login/back@3x.png" style="height:100%">

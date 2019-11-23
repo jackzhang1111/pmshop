@@ -1,11 +1,6 @@
 <template>
+<!-- 忘记密码点击下一步 =>输入验证码页 -->
   <div class="forget-password">
-        <!-- <div class="nav-bar">
-            <div class="icon">
-                <img src="@/assets/img/login/back@3x.png" style="height:100%">
-            </div>
-            <div class="title">Forgot Password</div>
-        </div> -->
         <navar title="Forgot Password"></navar>
         <div class="b-50">
             <h1>Authentication Required</h1>
@@ -109,7 +104,8 @@ export default {
                 width: 280px;
                 height:68px;
                 font-size: 30px;
-                color: #999
+                color: #999;
+                background-color: #DCDCDC;
             }
         }
         

@@ -1,4 +1,5 @@
 <template>
+<!-- 输入验证码点击确定 => 修改成功页 -->
     <div class="forge-success">
         <navar title="Forgot Password"></navar>
         <div class="content">

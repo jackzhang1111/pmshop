@@ -1,4 +1,5 @@
 <template>
+<!-- 输入验证码点击确定 => 修改密码页 -->
     <div class="revise-password">
         <navar title="Forgot Password"></navar>
         <div class="content">
@@ -21,7 +22,6 @@
             </div>
             <div class="upload">
                 <van-button type="info" size="large" class="load-btn" @click="confirm">Confirm</van-button>
-                
             </div>
             <div class="tips">
                 <span>Secure Password Tips:</span>
