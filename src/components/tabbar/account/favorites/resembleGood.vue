@@ -14,7 +14,7 @@
             <div class="good-desc">
                 <span class="p1">哈森2019秋新款羊反绒尖头单鞋时尚婚鞋浅口高跟鞋女细跟HL96505</span><br>
             </div>
-            <div class="aaa">
+            <div class="country">
                 <div class="good-img">
                     <img src="@/assets/img/confirmOrder/guojia@2x.png" alt="">
                 </div>
@@ -136,7 +136,7 @@ export default {
                 display: inline-block;
             }
         }
-        .aaa{
+        .country{
             position: absolute;
             top:110px;
             left:190px;
