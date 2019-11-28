@@ -2,14 +2,14 @@
 <!-- 首页搜索框 -->
     <div class="search-header c-b-gray">
         <div class="logo">
-            <img src="../assets/img/tabbar/home/logo@3x.png">
+            <img src="@/assets/img/tabbar/home/logo@3x.png">
         </div>
         <div class="search">
             <van-search placeholder="请输入搜索关键词" v-model="value" shape="round"/>
         </div>
         <div class="icons">
-            <img src="../assets/img/tabbar/home/scan@3x.png" class="img1">
-            <img src="../assets/img/tabbar/home/msg@3x.png" class="img2">
+            <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
+            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2">
         </div>
     </div>
 </template>

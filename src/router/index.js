@@ -58,7 +58,21 @@ import acceptOtp from '@/components/tabbar/account/accountSettings/acceptOtp'
 import editEmail from '@/components/tabbar/account/accountSettings/editEmail'
 import editLogpawo from '@/components/tabbar/account/accountSettings/editLogpawo'
 import editPaypawo from '@/components/tabbar/account/accountSettings/editPaypawo'
+import companyInformation from '@/components/tabbar/account/accountSettings/companyInformation'
 
+// 账户余额
+import accountBalance from '@/components/tabbar/account/accountBalance/index'
+import commentDetail from '@/components/tabbar/account/accountBalance/commentDetail'
+import comment from '@/components/tabbar/account/accountBalance/comment'
+import accountDetails from '@/components/tabbar/account/accountBalance/accountDetails'
+
+//语言
+import language from '@/components/tabbar/account/language/index'
+import languSubPage from '@/components/tabbar/account/language/subPage'
+
+//消息
+import information from '@/components/tabbar/account/information/index'
+import inforDetails from '@/components/tabbar/account/information/details'
 
 
 
@@ -213,9 +227,37 @@ export default new Router({
       name: '修改支付密码',
       component: editPaypawo,
     },
+    {
+      path: '/accountSettings/accountSecurity/companyInformation',
+      name: '公司信息',
+      component: companyInformation,
+    },
+    
     
 
 
+    {
+      path: '/accountBalance',
+      name: '账户余额',
+      component: accountBalance,
+    },
+    {
+      path: '/accountBalance/commentDetail',
+      name: '评论详情',
+      component: commentDetail,
+    },
+    {
+      path: '/accountBalance/commentDetail/comment',
+      name: '我的评论',
+      component: comment,
+    },
+    {
+      path: '/accountBalance/accountDetails',
+      name: '账户明细',
+      component: accountDetails,
+    },
+
+    
 
     {
       path: '/afterSales',
@@ -371,6 +413,30 @@ export default new Router({
       path: '/favorites',
       name: '收藏夹',
       component: favorites
-    }
+    },
+
+    {
+      path: '/language',
+      name: '语言',
+      component: language
+    },
+    {
+      path: '/language/languSubPage',
+      name: '语言选择页',
+      component: languSubPage
+    },
+    
+
+    {
+      path: '/information',
+      name: '消息',
+      component: information
+    },
+    {
+      path: '/information/inforDetails',
+      name: '消息详情',
+      component: inforDetails
+    },
+
   ]
 })

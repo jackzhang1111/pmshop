@@ -10,7 +10,7 @@
                 <div class="good-img">
                     <img src="@/assets/img/confirmOrder/chanpin-07@2x.png" alt="">
                 </div>
-                <div class="title-p1">11啄木鸟女包2019新款时尚休闲单肩斜挎包休闲单肩斜挎包</div>
+                <div class="title-p1">啄木鸟女包2019新款时尚休闲单肩斜挎包休闲单肩斜挎包</div>
             </div>
             <div class="top-textarea">
                 <textarea rows="3" cols="30" placeholder="来说说您的使用心得，分享给想买的人吧。"></textarea>
@@ -116,7 +116,7 @@ export default {
             box-sizing: border-box;
             position: relative;
             line-height: 100px;
-            border-bottom: 2px solid;
+            border-bottom: 2px solid #DCDCDC;
             margin-bottom: 20px;
             .good-img{
                 height: 100px;

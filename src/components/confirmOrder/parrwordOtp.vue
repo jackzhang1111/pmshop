@@ -9,6 +9,7 @@
                 <van-password-input
                 :value="value"
                 :focused="showKeyboard"
+                :length="4"
                 info="收短信大约需要59秒"
                 @focus="showKeyboard = true"
                 :mask="false"
@@ -23,6 +24,7 @@
                 close-button-text="完成"
                 :hide-on-click-outside="false"
                 theme='custom'
+                @close="wancheng"
                 />
                 
             </div>
@@ -63,6 +65,9 @@ export default {
         },
         toparrwordOtp(){
             this.$router.push({name:'支付密码输入验证码'})
+        },
+        wancheng(){
+            this.$router.push({name:'重置支付密码'})
         }
     },
     components: {

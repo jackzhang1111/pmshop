@@ -4,7 +4,7 @@
         <van-action-sheet v-model="show" title="" class="action-sheet-sucess">
             <div class="sucess-content">
                 <div class="sucess-img">
-                    <img src="../../../assets/img/confirmOrder/icon-05@2x.png" alt="">
+                    <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt="">
                 </div>
                 <div class="sucess-txt c-orange">
                     已支付成功

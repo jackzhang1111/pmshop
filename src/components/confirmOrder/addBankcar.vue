@@ -117,7 +117,7 @@ export default {
         .load-btn{
             display: inline-block;
             height:88px;
-            background-color: #999;
+            background-color: #DCDCDC;
             font-size: 40px;
         }
     }

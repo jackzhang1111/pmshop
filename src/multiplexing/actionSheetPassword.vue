@@ -1,7 +1,7 @@
 <template>
 <!-- 确认付款弹窗 -->
     <div>
-        <van-action-sheet v-model="show2" title="请输入支付密码" class="action-sheet-password">
+        <van-action-sheet v-model="showAction" title="请输入支付密码" class="action-sheet-password" :close-on-click-overlay="false" @cancel="cancel">
             <div class="paymen-content">
                 <van-password-input
                 :value="value"
@@ -17,7 +17,6 @@
                 @delete="onDelete"
                 @blur="showKeyboard = false"
                 delete-button-text =' '
-
                 :hide-on-click-outside="false"
                 />
                 
@@ -29,13 +28,13 @@
 <script>
 export default {
     props: {
-
+        
     },
     data() {
         return {
-            show2:true,
             value: '',
-            showKeyboard: true
+            showAction:false,
+            showKeyboard:true
         };
     },
     computed: {
@@ -59,6 +58,9 @@ export default {
         },
         toparrwordOtp(){
             this.$router.push({name:'支付密码输入验证码'})
+        },
+        cancel(){
+            this.value = ''
         }
         
     },

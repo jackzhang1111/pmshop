@@ -3,7 +3,7 @@
         <div class="success-top">
             <div class="aaa">
                 <div class="sucess-img">
-                    <img src="../../../../assets/img/confirmOrder/icon-05@2x.png" alt="">
+                    <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt="">
                 </div>
                 <span class="sucess-status">
                     评价成功！

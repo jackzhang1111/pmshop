@@ -22,7 +22,7 @@
         <div class="img-list" v-else>
             <div v-for="i in 4" :key="i">
                 <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox"></van-checkbox>
-                <img src="../../../../assets/img/confirmOrder/product@2x.png">
+                <img src="@/assets/img/confirmOrder/product@2x.png">
             </div>
         </div>
         <!-- 你可能还喜欢,推荐商品页 -->

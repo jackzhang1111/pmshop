@@ -7,7 +7,7 @@
                     <div class="pingjia" v-for="i in 3" :key="i">
                         <div class="diyi">
                             <div class="touxiang">
-                                <img src="../../../assets/img/confirmOrder/Twitter@2x.png" >
+                                <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
                             </div>
                             <span class="name">树**猫</span>
                             <van-rate v-model="value" disabled disabled-color="#FA5300"/>
@@ -28,7 +28,7 @@
                     <div class="pingjia" v-for="i in 3" :key="i">
                         <div class="diyi">
                             <div class="touxiang">
-                                <img src="../../../assets/img/confirmOrder/Twitter@2x.png" >
+                                <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
                             </div>
                             <span class="name">m**4</span>
                             <van-rate v-model="value" disabled disabled-color="#FA5300"/>

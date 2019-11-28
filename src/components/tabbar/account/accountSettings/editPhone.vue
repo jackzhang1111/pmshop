@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="btn">
-            <div class="btn-fsyzm">
+            <div class="btn-fsyzm" @click="toOtp">
                 发送验证码
             </div>
         </div>
@@ -47,7 +47,9 @@ export default {
 
     },
     methods: {
-
+        toOtp(){
+            this.$router.push({name:'接受验证码'})
+        }
     },
     components: {
         settingsHeader

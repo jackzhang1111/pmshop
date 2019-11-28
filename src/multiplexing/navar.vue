@@ -1,22 +1,21 @@
 <template>
-    <!-- 登录注册页面头部 -->
-    <div class="nav-bar">
-        <div class="icon">
-            <img src="@/assets/img/login/back@3x.png" style="height:100%">
-        </div>
-        <div class="title">{{title}}</div>
+    <div class="balance-header">
+        <van-icon name="arrow-left" class="arrow-left"/>
+        <span class="header-t1">{{title}}</span>
     </div>
-    
 </template>
 
 <script>
 export default {
     props: {
-        title:String
+        title:{
+            type: String,
+            default: ''
+        },
     },
     data() {
         return {
-
+            
         };
     },
     computed: {
@@ -32,35 +31,42 @@ export default {
 
     },
     methods: {
-
+        title2Click(){
+            // this.$router.push({name:'新增地址'})
+            this.$emit('aaa')
+        }
     },
     components: {
-        
+
     },
 };
 </script>
 
 <style scoped lang="less">
-.nav-bar{
+.balance-header{
     width: 100%;
     height: 88px;
+    background-color: #f2f3f5;
+    text-align: center;
     position: relative;
-    margin-bottom: 50px;
-    .icon{
-        width: 40px;
-        height:40px;
+    line-height: 88px;
+    .arrow-left{
         position: absolute;
-        top:50%;
-        transform: translateY(-50%)
+        top:20px;
+        left:30px;
+        font-size: 40px;
+        
     }
-    .title{
-        text-align: center;
+    .header-t1{ 
+        display: inline-block;
+        line-height: 88px;
         font-size: 36px;
-        color: #000;
+        color: #010101;
+    }
+    .header-t2{
         position: absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%, -50%)
+        right: 30px;
+        font-size: 30px;
     }
 }
 </style>

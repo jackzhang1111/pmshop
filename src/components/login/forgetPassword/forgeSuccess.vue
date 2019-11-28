@@ -7,8 +7,8 @@
                 <img src="@/assets/img/login/icon-02@3x.png">
             </div>
             <p>Congratulations!You have successfully set the password.</p>
-            <div class="confirm-btn">
-                <van-button round type="info" size="large" class="load-btn" @click="toLogin">Log In Now</van-button>
+            <div class="confirm-btn" @click='toLogin'>
+                Log In Now
             </div>
         </div>
     </div>
@@ -50,15 +50,10 @@ export default {
 
 <style scoped lang="less">
 .forge-success{
-    // position: relative;
-    padding:28px 40px 0 40px;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
     .content{
         position: relative;
         top:150px;
-        width: 100%;
+        padding: 0 30px;
         .logo{
             width: 200px;
             height:200px;
@@ -76,12 +71,12 @@ export default {
         }
     }
     .confirm-btn{
-        width: 670px;
         height:88px;
-        .load-btn{
-            height:100%;
-            background-color: #999;
-        }
+        line-height: 88px;
+        text-align: center;
+        background-color: #999;
+        color: #fff;
+        font-size: 40px;
     }
 }
 </style>

@@ -103,7 +103,7 @@
         </van-popup>
         <van-popup v-model="show2">
             <div class="revise-success">
-                <img src="../../../assets/img/login/icon@3x.png" alt="">
+                <img src="@/assets/img/login/icon@3x.png" alt="">
                 <div class="txt1">恭喜您!</div>
                 <div class="txt2">已注册成功</div>
             </div>

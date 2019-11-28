@@ -12,7 +12,7 @@
         </div>
         <div class="detail-d2">
             <div class="good-img">
-                <img src="../../../../assets/img/confirmOrder/chanpin-06@2x.png">
+                <img src="@/assets/img/confirmOrder/chanpin-06@2x.png">
             </div>
             <div class="d2-right">
                 <div>VH女包高级感刺绣撞色方包小蜜蜂时尚单肩包2019新款潮流斜挎包</div>

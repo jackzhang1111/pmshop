@@ -35,7 +35,7 @@
                 <li v-for="i in 5" :key="i" @click="toGoodsOne">
                     <span>香水男</span>
                     <span class="icon">
-                        <img src="../../assets/img/search/enter@3x.png" alt="">
+                        <img src="@/assets/img/search/enter@3x.png" alt="">
                     </span>
                 </li>
             </ul>

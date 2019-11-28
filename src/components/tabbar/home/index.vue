@@ -22,7 +22,7 @@
             <div class="flash-sale-2">
                 <div class="pictures">
                     <div class="p1" v-for="(i,index) in 4" :key="index">
-                        <img src="../../../assets/img/tabbar/home/01@3x.png" alt="">
+                        <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
                         <span class="good-name">OG法式连衣裙</span><br>
                         <span class="good-price1">¥99.00</span><br>
                         <span class="good-price2">¥199.00</span>
@@ -588,7 +588,7 @@ export default {
                         top: -10px;
                         width: 35px;
                         height: 35px;
-                        background: url('../../../assets/img/tabbar/home/NO.1@3x.png') no-repeat center;
+                        background: url('~@/assets/img/tabbar/home/NO.1@3x.png') no-repeat center;
                         background-size: 100%;
                         
                     }

@@ -3,7 +3,7 @@
     <div class="confirm-success">
         <div class="confirm-success-con">
             <div class="confirm-success-img">
-                <img src="../../assets/img/confirmOrder/icon-04@2x.png">
+                <img src="@/assets/img/confirmOrder/icon-04@2x.png">
             </div>
             
         </div>

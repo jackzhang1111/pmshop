@@ -3,7 +3,7 @@
     <div class="commodity-selection">
         <div class="selection-title">
             <div class="selection-img">
-                <img src="../assets/img/tabbar/home/commodityDetails/chanpin-03@2x.png" alt="">
+                <img src="@/assets/img/tabbar/home/commodityDetails/chanpin-03@2x.png" alt="">
             </div>
             <div class="p1">
                 <span>秋冬装2019新款女短款卫衣学生上衣服连帽韩版宽松薄款外套...牌正品</span>

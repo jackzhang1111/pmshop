@@ -17,7 +17,7 @@
            <div class="footprint-goods-content">
                <div class="good-img">
                    <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox"></van-checkbox>
-                   <img src="../../../../assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
+                   <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
                </div>
                <div class="good-desc">
                    <span class="p1">哈森2019秋新款羊反绒尖头单鞋时尚婚鞋浅口高跟鞋女细跟HL96505</span><br>

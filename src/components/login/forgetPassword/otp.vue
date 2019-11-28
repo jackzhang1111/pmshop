@@ -2,7 +2,7 @@
 <!-- 忘记密码点击下一步 =>输入验证码页 -->
   <div class="forget-password">
         <navar title="Forgot Password"></navar>
-        <div class="b-50">
+        <div class="password-con">
             <h1>Authentication Required</h1>
             <div class="line"></div>
             <div>
@@ -20,8 +20,8 @@
                     <van-button type="primary" class="count-down-btn">Resend after 59s</van-button>
                 </div>
             </div>
-            <div class="confirm-btn">
-                <van-button round type="info" size="large" class="load-btn" @click='toRevise'>Confirm</van-button>
+            <div class="confirm-btn" @click='toRevise'>
+                Confirm
             </div>
         </div>
 
@@ -51,10 +51,6 @@ export default {
 
 <style scoped lang="less">
 .forget-password{
-    width: 100%;
-    height: 100%;
-    padding:28px 40px 0 40px;
-    box-sizing: border-box;
     .nav-bar{
         width: 100%;
         height: 88px;
@@ -70,6 +66,10 @@ export default {
             font-size: 36px;
             color: #000;
         }
+    }
+    .password-con{
+        padding: 0 30px;
+        margin-top:20px;
     }
     .otp{
         width: 100%;
@@ -111,12 +111,12 @@ export default {
         
     }
     .confirm-btn{
-        width: 670px;
         height:88px;
-        .load-btn{
-            height:100%;
-            background-color: #999;
-        }
+        line-height: 88px;
+        text-align: center;
+        background-color: #999;
+        color: #fff;
+        font-size: 40px;
     }
     h1{
         font-size: 36px;
@@ -140,6 +140,8 @@ export default {
         color: #fa5300;
         font-size: 30px;
     }
-    
+    .password-con{
+
+    }
 }
 </style>

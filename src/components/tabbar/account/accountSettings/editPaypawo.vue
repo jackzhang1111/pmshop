@@ -5,21 +5,20 @@
         <div class="edit-paypawo-content">
             <div class="m-b-19">
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="请输入当前登录密码">
+                    <input type="search"  class="input-xt" placeholder="原支付密码">
                 </div>
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="输入新密码">
+                    <input type="search"  class="input-xt" placeholder="输入新支付密码">
                     <van-icon name="eye-o" class="pas-icon" v-if="eyeStuats" @click="eyeStuats = !eyeStuats"/>
                     <van-icon name="closed-eye"  class="pas-icon" v-else @click="eyeStuats = !eyeStuats"/>
                 </div>
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="确认密码">
+                    <input type="search"  class="input-xt" placeholder="确认支付密码">
                 </div>
             </div>
-            <p class="tips">密码必须是6-20个字符</p>
             <div class="btn">
                 <div class="btn-save">
-                    保存
+                    确定
                 </div>
             </div>
         </div>
@@ -73,6 +72,7 @@ export default {
         position: relative;
         font-size: 26px;
         border-bottom: 1px solid #DCDCDC;
+        margin-bottom: 20px;
         &:nth-last-child(1){
             border:0
         }
@@ -102,6 +102,7 @@ export default {
         line-height: 88px;
         color: #fff;
         font-size:34px;
+        margin-top:40px;
         .btn-save{
             height:88px;
             background:rgba(250,83,0,1);

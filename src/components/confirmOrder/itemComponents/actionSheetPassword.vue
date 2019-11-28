@@ -17,7 +17,6 @@
                 @delete="onDelete"
                 @blur="showKeyboard = false"
                 delete-button-text =' '
-
                 :hide-on-click-outside="false"
                 />
                 

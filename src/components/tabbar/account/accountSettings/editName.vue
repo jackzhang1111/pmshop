@@ -5,7 +5,7 @@
         <div class="head">
             <div class="head-con">
                 <div class="head-img">
-                    <img src="../../../../assets/img/tabbar/my/account/touxiang@2x.png">
+                    <img src="@/assets/img/tabbar/my/account/touxiang@2x.png">
                 </div>
                 <div class="c-orange head-text">
                     更改头像

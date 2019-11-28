@@ -14,8 +14,6 @@
                 <input type="text" class="name-input" placeholder="请输入密码">
                 <img src="@/assets/img/login/hidden@3x.png" alt="图标" class="password-icon">
             </div>
-             
-             <!-- <img src="../../assets/img/login/According@3x.png" alt="图标" class="password-icon"> -->
         </div>
         <div class="forgetPassword">
             <span class="c1" @click="toForgot">Forgot Password？</span>

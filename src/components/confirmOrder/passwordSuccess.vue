@@ -2,7 +2,7 @@
 <!-- 支付密码设置成功 -->
     <div class="password-success">
         <div class="success-img">
-            <img src="../../assets/img/confirmOrder/icon-02@2x.png" alt="">
+            <img src="@/assets/img/confirmOrder/icon-02@2x.png" alt="">
         </div>
         <div class="success-test c-orange">
             支付密码设置成功

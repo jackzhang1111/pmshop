@@ -14,7 +14,7 @@
                 <div class="goods-content" v-for="(i,index) in 2" :key="index">
                     <van-checkbox v-model="checked" icon-size="24px"></van-checkbox>
                     <div class="good-img">
-                        <img src="../../../assets/img/tabbar/shoppingCart/product@2x.png">
+                        <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
                     <span class="good-describe">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
                     <div class="good-seclet">
@@ -43,7 +43,7 @@
                         失效
                     </span>
                     <div class="good-img">
-                        <img src="../../../assets/img/tabbar/shoppingCart/product@2x.png">
+                        <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
                     <span class="good-describe">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
                     <div class="good-seclet">

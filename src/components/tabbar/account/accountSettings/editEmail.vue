@@ -15,7 +15,7 @@
             <div class="cell">
                 <input type="search"  class="input-xt-otp" placeholder="验证码">
                 <div class="yzm">
-                    <img src="../../../../assets/img/tabbar/my/account/yanzhengma@2x.png">
+                    <img src="@/assets/img/tabbar/my/account/yanzhengma@2x.png">
                 </div>
                 <span class="c-orange fl-right">换一个</span>
             </div>

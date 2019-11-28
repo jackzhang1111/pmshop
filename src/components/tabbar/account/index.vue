@@ -7,7 +7,7 @@
         </div>
         <div class="head-con">
             <div class="head-img">
-                <img src="../../../assets/img/tabbar/my/account/touxiang@2x.png"><br>
+                <img src="@/assets/img/tabbar/my/account/touxiang@2x.png"><br>
                 <span class="head-name">设置您的个人昵称</span><br>
                 <span class="head-id">会员ID:123456</span>
             </div>

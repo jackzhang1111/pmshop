@@ -7,12 +7,13 @@
             <div class="otp">
                 <div class="input-con">
                     <input type="text" class="name-input" placeholder="+86 请输入您的手机号码">
-                    <!-- <input type="text" class="name-input" placeholder="123465"> -->
                 </div>
                 
             </div>
             <div class="confirm-btn">
-                <van-button round type="info" size="large" class="load-btn" @click="next">下一步</van-button>
+                <div class="load-btn" @click="next">
+                    下一步
+                </div>
             </div>
             <p>您是否修改过邮箱地址或者手机号码?</p>
             <p>如果您不再使用与您的TOSPINO账户相关联的电子邮箱地址或者手机号码,可以联系客户服务帮助您恢复账号的访问.</p>
@@ -42,10 +43,6 @@ export default {
 
 <style scoped lang="less">
 .forget-password{
-    width: 100%;
-    height: 100%;
-    padding:28px 40px 0 40px;
-    box-sizing: border-box;
     .nav-bar{
         width: 100%;
         height: 88px;
@@ -86,6 +83,7 @@ export default {
                 position: absolute;
                 width: 450px;
                 border: 0;
+                background-color: #f2f3f5;
             }
         }
         .count-down{
@@ -105,8 +103,12 @@ export default {
         width: 670px;
         height:88px;
         .load-btn{
-            height:100%;
+            height:88px;
+            line-height: 88px;
             background-color: #999;
+            color: #fff;
+            text-align: center;
+            font-size:40px;
         }
     }
     h1{
@@ -132,6 +134,8 @@ export default {
         font-size: 30px;
     }
     .footer{
+        padding: 0 30px;
+        margin-top:20px;
         p:nth-child(1){
             font-size: 20px;
             color: #333

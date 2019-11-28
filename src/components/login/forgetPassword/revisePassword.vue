@@ -70,10 +70,6 @@ export default {
 
 <style scoped lang="less">
 .revise-password{
-    width: 100%;
-    height: 100%;
-    padding:28px 40px 0 40px;
-    box-sizing: border-box;
     .content{
         width: 100%;
         position: relative;
@@ -81,6 +77,7 @@ export default {
             font-size: 36px;
             color:#333333;
             margin-bottom: 38px;
+            margin-top:40px;
         }
         .line{
             width: 100%;
@@ -95,6 +92,7 @@ export default {
             top:358px;
             box-sizing: border-box;
             overflow: hidden;
+            padding: 0 30px;
             .load-btn{
                 height:100%;
                 background-color: #999;
@@ -103,6 +101,7 @@ export default {
         .tips{
             position: absolute;
             top:500px;
+            padding: 0 30px;
             p{
                 margin-top: 13px;
                 font-size: 18px;
@@ -170,6 +169,7 @@ export default {
         top:130px;
         left:0;
         display: inline-block;
+        // padding: 0 30px;
         .input-con{
             position: absolute;
             top:-5px;
