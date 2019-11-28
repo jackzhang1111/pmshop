@@ -30,7 +30,7 @@
             </div>
             <div class="good-detail-content" v-for="i in 2" :key="i">
                 <div class="good-detail-img">
-                    <img src="../../assets/img/tabbar/shoppingCart/product-03@2x.png">
+                    <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                 </div>
                 <div class="good-detail-title">
                     <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>

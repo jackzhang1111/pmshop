@@ -1,22 +1,30 @@
 <template>
-<!-- 确认订单母页面 -->
-    <div class="confirm-order">
-        <div class="confirm-order-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
-            <span class="header-t1">确认订单</span>
-        </div>
-        <router-view></router-view>
+    <div class="settings-header">
+        <van-icon name="arrow-left" class="arrow-left"/>
+        <span class="header-t1">{{title}}</span>
+        <span class="header-t2 c-orange" v-if="title2Show" @click="toAddAdder">{{title2}}</span>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-
+        title:{
+            type: String,
+            default: '我的订单'
+        },
+        title2:{
+            type: String,
+            default: ''
+        },
+        title2Show:{
+            type: Boolean,
+            default: true
+        },
     },
     data() {
         return {
-
+            
         };
     },
     computed: {
@@ -32,7 +40,9 @@ export default {
 
     },
     methods: {
-
+        toAddAdder(){
+            this.$router.push({name:'新增地址'})
+        }
     },
     components: {
 
@@ -41,12 +51,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-.confirm-order-header{
+.settings-header{
     width: 100%;
     height: 88px;
     background-color: #f2f3f5;
     text-align: center;
     position: relative;
+    line-height: 88px;
     .arrow-left{
         position: absolute;
         top:20px;
@@ -62,16 +73,8 @@ export default {
     }
     .header-t2{
         position: absolute;
-        font-size:30px;
-        right: 100px;
-        top:30px;
-    }
-    .ellipsis{
-        position: absolute;
-        top:20px;
         right: 30px;
-        font-size: 40px;
-        transform: rotate(-90deg)
+        font-size: 30px;
     }
 }
 </style>

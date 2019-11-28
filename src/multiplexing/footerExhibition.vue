@@ -74,7 +74,7 @@ export default {
 
     },
     mounted() {
-
+        console.log(456789);
     },
     watch: {
 

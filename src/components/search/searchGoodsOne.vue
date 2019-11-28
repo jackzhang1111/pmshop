@@ -5,37 +5,43 @@
             <van-dropdown-item v-model="value1" :options="option1" class="scj"></van-dropdown-item>
             <van-dropdown-item v-model="value2" :options="option2"  class="scj"/>
             <van-dropdown-item v-model="value3" :options="option3"  class="scj" @close="aaa(value3)"/>
-            <van-icon name="apps-o" class="apps-o"/>
+            <van-icon name="apps-o" class="apps-o" @click="viewModel"/>
         </van-dropdown-menu>
         <div style="height:34px;"></div>
-        <div class="footprint-goods-content" v-for="i in 9" :key="i">
-            <div v-if="goodsShow1">
-                <div class="good-img">
-                    <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
-                </div>
-                <div class="good-desc">
-                    <span class="p1">哈森2019秋新款羊反绒尖头单鞋时尚婚鞋浅口高跟鞋女细跟HL96505</span><br>
-                </div>
-                <div class="country">
+        <div v-if="goodsShow1">
+            <div class="footprint-goods-content" v-for="i in 9" :key="i">
+                <div>
                     <div class="good-img">
-                        <img src="@/assets/img/confirmOrder/guojia@2x.png" alt="">
+                        <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
                     </div>
-                    <div class="guojia">
-                        <span>瑞士</span><br>
+                    <div class="good-desc">
+                        <span class="p1">哈森2019秋新款羊反绒尖头单鞋时尚婚鞋浅口高跟鞋女细跟HL96505</span><br>
                     </div>
-                </div>
-                <div class="good-price">
-                    <span class="p1">￥259.00</span>
-                    <span class="p3">已售2953件</span>
-                    <span class="p2">购买</span>
+                    <div class="country">
+                        <div class="good-img">
+                            <img src="@/assets/img/confirmOrder/guojia@2x.png" alt="">
+                        </div>
+                        <div class="guojia">
+                            <span>瑞士</span><br>
+                        </div>
+                    </div>
+                    <div class="good-price">
+                        <span class="p1">￥259.00</span>
+                        <span class="p3">已售2953件</span>
+                        <span class="p2">购买</span>
+                    </div>
                 </div>
             </div>
-            
+        </div>
+        
+        <div v-else>
+            <footer-exhibition></footer-exhibition>
         </div>
     </div>
 </template>
 
 <script>
+import footerExhibition from '@/multiplexing/footerExhibition'
 export default {
     props: {
 
@@ -80,10 +86,13 @@ export default {
         aaa(a,b){
             this.value3 = 0
             console.log(a,b);
+        },
+        viewModel(){
+            this.goodsShow1 = !this.goodsShow1
         }
     },
     components: {
-
+        footerExhibition
     },
 };
 </script>

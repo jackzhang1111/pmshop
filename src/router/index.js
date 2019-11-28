@@ -29,6 +29,39 @@ import noSearch from '@/components/search/noSearch.vue'
 import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
 import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
+import myOrder from '@/components/tabbar/account/myOrder/index'
+import editAddress from '@/components/tabbar/account/myOrder/editAddress'
+import orderTitle from '@/multiplexing/orderTitle'
+import orderDetail from '@/components/tabbar/account/myOrder/orderDetail'
+import addressList from '@/components/tabbar/account/myOrder/addressList'
+import addAdderss from '@/components/tabbar/account/myOrder/addAdderss'
+import refund from '@/components/tabbar/account/myOrder/refund'
+import afterSales from '@/components/tabbar/account/afterSales/index'
+import afterSalesContent from '@/components/tabbar/account/afterSales/afterSalesContent'
+import afterSalesDetail from '@/components/tabbar/account/afterSales/afterSalesDetail'
+import afterSalesSteps from '@/components/tabbar/account/afterSales/afterSalesSteps'
+import evaluate from '@/components/tabbar/account/evaluate/index'
+import noShopping from '@/components/tabbar/account/evaluate/noShopping'
+import evaluateList from '@/components/tabbar/account/evaluate/evaluateList'
+import expressedEvaluate from '@/components/tabbar/account/evaluate/expressedEvaluate'
+import appendEvaluate from '@/components/tabbar/account/evaluate/appendEvaluate'
+import evaluateSuccess from '@/components/tabbar/account/evaluate/evaluateSuccess'
+import evaluateDetail from '@/components/tabbar/account/evaluate/evaluateDetail'
+
+import accountSettings from '@/components/tabbar/account/accountSettings/index'
+import accountAddress from '@/components/tabbar/account/accountSettings/accountAddress'
+import addAddress from '@/components/tabbar/account/accountSettings/addAddress'
+import accountSecurity from '@/components/tabbar/account/accountSettings/accountSecurity'
+import editName from '@/components/tabbar/account/accountSettings/editName'
+import editPhone from '@/components/tabbar/account/accountSettings/editPhone'
+import acceptOtp from '@/components/tabbar/account/accountSettings/acceptOtp'
+import editEmail from '@/components/tabbar/account/accountSettings/editEmail'
+import editLogpawo from '@/components/tabbar/account/accountSettings/editLogpawo'
+import editPaypawo from '@/components/tabbar/account/accountSettings/editPaypawo'
+
+
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -85,6 +118,158 @@ export default new Router({
       path: '/footprint',
       name: '我的足迹',
       component: footprint
+    },
+    {
+      path: '/myOrder',
+      name: '我的订单',
+      component: myOrder,
+    },
+    {
+      path: '/evaluate',
+      name: '评价',
+      component: evaluate,
+      children:[
+        {
+          path: 'noShopping',
+          name: '评价没有购物',
+          component: noShopping,
+        },
+        {
+          path: 'evaluateList',
+          name: '评价列表',
+          component: evaluateList,
+        },
+        {
+          path: 'evaluateSuccess',
+          name: '评价成功',
+          component: evaluateSuccess,
+        },
+        {
+          path: 'evaluateDetail',
+          name: '评价详情',
+          component: evaluateDetail,
+        },
+      ]
+    },
+    {
+      path: '/evaluate/evaluateList/expressedEvaluate',
+      name: '发表评价',
+      component: expressedEvaluate,
+    },
+    {
+      path: '/evaluate/evaluateList/appendEvaluate',
+      name: '追加评价',
+      component: appendEvaluate,
+    },
+
+
+    {
+      path: '/accountSettings',
+      name: '账户设置',
+      component: accountSettings,
+    },
+    {
+      path: '/accountSettings/accountAddress',
+      name: '收货地址',
+      component: accountAddress,
+    },
+    {
+      path: '/accountSettings/accountAddress/addAddress',
+      name: '新增地址',
+      component: addAddress,
+    },
+    {
+      path: '/accountSettings/accountSecurity',
+      name: '账户安全',
+      component: accountSecurity,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editName',
+      name: '修改昵称',
+      component: editName,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editPhone',
+      name: '修改手机号码',
+      component: editPhone,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editPhone/acceptOtp',
+      name: '接受验证码',
+      component: acceptOtp,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editEmail',
+      name: '修改邮箱',
+      component: editEmail,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editLogpawo',
+      name: '修改登录密码',
+      component: editLogpawo,
+    },
+    {
+      path: '/accountSettings/accountSecurity/editPaypawo',
+      name: '修改支付密码',
+      component: editPaypawo,
+    },
+    
+
+
+
+    {
+      path: '/afterSales',
+      name: '售后',
+      component: afterSales,
+      children:[
+        {
+          path: 'afterSalesContent',
+          name: '售后内容',
+          component: afterSalesContent,
+        },
+        {
+          path: 'afterSalesContent/afterSalesDetail',
+          name: '售后详情',
+          component: afterSalesDetail,
+        },
+        {
+          path: 'afterSalesContent/afterSalesDetail/afterSalesSteps',
+          name: '售后流程',
+          component: afterSalesSteps,
+        }
+      ]
+    },
+    {
+      path: '/myOrder/orderTitle',
+      name: '我的订单详情头部',   
+      component: orderTitle,
+      children:[
+        {
+          path: 'editAddress',
+          name: '我的订单修改地址',   
+          component: editAddress,
+        },
+        {
+          path: 'editAddress/addressList',
+          name: '地址列表',   
+          component: addressList,
+        },
+        {
+          path: 'editAddress/addressList/addAdderss',
+          name: '新增地址',   
+          component: addAdderss,
+        },
+        {
+          path: 'orderDetail',
+          name: '订单详情',   //我的订单,订单详情
+          component: orderDetail,
+        },
+        {
+          path: 'orderDetail/refund',
+          name: '退货退款页面',   
+          component: refund,
+        },
+      ]
     },
     {
       path: '/resembleGood',

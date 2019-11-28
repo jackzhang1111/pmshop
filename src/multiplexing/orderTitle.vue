@@ -1,9 +1,10 @@
 <template>
-<!-- 确认订单母页面 -->
-    <div class="confirm-order">
-        <div class="confirm-order-header">
+<!-- 订单头部 -->
+    <div class="orderTitle">
+        <div class="footprint-header">
             <van-icon name="arrow-left" class="arrow-left"/>
-            <span class="header-t1">确认订单</span>
+            <span class="header-t1">{{title}}</span>
+            <van-icon name="ellipsis" class="ellipsis"/>
         </div>
         <router-view></router-view>
     </div>
@@ -12,11 +13,14 @@
 <script>
 export default {
     props: {
-
+        title:{
+            type: String,
+            default: '我的订单'
+        },
     },
     data() {
         return {
-
+           
         };
     },
     computed: {
@@ -41,7 +45,10 @@ export default {
 </script>
 
 <style scoped lang="less">
-.confirm-order-header{
+.edit-address{
+    
+}
+.footprint-header{
     width: 100%;
     height: 88px;
     background-color: #f2f3f5;
@@ -62,9 +69,9 @@ export default {
     }
     .header-t2{
         position: absolute;
-        font-size:30px;
+        top:20px;
         right: 100px;
-        top:30px;
+        font-size: 40px;
     }
     .ellipsis{
         position: absolute;
