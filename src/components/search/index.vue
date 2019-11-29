@@ -3,7 +3,7 @@
     <div class="search">
         <div class="detailsHeader c-b-gray">
             <div class="logo">
-                <van-icon name="arrow-left" size="17px"/>
+                <van-icon name="arrow-left" size="17px" @click="$router.go(-1)"/>
             </div>
             <div class="search-input">
                 <van-search
@@ -52,7 +52,12 @@ export default {
     methods: {
         //搜索按钮
         onSearch(){
-            this.$router.push({name:'收藏夹搜索商品'})
+            if(this.$route.name == '历史记录') {
+                this.$router.push({name:'搜索商品1'})
+            }else{
+                this.$router.push({name:'收藏夹搜索商品'})
+            }
+            
             console.log(1234);
             //收藏夹搜索商品
         },
@@ -60,7 +65,9 @@ export default {
             this.value = '';
         },
         onocus(){
+            if(this.$route.name == '历史记录') return
             this.$router.push({name:'历史记录'})
+            
         },
         showInput(){
             console.log(88);

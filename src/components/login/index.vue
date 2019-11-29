@@ -19,7 +19,9 @@
             <span class="c1" @click="toForgot">Forgot Password？</span>
         </div>
         <div class="upload">
-            <van-button round type="info" size="large" class="load-btn">Log In</van-button>
+            <div class="load-btn" @click="logIn">
+                Log In
+            </div>
         </div>
         <div class="remarks-option">
             <span class="c2" @click="toRegister">Create Account</span>
@@ -42,8 +44,7 @@
                 </van-row>
             </div>
             <div class="agreement">
-                <div class="checkbox"></div>
-                <!-- <input type="checkbox"> -->
+                <input type="checkbox" class="checkbox">
                 <span>
                     <span class="c1">You agree to the TOSPINO Law Aggrement and the Privacy Notice.</span>
                 </span>
@@ -54,13 +55,30 @@
 </template>
 
 <script>
+import {aaa,bbb} from '@/api/login/login';
 export default {
     props: {
 
     },
     data() {
         return {
-            value:''
+            value:'',
+            search:{
+            "addressAreaId": 111111,
+            "addressId": 1111,
+            "addressStatus": 1,
+            "areaCode": "DS",
+            "createTime": "",
+            "isDefault": 0,
+            "name": "SA",
+            "phoneNumber": "ASS",
+            "userAddress": "SAS",
+            "userId": 8
+            },
+            search1:{
+                username:'132123',
+                password:'23123'
+            }
         };
     },
     computed: {
@@ -78,10 +96,23 @@ export default {
     methods: {
         toForgot(){
             this.$router.push({name:'忘记密码'})
+            // bbb(this.search).then(res => {
+            //     console.log(this.search);
+            // })
         },
+
+
         toRegister(){
             this.$router.push({name:'注册'})
+            // aaa(this.search1).then(res => {
+            //     // console.log(this.search);
+            // })
+        },
+        //登录按钮
+        logIn(){
+            this.$router.push({name:'首页'})
         }
+        
     },
     components: {
 
@@ -173,9 +204,14 @@ export default {
         top:742px;
         box-sizing: border-box;
         overflow: hidden;
+        line-height: 88px;
+        text-align: center;
         .load-btn{
             height:100%;
             background-color: #999;
+            border-radius:44px;
+            color: #fff;
+            font-size:40px;
         }
     }
     .remarks-option{
@@ -221,11 +257,7 @@ export default {
         }
     }
     .checkbox{
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #999;
-
+        vertical-align: middle
     }
     .c1{
         color: #999

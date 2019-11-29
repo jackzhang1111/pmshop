@@ -35,7 +35,7 @@
         </div>
         
         <div v-else>
-            <footer-exhibition></footer-exhibition>
+            <footer-exhibition :showIlike="false"></footer-exhibition>
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <!-- 点击搜索框弹出的历史记录 -->
     <div class="search-record" >
-        <div v-if="false" class="record">
+        <div v-if="lishiShow" class="record">
             <div class="search-title">
                 <span class="title-p1">历史搜索</span>
                 <van-icon name="delete" @click="deleteRecord"/>
@@ -20,7 +20,7 @@
                 <van-icon name="eye-o" v-if='iconShow' @click="iconShow = !iconShow"/>
                 <van-icon name="closed-eye" v-else @click="iconShow = !iconShow"/>
             </div>
-            <div class="search-labels">
+            <div class="search-labels" v-if="iconShow">
                 <span class="label">历史搜索</span>
                 <span class="label">历史搜索</span>
                 <span class="label">历史搜索</span>
@@ -64,7 +64,8 @@ export default {
     data() {
         return {
             iconShow:true,
-            redordshow:false
+            redordshow:false,
+            lishiShow:true
         };
     },
     computed: {

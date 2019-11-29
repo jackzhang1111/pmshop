@@ -3,20 +3,20 @@
     <div class="revise-password">
         <navar title="Forgot Password"></navar>
         <div class="content">
-            <p>Reset A New Password</p>
+            <p class="padding-l-30">Reset A New Password</p>
             <div class="line"></div>
             <div class="pass-word"> 
-                <span>New password:</span>
+                <span class="margin-l-30">New password:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input" placeholder="请输入6-20个字符的密码">
-                    <img src="@/assets/img/login/hidden@3x.png" alt="图标" class="password-icon">
+                    <input type="text" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码">
+                    <van-icon :name="eyeName" class="eye" @click="eyeStatus = !eyeStatus" size="18px"/>
                 </div>
                 <div class="line"></div>
             </div>
             <div class="re-enter"> 
-                <span>Re-enter:</span>
+                <span class="margin-l-30">Re-enter:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input" placeholder="请再次输入新密码">
+                    <input type="text" class="name-input bgc-moren" placeholder="请再次输入新密码">
                 </div>
                  <div class="line"></div>
             </div>
@@ -42,7 +42,8 @@ export default {
     },
     data() {
         return {
-
+            eyeStatus:false,
+            eyeName:'closed-eye',
         };
     },
     computed: {
@@ -55,7 +56,12 @@ export default {
 
     },
     watch: {
-
+        eyeStatus:{
+            handler:function(newVal, oldVal){
+                this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
+                console.log(newVal,'newVal')
+            },
+        },
     },
     methods: {
         confirm(){
@@ -146,7 +152,7 @@ export default {
             position: absolute;
             width: 350px;
             border: 0;
-            left:80px;
+            left:110px;
         }
         .password-icon{
             position: absolute;
@@ -178,12 +184,15 @@ export default {
             height:60px;
             font-size: 26px;
             margin-bottom: 50px;
+            .eye{
+                float:right
+            }
         }
         .name-input{
             position: absolute;
             width: 350px;
             border: 0;
-            left:80px;
+            left:110px;
         }
         .password-icon{
             position: absolute;
@@ -200,5 +209,11 @@ export default {
             top:58px;
         }
     }
+}
+.margin-l-30{
+    margin-left:30px;
+}
+.padding-l-30{
+    padding-left:30px;
 }
 </style>

@@ -4,8 +4,7 @@
         <search-header></search-header>
         <div class="classify-con">
             <van-sidebar v-model="activeKey">
-                <van-sidebar-item title="标签名称" v-for="(i,index) in 10" :key="index"/>
-                
+                <van-sidebar-item title="标签名称" v-for="(i,index) in 15" :key="index"/>
             </van-sidebar>
             <div class="classify-right">
                 <div class="banner">
@@ -25,7 +24,7 @@
                         </van-row>
                     </div>
                 </div>
-                <div class="recommend">
+                <div class="recommend" v-for="i in 2" :key="i + '5'">
                     <span class="title">热门推荐</span>
                     <div>
                         <van-row gutter="40" v-for="i in 3" :key="i">
@@ -85,6 +84,8 @@ export default {
         width: 176px;
         margin: 15px 0 0 0;
         display: inline-block;
+        max-height: 1109px;
+        overflow: auto;
         .van-sidebar-item{
             height: 110px;
             line-height: 70px;
@@ -96,12 +97,11 @@ export default {
     .classify-right{
         width: 524px;
         height: 100%;
-        position: absolute;
-        top:30px;
-        right:30px;
-        // overflow: hidden;
+        float: right;
+        max-height: 1109px;
         overflow-x: hidden;
         overflow-y: auto;
+        padding-right:30px;
         .banner{
             width: 524px;
             height: 180px;

@@ -5,7 +5,7 @@
             <img src="@/assets/img/tabbar/home/logo@3x.png">
         </div>
         <div class="search">
-            <van-search placeholder="请输入搜索关键词" v-model="value" shape="round"/>
+            <van-search placeholder="请输入搜索关键词" v-model="value" shape="round" @click="toSearch"/>
         </div>
         <div class="icons">
             <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
@@ -37,7 +37,10 @@ export default {
 
     },
     methods: {
-
+        toSearch(){
+            this.$router.push({name:'历史记录'})
+            console.log(123);
+        }
     },
     components: {
 

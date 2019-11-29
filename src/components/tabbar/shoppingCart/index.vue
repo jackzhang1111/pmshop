@@ -3,7 +3,7 @@
     <div class="shopping-cart">
         <div class="shopping-cart-header">
             <span class="header-t1">购物车(4)</span>
-            <span class="header-t2">管理</span>
+            <span class="header-t2" @click="mange">{{showMange?'管理':'完成'}}</span>
         </div>
         <div class="shopping-cart-container" v-if="true">
             <!-- 有商品的页面 -->
@@ -74,7 +74,7 @@
             <footerExhibition></footerExhibition>
         </div>
         <div class="settlement">
-            <span class="settlement-text" v-if="true">
+            <span class="settlement-text" v-if="showMange">
                 <van-checkbox v-model="checked" icon-size="24px" class="checkbox"></van-checkbox>
                 <span class="btn">结算(0)</span>
                 <span class="p3">¥5</span>
@@ -115,7 +115,8 @@ export default {
         return {
             checked:'',
             value:1,
-            show:false
+            show:false,
+            showMange:true
         };
     },
     computed: {
@@ -133,6 +134,9 @@ export default {
     methods: {
         aaa(){
             
+        },
+        mange(){
+            this.showMange = !this.showMange
         }
     },
     components: {

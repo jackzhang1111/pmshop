@@ -1,20 +1,35 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+//引导屏
 import guidePage from '@/components/guidePage/index.vue'
+//登录页
 import login from '@/components/login/index.vue'
+
+//忘记密码
 import forgetPassword from '@/components/login/forgetPassword/index.vue'
 import otp from '@/components/login/forgetPassword/otp.vue'
 import forgeSuccess from '@/components/login/forgetPassword/forgeSuccess.vue'
 import revisePassword from '@/components/login/forgetPassword/revisePassword.vue'
+//注册
 import register from '@/components/login/register/index.vue'
-import home from '@/components/tabbar/home/index.vue'
+//分类
 import classify from '@/components/tabbar/classify/index.vue'
+//购物车
 import shoppingCart from '@/components/tabbar/shoppingCart/index.vue'
-import account from '../components/tabbar/account/index.vue'
+//我的
+import account from '@/components/tabbar/account/index.vue'
+//首页母页
 import person from '@/components/tabbar/person.vue'
+
+//首页
+import home from '@/components/tabbar/home/index.vue'
 import commodityDetails from '@/components/tabbar/home/commodityDetails.vue'
 import evaluaDetails from '@/components/tabbar/home/evaluaDetails.vue'
+
+//我的足迹
 import footprint from '@/components/tabbar/account/footprint/index.vue'
+
+//确认订单
 import confirmOrder from '@/components/confirmOrder/index.vue'
 import orderContent from '@/components/confirmOrder/orderContent.vue'
 import confirmSuccess from '@/components/confirmOrder/confirmSuccess.vue'
@@ -22,13 +37,17 @@ import addBankcar from '@/components/confirmOrder/addBankcar.vue'
 import resetPassword from '@/components/confirmOrder/resetPassword.vue'
 import passwordSuccess from '@/components/confirmOrder/passwordSuccess.vue'
 import parrwordOtp from '@/components/confirmOrder/parrwordOtp.vue'
-import favorites from '@/components/tabbar/account/favorites/index.vue'
+//搜索界面
 import search from '@/components/search/index.vue'
 import searchRecord from '@/components/search/searchRecord.vue'
 import noSearch from '@/components/search/noSearch.vue'
+import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
+
+//收藏夹
+import favorites from '@/components/tabbar/account/favorites/index.vue'
 import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
-import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
+//我的订单
 import myOrder from '@/components/tabbar/account/myOrder/index'
 import editAddress from '@/components/tabbar/account/myOrder/editAddress'
 import orderTitle from '@/multiplexing/orderTitle'
@@ -36,10 +55,14 @@ import orderDetail from '@/components/tabbar/account/myOrder/orderDetail'
 import addressList from '@/components/tabbar/account/myOrder/addressList'
 import addAdderss from '@/components/tabbar/account/myOrder/addAdderss'
 import refund from '@/components/tabbar/account/myOrder/refund'
+
+//售后
 import afterSales from '@/components/tabbar/account/afterSales/index'
 import afterSalesContent from '@/components/tabbar/account/afterSales/afterSalesContent'
 import afterSalesDetail from '@/components/tabbar/account/afterSales/afterSalesDetail'
 import afterSalesSteps from '@/components/tabbar/account/afterSales/afterSalesSteps'
+
+//评价
 import evaluate from '@/components/tabbar/account/evaluate/index'
 import noShopping from '@/components/tabbar/account/evaluate/noShopping'
 import evaluateList from '@/components/tabbar/account/evaluate/evaluateList'
@@ -48,6 +71,8 @@ import appendEvaluate from '@/components/tabbar/account/evaluate/appendEvaluate'
 import evaluateSuccess from '@/components/tabbar/account/evaluate/evaluateSuccess'
 import evaluateDetail from '@/components/tabbar/account/evaluate/evaluateDetail'
 
+
+//账户设置
 import accountSettings from '@/components/tabbar/account/accountSettings/index'
 import accountAddress from '@/components/tabbar/account/accountSettings/accountAddress'
 import addAddress from '@/components/tabbar/account/accountSettings/addAddress'

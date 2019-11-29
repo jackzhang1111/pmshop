@@ -83,7 +83,7 @@ export default {
                 position: absolute;
                 width: 450px;
                 border: 0;
-                background-color: #f2f3f5;
+                background-color: #F8F8FA;
             }
         }
         .count-down{

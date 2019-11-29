@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
+// import { Toast } from 'vant';
 export default {
     props: {
 
@@ -72,7 +72,8 @@ export default {
     },
     methods: {
         aaa(){
-            Toast('提示内容');
+            console.log(555);
+            // this.$toast('提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容提示内容   ');
         },
         toOrderDetail(){
             this.$router.push({name:'地址列表'})

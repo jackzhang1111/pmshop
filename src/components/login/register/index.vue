@@ -12,11 +12,11 @@
                     </select> 
                 </div>
                 <van-field v-model="username" placeholder="请输入您的手机号"  class="iphone-input"/>
-                <van-field v-model="username" placeholder="请输入验证码" />
-                <van-field v-model="username" placeholder="请输入您的邮箱(可不填）" class="register-otp">
-                    <van-button slot="button" size="small" type="primary">发送验证码</van-button>
+                <van-field v-model="username" placeholder="请输入验证码" class="register-otp">
+                    <van-button slot="button" size="small" type="primary" @click="aaa">发送验证码</van-button>
                 </van-field>
-                <van-field v-model="username" clearable right-icon="question-o" placeholder="请设置6至20位字符的登录密码" @click-right-icon="$toast('question')" class="password"/>
+                <van-field v-model="username" placeholder="请输入您的邮箱(可不填）" />
+                <van-field v-model="username" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password"/>
                 <van-field v-model="username" placeholder="确认密码" />
             </van-cell-group>
         </div>
@@ -51,11 +51,11 @@
                         <div class="uploader-name">公司正面照</div>
                     </van-col>
                     <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
+                        <van-uploader v-model="fileList" multiple :max-count="1"/>
                         <div class="uploader-name">公司内部照</div>
                     </van-col>
                     <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
+                        <van-uploader/>
                         <div class="uploader-name">营业执照</div>
                     </van-col>
                 </van-row>
@@ -64,35 +64,33 @@
             <div class="uploader">
                 <van-row type="flex" justify="space-around">
                     <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
+                        <van-uploader/>
                         <div class="uploader-name">法人/人像照</div>
                     </van-col>
                     <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
+                        <van-uploader/>
                         <div class="uploader-name">法人证件正面照</div>
                     </van-col>
                     <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
+                        <van-uploader />
                         <div class="uploader-name">法人证件背面照</div>
                     </van-col>
                 </van-row>
             </div>
-            
-                
-            
-                
         </div>
         <div class="agreement">
-            <div class="checkbox"></div>
-            <!-- <input type="checkbox"> -->
+            <!-- <div class="checkbox"></div> -->
+            <input type="checkbox" class="checkbox">
             <span>
                 <span class="c1">我已阅读并同意网站的</span>
             </span>
         </div>
-        <div class="confirm-btn">
-            <van-button type="info" size="large" class="load-btn" @click="toRevise">注册</van-button>
+        <div class="confirm-btn" @click="toRevise">
+            <div class="btn-zc">
+                注册
+            </div>
         </div>
-        <div class="to-login">
+        <div class="to-login" @click="$router.push({name:'登录'})">
             已有账户,去登录
         </div>
         <van-popup
@@ -101,6 +99,7 @@
             :style="{ height: '30%' }">
             <van-area :area-list="areaList" :columns-placeholder="['请选择', '请选择', '请选择']"/>
         </van-popup>
+
         <van-popup v-model="show2">
             <div class="revise-success">
                 <img src="@/assets/img/login/icon@3x.png" alt="">
@@ -126,7 +125,10 @@ export default {
             sms:'',
             areaList,
             show:false,
-            show2:false
+            show2:false,
+            eyeStatus:false,
+            eyeName:'closed-eye',
+            fileList:[]
         };
     },
     computed: {
@@ -139,18 +141,28 @@ export default {
 
     },
     watch: {
-
+        eyeStatus:{
+            handler:function(newVal, oldVal){
+                this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
+                console.log(newVal,'newVal')
+            },
+        },
     },
     methods: {
         afterRead(file) {
         // 此时可以自行将文件上传至服务器
             console.log(file);
+            // this.fileList.push(file)
         },
         showAddre(){
             this.show = true;
         },
         toRevise(){
             this.show2 = true;
+        },
+        aaa(){
+            console.log(this.$refs.as.rightIcon);
+            this.eyeStatus = 'closed-eye'
         }
 
     },
@@ -162,10 +174,6 @@ export default {
 
 <style scoped lang="less">
 .register{
-    padding:28px 40px 0 40px;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
     /deep/ .van-cell,.van-field{
         height: 88px;
         .van-cell__value{
@@ -188,7 +196,8 @@ export default {
         z-index: 999999999999;
     }
     .create-user{
-            .iphone-input{
+        padding: 0 30px;
+        .iphone-input{
             /deep/ .van-cell__value{
                 .van-field__body{
                     margin-left: 100px;
@@ -200,6 +209,7 @@ export default {
         }
     }
     /deep/ .register-otp{
+        position: relative;
         .van-field__body{
             .van-field__button{
                 .van-button{
@@ -209,7 +219,7 @@ export default {
                     color: #333333;
                     position: absolute;
                     top:-20px;
-                    right: -350px;
+                    right: -370px;
                 }
             }
         }
@@ -265,22 +275,22 @@ export default {
     }
     .agreement{
         margin: 99px 0 29px;
-        padding-right: 60px;
+        padding-left: 30px;
         font-size: 20px;
     }
     .checkbox{
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #999;
-
+        vertical-align: middle;
     }
     .confirm-btn{
-        width: 670px;
+        padding: 0 30px;
         height:88px;
-        .load-btn{
-            height:100%;
+        font-size:40px;
+        text-align: center;
+        line-height: 88px;
+        .btn-zc{
             background-color: #999;
+            color: #fff;
         }
     }
     .item-title{
@@ -291,7 +301,7 @@ export default {
         font-size: 36px;
         text-align: center;
         line-height: 60px;
-        margin: 39px 0 20px;
+        margin: 39px 0 20px 30px;
         &:nth-child(2){
             margin-top:0
         }

@@ -8,15 +8,20 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
-   methods: {
-    
-  }
+	name: 'HelloWorld',
+	data () {
+		return {
+		msg: 'Welcome to Your Vue.js App'
+		}
+	},
+	methods: {
+		
+	},
+	mounted(){
+		setTimeout(()=>{
+			this.$router.push({name:'登录'})
+		},3000)
+	}
 }
 </script> 
 

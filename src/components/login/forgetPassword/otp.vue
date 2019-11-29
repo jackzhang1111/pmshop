@@ -94,6 +94,7 @@ export default {
                 position: absolute;
                 width: 240px;
                 border: 0;
+                background-color: #F8F8FA;
             }
         }
         .count-down{

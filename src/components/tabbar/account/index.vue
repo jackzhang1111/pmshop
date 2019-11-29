@@ -59,28 +59,28 @@
         </div>
 
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="$router.push({name:'评价列表'})">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/pingjia@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="售后" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="售后" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/shouhou@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="我的优惠券" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="我的优惠券" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户余额" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户余额" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/zhanghuyue@2x.png" alt="">
                 </div>
@@ -116,21 +116,21 @@
             </div>
         </div>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="意见反馈" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="意见反馈" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/yijianfankui@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户设置" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户设置" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/zhanghushezhi@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png" alt="">
                 </div>
@@ -229,13 +229,13 @@ export default {
             }
             .head-id{
                 display: inline-block;
-                width:130px;
                 height:24px;
                 background:rgba(219,144,0,1);
                 border-radius:12px;
                 color: #FFFFFF;
                 font-size: 16px;
-                margin-top: 8px;
+                margin: 8px 0 34px;
+                padding: 0 11px;
             }
         }
     }

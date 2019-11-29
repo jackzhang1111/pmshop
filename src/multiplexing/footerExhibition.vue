@@ -1,12 +1,11 @@
 <template>
 <!-- 你可能还喜欢,推荐商品页 -->
     <div class="footer-exhibition">
-        <div class="nknxh">
+        <div class="nknxh" v-if="showIlike">
             <span class="line-left"></span>
             <span class="icon">
                 <img src="@/assets/img/tabbar/home/commodityDetails/disabled@2x.png">
             </span>
-            
             <span class="nknxh-p1">你可能还喜欢</span>
             <span class="line-right"></span>
         </div>
@@ -60,7 +59,10 @@
 <script>
 export default {
     props: {
-
+        showIlike:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {

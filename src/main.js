@@ -9,6 +9,7 @@ import '@/assets/css/reset.css'
 import 'vant/lib/index.css'
 import '@/assets/css/common.less'
 import './assets/font/font_501137_8uegssallpv/iconfont.css'
+// import { Toast } from 'vant';
 Vue.use(Vant);
 
 Vue.config.productionTip = false
