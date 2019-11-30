@@ -1,6 +1,7 @@
 <template>
 <!-- 确认订单填写信息 -->
     <div class="order-content">
+        <balance-header title="确认订单"></balance-header>
         <div class="shouhuoxq m-b-20">
             <div class="shouhuoxq-top">
                 <span>收件人：章小楠</span>
@@ -9,7 +10,7 @@
             <div class="shouhuoxq-bottom">
                 <span>收件地址：广东省 深圳市 光明区 公明街道广东省深圳市宝安区公明街道风景北路收件</span>
             </div>
-            <van-icon name="arrow" class="arrow"/>
+            <van-icon name="arrow" class="arrow" @click="jumpRouter('确认订单收货地址')"/>
         </div>
         <div class="payment m-b-20">
             <span>支付方式</span>
@@ -139,6 +140,7 @@ import actionSheetPaymen from "./itemComponents/actionSheetPaymen"
 import actionSheetYinhang from './itemComponents/actionSheetYinhang'
 import actionSheetSucess from './itemComponents/actionSheetSucess'
 import actionSheetPassword from './itemComponents/actionSheetPassword'
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -206,13 +208,17 @@ export default {
             });
             console.log(item);
         },
-        confirm(){}
+        confirm(){},
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         actionSheetPaymen,
         actionSheetYinhang,
         actionSheetSucess,
-        actionSheetPassword
+        actionSheetPassword,
+        balanceHeader
     },
 };
 </script>
@@ -222,13 +228,11 @@ export default {
     width: 100%;
     height: 100%;
     .shouhuoxq{
-        width: 100%;
         background-color: #fff;
         position: relative;
         font-size:30px;
         color: #333;
-        padding: 29px 0 0 30px;
-        box-sizing: border-box;
+        padding: 30px 0 30px 30px;
         line-height: 45px;
         .shouhuoxq-top{
             margin-top:29px;
@@ -412,6 +416,7 @@ export default {
             }
         }
         .beizhu{
+            margin-bottom: 20px;
             /deep/ .van-cell-group{
                 .van-cell{
                     padding-left: 30px;

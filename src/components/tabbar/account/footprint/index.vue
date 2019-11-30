@@ -2,21 +2,21 @@
 <!-- 我的足迹 未完成-->
     <div class="footprint">
         <div class="footprint-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
-            <span class="header-t1">我的足迹</span>
-            <span class="header-t2">编辑</span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
+            <span class="header-t1" >我的足迹</span>
+            <span class="header-t2" @click="editBj">{{editBjName}}</span>
+            <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
         </div>
         <div class="riqizujian"></div>
         <div class="footprint-goods" v-for="i in 7" :key="i">
            <div class="footprint-goods-header">
-               <van-checkbox v-model="checked" icon-size="24px" class="goods-header-checkbox" v-if="true"></van-checkbox>
+               <van-checkbox v-model="checked" icon-size="24px" class="goods-header-checkbox" v-if="showFooter" checked-color="#F83600"></van-checkbox>
                <span class="p1">10月9日 今天</span>
                
            </div>
            <div class="footprint-goods-content">
                <div class="good-img">
-                   <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox"></van-checkbox>
+                   <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox" checked-color="#F83600" v-if="showFooter"></van-checkbox>
                    <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
                </div>
                <div class="good-desc">
@@ -31,10 +31,10 @@
            </div>
         </div>
         <div style="height:60px;"></div>
-        <div class="settlement">
+        <div class="settlement" v-if="showFooter">
             
-            <span class="settlement-text" v-if="true">
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox"></van-checkbox>
+            <span class="settlement-text">
+                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
                 <span class="btn1">删除足迹</span>
                 <span class="p1">全选</span>
             </span>
@@ -49,7 +49,9 @@ export default {
     },
     data() {
         return {
-            checked:false
+            checked:false,
+            editBjName:'编辑',
+            showFooter:false
         };
     },
     computed: {
@@ -62,10 +64,20 @@ export default {
 
     },
     watch: {
-
+        showFooter:{
+            handler:function(newVal, oldVal){
+                this.editBjName = newVal? '完成':'编辑'
+            },
+        },
     },
     methods: {
-
+        //点击编辑
+        editBj(){
+            this.showFooter = !this.showFooter
+        },
+        jumpRouter(name){
+            this.$router.push({name})
+        }
     },
     components: {
 
@@ -142,6 +154,7 @@ export default {
                 top:20px;
                 /deep/ .van-icon{
                     background-color: #DCDCDC;
+                    border: 2px solid #999
                 }
             }
         }

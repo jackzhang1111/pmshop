@@ -14,15 +14,15 @@
         </div>
         <div class="record">
             <van-row>
-                <van-col span="8">
+                <van-col span="8" @click="jumpRouter('收藏夹')">
                     <span class="t1">收藏</span>
                     <span class="num">1</span>
                 </van-col>
                  <van-col span="8">
-                    <span class="t1">浏览</span>
+                    <span class="t1" @click="jumpRouter('我的足迹')">浏览</span>
                     <span class="num">1280</span>
                 </van-col>
-                 <van-col span="8">
+                 <van-col span="8" @click="jumpRouter('账户余额')">
                     <span class="t1">余额</span>
                     <span class="num">￥588.00</span>
                 </van-col>
@@ -185,7 +185,9 @@ export default {
 
     },
     methods: {
-        
+        jumpRouter(name){
+            this.$router.push({name})
+        }
     },
     components: {
         

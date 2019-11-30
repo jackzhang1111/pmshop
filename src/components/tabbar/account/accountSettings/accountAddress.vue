@@ -1,6 +1,6 @@
 <template>
     <div class="account-address">
-        <settingsHeader title2="添加新地址"></settingsHeader>
+        <settings-header :title="title" :title2="title2"></settings-header>
         <div v-if="addressStatus">
             <posse-address></posse-address>
         </div>

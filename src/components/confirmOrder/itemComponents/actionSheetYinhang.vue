@@ -56,7 +56,7 @@ export default {
             message:'',
             checked:true,
             show:true,
-            show1:true,
+            show1:false,
             radio:true
         };
     },

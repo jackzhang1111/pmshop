@@ -1,7 +1,7 @@
 <template>
 <!-- 选择付款方式弹窗 -->
     <div>
-        <van-action-sheet v-model="showAction" title="选择付款方式" class="action-sheet-yinhang" :close-on-click-overlay="false">
+        <van-action-sheet v-model="showAction" :title="title" class="action-sheet-yinhang" :close-on-click-overlay="false">
             <div class="paymen-content">
                 <div class="paymen-content-top" v-for="i in list" :key="i.num" @click="paymen(i)">
                     <span class="yh-icon czjz">
@@ -12,7 +12,8 @@
                 </div>
                 <div class="paymen-content-top" @click="toaddBankcar">
                     <span></span>
-                    <span class="c-999">></span>
+                    <!-- <span class="c-999">></span> -->
+                    <van-icon name="arrow" class="arrow c-999"/>
                     <span>添加银行卡</span>
                 </div>
                 <div class="btn-ljzf" @click="showpaymen">
@@ -26,10 +27,10 @@
 <script>
 export default {
     props: {
-        // showAction:{
-        //     type:Boolean,
-        //     default:false
-        // },
+        title:{
+            type:String,
+            default:'请选择付款方式'
+        },
     },
     data() {
         return {
@@ -108,37 +109,40 @@ export default {
         position: relative;
         font-size:34px;
         color: #333;
-    .paymen-content-top{
-        position: relative;
-        width: 100%;
-        height: 97px;
-        line-height: 97px;
-        border-top:1px solid #DCDCDC;
-        padding:0 30px;
-        box-sizing: border-box;
-        &:nth-last-child(2){
-            border-bottom:1px solid #DCDCDC;
-            
-        }
-        .yh-icon{
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-        }
-        span{
-            &:nth-child(2){
-                float: right;
-                font-size: 30px;
-                .van-icon{
-                    color: #FA5300
-                }
+        .paymen-content-top{
+            position: relative;
+            width: 100%;
+            height: 97px;
+            line-height: 97px;
+            border-top:1px solid #DCDCDC;
+            padding:0 30px;
+            box-sizing: border-box;
+            &:nth-last-child(2){
+                border-bottom:1px solid #DCDCDC;
             }
-            &:nth-child(3){
-                // float: right;
+            .yh-icon{
+                display: inline-block;
+                width: 60px;
+                height: 60px;
+            }
+            span{
+                &:nth-child(2){
+                    float: right;
+                    font-size: 30px;
+                    .van-icon{
+                        color: #FA5300
+                    }
+                }
+                &:nth-child(3){
                     padding-left:119px;
                 }
             }
-            
+            .arrow{
+                position: absolute;
+                right:30px;
+                top:50%;
+                transform: translateY(-50%)
+            }
         }
     }
     .btn-ljzf{

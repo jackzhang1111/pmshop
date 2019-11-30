@@ -32,7 +32,7 @@ export default {
     },
     data() {
         return {
-            show2:true,
+            show2:false,
             value: '',
             showKeyboard: true
         };

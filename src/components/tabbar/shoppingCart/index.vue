@@ -9,14 +9,14 @@
             <!-- 有商品的页面 -->
             <div class="shopping-cart-content" v-for="(i,index) in 2" :key="index">
                 <div class="serial-number">
-                    <van-checkbox v-model="checked" icon-size="24px">DJF161611616</van-checkbox>
+                    <van-checkbox v-model="checked" icon-size="24px" checked-color="#F83600">DJF161611616</van-checkbox>
                 </div>
                 <div class="goods-content" v-for="(i,index) in 2" :key="index">
-                    <van-checkbox v-model="checked" icon-size="24px"></van-checkbox>
-                    <div class="good-img">
+                    <van-checkbox v-model="checked" icon-size="24px" checked-color="#F83600"></van-checkbox>
+                    <div class="good-img" @click="toDetail">
                         <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
-                    <span class="good-describe">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
+                    <span class="good-describe" @click="toDetail">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
                     <div class="good-seclet">
                         <select name="" disabled> 
                             <option value="0">红色/s码</option> 
@@ -51,12 +51,12 @@
                     </div>
                     <div class="good-price">
                         <span class="price-batch-left">已下架</span>
-                        <span class="price-batch-right">找相似</span>
+                        <span class="price-batch-right" @click="toXiangsi">找相似</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="no-shopping" @click="aaa" v-else>
+        <div class="no-shopping" v-else>
             <!-- 没有商品的页面 -->
             <div class="no-shopping-img">
                 <img src="@/assets/img/tabbar/shoppingCart/icon@2x.png">
@@ -75,30 +75,30 @@
         </div>
         <div class="settlement">
             <span class="settlement-text" v-if="showMange">
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox"></van-checkbox>
-                <span class="btn">结算(0)</span>
+                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
+                <span class="btn" @click="$router.push({name:'确认订单详情'})">结算(0)</span>
                 <span class="p3">¥5</span>
                 <span class="p2">合计:</span>
                 <span class="p1">全选</span>
             </span>
             <span class="settlement-text" v-else>
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox"></van-checkbox>
-                <span class="btn1">删除</span>
+                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
+                <span class="btn1" @click="show=true">删除</span>
                 <span class="btn2">移入收藏夹</span>
                 <span class="p1">全选</span>
             </span>
         </div>
 
 
-        <van-overlay :show="show" @click="show = false" >
+        <van-overlay :show="show">
             <!-- 遮罩层确认购买弹框 -->
             <div class="overlay-wrapper" @click.stop>
                 <div class="overlay-wrapper-p1">
                     确认删除这4件商品吗？
                 </div>
                 <div class="overlay-wrapper-btns">
-                    <span>取消</span>
-                    <span>确定</span>
+                    <span @click="show = false">取消</span>
+                    <span @click="show = false">确定</span>
                 </div>
             </div>
         </van-overlay>
@@ -132,11 +132,14 @@ export default {
 
     },
     methods: {
-        aaa(){
-            
+        toDetail(){
+            this.$router.push({name:'商品详情'})
         },
         mange(){
             this.showMange = !this.showMange
+        },
+        toXiangsi(){
+            this.$router.push({name:'找相似商品'})
         }
     },
     components: {
@@ -324,7 +327,7 @@ export default {
         background-color:#fff;
         position:fixed;
         bottom:98px;
-        z-index:999;
+        z-index:5;
         line-height: 120px;
         border-top:2px solid #DCDCDC;
         border-bottom:2px solid #DCDCDC;
@@ -422,6 +425,7 @@ export default {
         }
     }
     .van-overlay{
+        z-index:10 !important ;
         .overlay-wrapper{
             width: 500px;
             height: 200px;

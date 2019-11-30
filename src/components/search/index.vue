@@ -65,7 +65,7 @@ export default {
             this.value = '';
         },
         onocus(){
-            if(this.$route.name == '历史记录') return
+            if(this.$route.name == '历史记录' || this.$route.name == '收藏夹历史记录') return
             this.$router.push({name:'历史记录'})
             
         },

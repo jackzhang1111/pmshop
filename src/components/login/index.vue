@@ -12,7 +12,7 @@
              <img src="@/assets/img/login/password@3x.png" alt="图标" class="name-icon">
              <div class="input-con">
                 <input type="text" class="name-input" placeholder="请输入密码">
-                <img src="@/assets/img/login/hidden@3x.png" alt="图标" class="password-icon">
+                <van-icon :name="eyeName" class="password-icon" size="20px" @click="eyeStatus = !eyeStatus"/>
             </div>
         </div>
         <div class="forgetPassword">
@@ -62,6 +62,8 @@ export default {
     },
     data() {
         return {
+            eyeName:'closed-eye',
+            eyeStatus:false,
             value:'',
             search:{
             "addressAreaId": 111111,
@@ -91,7 +93,12 @@ export default {
         
     },
     watch: {
-
+        eyeStatus:{
+            handler:function(newVal, oldVal){
+                this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
+                console.log(newVal,'newVal')
+            },
+        },
     },
     methods: {
         toForgot(){
@@ -187,8 +194,6 @@ export default {
         .password-icon{
             position: absolute;
             right: 30px;
-            width: 40px;
-            height: 40px;
         }
     }
     .forgetPassword{

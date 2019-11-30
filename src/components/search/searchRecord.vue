@@ -15,20 +15,23 @@
                 <span class="label">历史搜索</span>
                 <span class="label">搜索</span>
             </div>
-            <div class="search-title m-t-60">
-                <span class="title-p1">搜索发现</span>
-                <van-icon name="eye-o" v-if='iconShow' @click="iconShow = !iconShow"/>
-                <van-icon name="closed-eye" v-else @click="iconShow = !iconShow"/>
+            <div v-if="faxian">
+                <div class="search-title m-t-60" >
+                    <span class="title-p1">搜索发现</span>
+                    <van-icon name="eye-o" v-if='iconShow' @click="iconShow = !iconShow"/>
+                    <van-icon name="closed-eye" v-else @click="iconShow = !iconShow"/>
+                </div>
+                <div class="search-labels" v-if="iconShow">
+                    <span class="label">历史搜索</span>
+                    <span class="label">历史搜索</span>
+                    <span class="label">历史搜索</span>
+                    <span class="label">搜索</span>
+                    <span class="label">历史搜索</span>
+                    <span class="label">历史搜索</span>
+                    <span class="label">搜索</span>
+                </div>
             </div>
-            <div class="search-labels" v-if="iconShow">
-                <span class="label">历史搜索</span>
-                <span class="label">历史搜索</span>
-                <span class="label">历史搜索</span>
-                <span class="label">搜索</span>
-                <span class="label">历史搜索</span>
-                <span class="label">历史搜索</span>
-                <span class="label">搜索</span>
-            </div>
+            
         </div>
         <div class="sousuo" v-else>
             <ul>
@@ -59,13 +62,14 @@
 <script>
 export default {
     props: {
-
+        
     },
     data() {
         return {
             iconShow:true,
             redordshow:false,
-            lishiShow:true
+            lishiShow:true,
+            faxian:true
         };
     },
     computed: {

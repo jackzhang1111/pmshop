@@ -2,13 +2,12 @@
 <!-- 商品详情头部搜素 -->
     <div class="detailsHeader c-b-gray">
         <div class="logo">
-            <van-icon name="arrow-left" size="17px"/>
+            <van-icon name="arrow-left" size="17px" @click="$router.go(-1)"/>
         </div>
         <div class="search">
             <van-search
                 v-model="value"
                 placeholder="请输入搜索关键词"
-                show-action
                 shape="round"
                 @search="onSearch"
                 >
@@ -18,8 +17,8 @@
         <div class="icons">
             <!-- 最好能用icon做出显示消息数 -->
             <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img1">
-            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2">
+            <img src="@/assets/img/tabbar/home/cart@3x.png" class="img1" @click="$router.push({name:'购物车'})">
+            <img src="@/assets/img/tabbar/home/commodityDetails/msg@2x.png" class="img2" @click="$router.push({name:'消息'})">
         </div>
     </div>
 </template>
@@ -84,7 +83,7 @@ export default {
     }
     .icons{
         position: absolute;
-        left:542px;
+        left:572px;
         top:38px;
         .img1{
             width: 34px;
@@ -92,7 +91,7 @@ export default {
             margin-right: 25px;
         }
         .img2{
-            width: 34px;
+            width: 7px;
             height: 34px;
         }
     }

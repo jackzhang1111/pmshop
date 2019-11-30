@@ -1,7 +1,7 @@
 <template>
 <!-- 评论详情 -->
     <div class="comment-detail">
-        <balance-header title2="我要评论"></balance-header>
+        <balance-header title2="我要评论" @jumpRouter="jumpRouter" jumpName="我的评论"></balance-header>
         <div class="detail-top">
             <div class="detail-top-left">
                 <div class="zhanshiban">
@@ -73,7 +73,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         balanceHeader

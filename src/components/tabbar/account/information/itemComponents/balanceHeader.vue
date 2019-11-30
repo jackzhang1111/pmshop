@@ -1,6 +1,6 @@
 <template>
     <div class="balance-header">
-        <van-icon name="arrow-left" class="arrow-left"/>
+        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
         <span class="header-t1">{{title}}</span>
         <span class="header-t2" @click="title2Click" v-if="iconShow"></span>
     </div>
@@ -43,6 +43,9 @@ export default {
         title2Click(){
             // this.$router.push({name:'新增地址'})
             this.$emit('aaa')
+        },
+        aaa(){
+
         }
     },
     components: {

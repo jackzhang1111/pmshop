@@ -4,7 +4,7 @@
             <!-- 未失效商品 -->
             <div class="footprint-goods-content" v-for="i in 4" :key="i">
                 <div class="good-img">
-                    <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox"></van-checkbox>
+                    <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox" v-if="showCheck"></van-checkbox>
                     <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
                 </div>
                 <div class="good-desc">
@@ -20,7 +20,7 @@
             <div class="goods-list">
                 <div class="footprint-goods-content">
                     <div class="good-img">
-                        <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox"></van-checkbox>
+                        <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox" v-if="showCheck"></van-checkbox>
                         <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
                     </div>
                     <div class="good-desc">
@@ -45,6 +45,7 @@ export default {
     data() {
         return {
             checked:false,
+            showCheck:false
         };
     },
     computed: {
@@ -63,6 +64,10 @@ export default {
         toResembleGood(){
             //找相似
             this.$router.push({name:'找相似商品'})
+        },
+        onShowCheck(){
+            this.showCheck = !this.showCheck
+            console.log(this.showCheck,123);
         }
     },
     components: {
@@ -103,6 +108,8 @@ export default {
             color: #333;
             .p1{
                 line-height:39px;
+                display: inline-block;
+                padding-right: 40px;
             }
             .p2{
                 font-size:20px;
@@ -118,19 +125,16 @@ export default {
             color: #FA5300;
             font-size:36px;
             .p2{
-                font-size: 26px;
-                color: #333333;
-                width:120px;
-                height:40px;
-                // margin-left:180px;
-                display: inline-block;
-                border:1px solid #666;
-                border-radius:40%;
-                text-align: center;
-                line-height: 40px;
                 position: absolute;
-                left:360px;
-                // top:-50px;
+                left:400px;
+                width:100px;
+                height:38px;
+                border:2px solid rgba(102,102,102,1);
+                border-radius:19px;
+                line-height: 38px;
+                text-align: center;
+                font-size: 16px;
+                color: #666;
             }
             .p3{
                 font-size: 18px;

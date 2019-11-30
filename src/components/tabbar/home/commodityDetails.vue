@@ -51,7 +51,7 @@
         </div>
 
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="123" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="颜色:21#(复古正红色);196#(朱砂橘);" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="text-left">
                     <span>规格</span>
                     <span>选择</span>
@@ -60,7 +60,7 @@
             </van-field>
         </van-cell-group>
 
-        <div class="good-comment">
+        <div class="good-comment" @click="$router.push({name:'商品详情评价'})">
             <div class="comment-top">
                 <span class="p1">评价</span>
                 <span class="p2">4.9</span>
@@ -274,13 +274,13 @@ export default {
             }
             .text-left{
                 width: 60px;
-                // height: 29px;
                 position: absolute;
                 left:23px;
                 top:30px;
                 color: #000000;
                 font-size: 20px;
-                line-height:30px;
+                line-height:33px;
+                font-weight:bold;
                 .erect-line1{
                     position: absolute;
                     display: inline-block;
@@ -298,6 +298,7 @@ export default {
         height: 201px;
         margin: 21px 0 0;
         position: relative;
+        background-color: #fff;
         .comment-top{
             height: 87px;
             line-height: 87px;

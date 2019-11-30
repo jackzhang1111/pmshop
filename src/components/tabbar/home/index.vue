@@ -21,7 +21,7 @@
             </div>
             <div class="flash-sale-2">
                 <div class="pictures">
-                    <div class="p1" v-for="(i,index) in 4" :key="index">
+                    <div class="p1" v-for="(i,index) in 4" :key="index" @click="$router.push({name:'商品详情'})">
                         <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
                         <span class="good-name">OG法式连衣裙</span><br>
                         <span class="good-price1">¥99.00</span><br>

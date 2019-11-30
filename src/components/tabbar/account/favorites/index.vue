@@ -2,35 +2,35 @@
 <!-- 收藏夹 -->
     <div class="favorites">
         <div class="favorites-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">收藏夹(2)</span>
             <van-icon name="search"  class="search" @click="toSearch"/>
-            <span >编辑</span>
+            <span class="bj" @click="editBj">{{editBjName}}</span>
         </div>
         <!-- 下拉框 -->
         <van-dropdown-menu active-color="#DB9000">
             <van-dropdown-item v-model="value1" :options="option1" class="scj"/>
             <van-dropdown-item v-model="value2" :options="option2" disabled />
             <van-dropdown-item v-model="value2" :options="option2" disabled />
-            <van-icon name="apps-o" class="apps-o "/>
+            <van-icon name="apps-o" class="apps-o " @click="iconView"/>
         </van-dropdown-menu>
-        <div v-if="true">
+        <div v-if="viewOne">
             <!-- 收藏夹收藏商品(失效和未失效) -->
-            <good-list></good-list>
+            <good-list ref="goodList"></good-list>
         </div>
         
         <div class="img-list" v-else>
-            <div v-for="i in 4" :key="i">
-                <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox"></van-checkbox>
+            <div v-for="i in 7" :key="i">
+                <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox" checked-color="#FA5300" v-if="showFooter"></van-checkbox>
                 <img src="@/assets/img/confirmOrder/product@2x.png">
             </div>
         </div>
         <!-- 你可能还喜欢,推荐商品页 -->
         <footer-exhibition></footer-exhibition>
         <div style="height:60px;"></div>
-        <div class="settlement">
+        <div class="settlement" v-if="showFooter">
             <span class="settlement-text" v-if="true">
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox"></van-checkbox>
+                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#FA5300"></van-checkbox>
                 <span class="btn1">取消收藏</span>
                 <span class="p1">全选</span>
             </span>
@@ -59,7 +59,10 @@ export default {
                 { text: '', value: '' },
                 { text: '', value: '' },
             ],
-            checked:true
+            checked:true,
+            showFooter:false,
+            editBjName:'编辑',
+            viewOne:true
         };
     },
     computed: {
@@ -69,14 +72,32 @@ export default {
 
     },
     mounted() {
-
+        
     },
     watch: {
-
+        showFooter:{
+            handler:function(newVal, oldVal){
+                this.editBjName = newVal? '完成':'编辑'
+            },
+        },
     },
     methods: {
+        //点击搜索页面
         toSearch(){
-            this.$router.push({name:'搜索'})
+            this.$router.push({name:'收藏夹历史记录'})
+        },
+        //点击编辑
+        editBj(){
+            this.showFooter = !this.showFooter
+            if(this.$refs.goodList){
+                this.$refs.goodList.onShowCheck()
+            }
+            
+            console.log(this.$refs.goodList);
+        },
+        //点击视图图标
+        iconView(){
+            this.viewOne = !this.viewOne
         }
     },
     components: {
@@ -95,6 +116,7 @@ export default {
         background-color: #f2f3f5;
         text-align: center;
         position: relative;
+        line-height: 88px;
         .arrow-left{
             position: absolute;
             top:20px;
@@ -109,24 +131,24 @@ export default {
             color: #010101;
         }
         .search{
-            position: relative;
-            left:165px;
+            position: absolute;
+            right:110px;
             font-size:30px;
+            top:24px;
         }
-        span{
-            &:nth-child(4){
-                position: relative;
-                left:200px;
-                font-size:30px;
-                color: #333333;
-            }
+        .bj{
+            position: absolute;
+            font-size:30px;
+            color: #333333;
+            right:30px;
+            // padding-right:30px;
         }
         
     }
     /deep/ .van-dropdown-menu{
         height: 69px;
         font-size: 26px;
-        
+        background-color: #F2F3F5;
          .van-dropdown-menu__title{
             height: 60px;
             line-height: 60px;
@@ -270,6 +292,9 @@ export default {
                 text-align: center;
                 background-color: #FA5300;
             }
+            /deep/ .van-icon-success{
+                border: 2px solid #999
+            }
         }
         
     }
@@ -282,12 +307,15 @@ export default {
             position: relative;
             width: 23%;
             height: 165px;
-            margin:0 0px 0 10px;
+            margin:0 0px 10px 10px;
             // background-color: red;
         }
         .img-checkbox{
             display: inline-block;
             position: absolute;
+        }
+        /deep/ .van-icon-success{
+            border: 2px solid #999
         }
     }
 }

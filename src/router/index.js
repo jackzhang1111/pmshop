@@ -37,6 +37,9 @@ import addBankcar from '@/components/confirmOrder/addBankcar.vue'
 import resetPassword from '@/components/confirmOrder/resetPassword.vue'
 import passwordSuccess from '@/components/confirmOrder/passwordSuccess.vue'
 import parrwordOtp from '@/components/confirmOrder/parrwordOtp.vue'
+import orderAddress from '@/components/confirmOrder/orderAddress.vue'
+
+
 //搜索界面
 import search from '@/components/search/index.vue'
 import searchRecord from '@/components/search/searchRecord.vue'
@@ -47,6 +50,10 @@ import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
 import favorites from '@/components/tabbar/account/favorites/index.vue'
 import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
+import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord'
+
+
+
 //我的订单
 import myOrder from '@/components/tabbar/account/myOrder/index'
 import editAddress from '@/components/tabbar/account/myOrder/editAddress'
@@ -343,6 +350,7 @@ export default new Router({
       name: '找相似商品',
       component: resembleGood
     },
+
     {
       path: '/search',
       name: '搜索',
@@ -367,6 +375,11 @@ export default new Router({
           path: 'searchGoodsOne',
           name: '搜索商品1',
           component: searchGoodsOne
+        },
+        {
+          path: 'favoriteRecord',
+          name: '收藏夹历史记录',
+          component: favoriteRecord
         }
       ]
     },
@@ -404,6 +417,11 @@ export default new Router({
           path: 'parrwordOtp',
           name: '支付密码输入验证码',
           component: parrwordOtp
+        },
+        {
+          path: 'orderAddress',
+          name: '确认订单收货地址',
+          component: orderAddress,
         },
       ]
     },

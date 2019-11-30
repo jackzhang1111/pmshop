@@ -1,14 +1,14 @@
 <template>
 <!-- 账户余额 -->
     <div class="account-balance">
-        <balance-header title="账户余额" title2="查看明细" @aaa="aaa"></balance-header>
+        <balance-header title="账户余额" title2="查看明细" @jumpRouter="jumpRouter" jumpName="账户明细"></balance-header>
         <div class="balance-top">
             <div class="top-p1">
                 账户充值
             </div>
             <div class="top-p2">
                 <van-rate v-model="value" color="#FA5300" class="rate"/>
-                <span>2,206条评论</span>
+                <span @click="jumpRouter('评论详情')">2,206条评论</span>
             </div>
             <div class="top-p3">
                 <span>当前余额: ￥10825.00</span>
@@ -38,7 +38,7 @@
         <action-sheet-paymen ref="paymen" @showpaymen="showpaymen"></action-sheet-paymen>
         
         <!-- 选择付款方式弹窗 -->
-        <action-sheet-yinhang ref="yinhang" @showyinhang="showyinhang" @showpassword="showpassword" @showsucess="showsucess"></action-sheet-yinhang>
+        <action-sheet-yinhang ref="yinhang" @showyinhang="showyinhang" @showpassword="showpassword" @showsucess="showsucess" :title="yinhangTitle"></action-sheet-yinhang>
 
         <!-- 支付成功弹窗 -->
         <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
@@ -71,6 +71,7 @@ export default {
                 }
             ],
             showPaymen:false,
+            yinhangTitle:'￥10825.00'
         };
     },
     computed: {
@@ -86,8 +87,8 @@ export default {
 
     },
     methods: {
-        aaa(){
-            console.log(99);
+        jumpRouter(name){
+            this.$router.push({name})
         },
         //弹出银行
         showyinhang(){

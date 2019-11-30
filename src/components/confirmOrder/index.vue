@@ -1,10 +1,6 @@
 <template>
 <!-- 确认订单母页面 -->
     <div class="confirm-order">
-        <div class="confirm-order-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
-            <span class="header-t1">确认订单</span>
-        </div>
         <router-view></router-view>
     </div>
 </template>
@@ -16,7 +12,7 @@ export default {
     },
     data() {
         return {
-
+            
         };
     },
     computed: {
@@ -32,7 +28,9 @@ export default {
 
     },
     methods: {
-
+        editTitle(name){
+            this.title = name
+        }
     },
     components: {
 

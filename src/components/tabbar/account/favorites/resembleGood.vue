@@ -2,7 +2,7 @@
 <!-- 找相似商品 -->
     <div class="resemble-good">
         <div class="footprint-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">相似产品</span>
             <van-icon name="ellipsis" class="ellipsis"/>
         </div>

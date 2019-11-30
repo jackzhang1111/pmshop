@@ -11,7 +11,7 @@ export default {
     props: {
         title:{
             type: String,
-            default: '我的订单'
+            default: ''
         },
         title2:{
             type: String,

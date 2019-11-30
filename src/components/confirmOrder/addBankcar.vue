@@ -1,6 +1,7 @@
 <template>
 <!-- 添加银行卡 -->
     <div class="addBankcar">
+        <balance-header></balance-header>
         <div class="addBankcar-title">
             添加银行卡
         </div>
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -45,7 +47,7 @@ export default {
         }
     },
     components: {
-
+        balanceHeader
     },
 };
 </script>

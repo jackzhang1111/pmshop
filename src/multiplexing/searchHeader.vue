@@ -9,7 +9,7 @@
         </div>
         <div class="icons">
             <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2">
+            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
         </div>
     </div>
 </template>

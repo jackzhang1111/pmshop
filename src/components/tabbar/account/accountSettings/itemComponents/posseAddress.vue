@@ -13,8 +13,8 @@
                 <span>邮政编码：100020</span>
             </div>
             <div class="content-btns">
-                <div class="btn-bj">编辑</div>
-                <div class="btn-sc" @click="deleteCli">删除</div>
+                <div class="btn-bj" @click="editRedord">编辑</div>
+                <div class="btn-sc" @click="deleteRedord">删除</div>
             </div>
         </div>
 
@@ -28,8 +28,8 @@
                     请注意：删除该地址不会删除任何等待发送到该地址的订单,为确保未来的订单旅行不受影响,请使用此地址更新所有愿望清单及订阅和保存设置。
                 </div>
                 <div class="overlay-wrapper-btns">
-                    <span class="btn-no">否</span>
-                    <span class="btn-yes"> 是</span>
+                    <span class="btn-no" @click="redordshow = false">否</span>
+                    <span class="btn-yes" @click="redordshow = false"> 是</span>
                 </div>
             </div>
         </van-overlay>
@@ -45,7 +45,7 @@ export default {
     },
     data() {
         return {
-            redordshow:true
+            redordshow:false
         };
     },
     computed: {
@@ -61,7 +61,11 @@ export default {
 
     },
     methods: {
-        deleteCli(){
+        deleteRedord(){
+            this.redordshow = true
+        },
+        //编辑
+        editRedord(){
 
         }
     },

@@ -10,7 +10,19 @@ import 'vant/lib/index.css'
 import '@/assets/css/common.less'
 import './assets/font/font_501137_8uegssallpv/iconfont.css'
 // import { Toast } from 'vant';
+import {isDisabled,formValidate,strTrim,objTrim,priceReg,objDeepCopy} from '@/common/utils.js'
+
+
 Vue.use(Vant);
+
+Vue.prototype.$fn = {
+  copy:objDeepCopy,
+  isDisabled,
+  formValidate,
+  strTrim,
+  objTrim,
+  priceReg
+}
 
 Vue.config.productionTip = false
 
