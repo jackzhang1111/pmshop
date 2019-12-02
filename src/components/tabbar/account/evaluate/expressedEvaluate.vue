@@ -2,7 +2,7 @@
 <!-- 发表评论 -->
     <div class="expressed-evaluate">
         <div class="evaluate-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
             <span class="header-t2 c-orange">发布</span>
         </div>

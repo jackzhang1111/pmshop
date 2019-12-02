@@ -1,20 +1,21 @@
 <template>
 <!-- 重置密码 -->
     <div class="revise-password">
+        <balance-header title="重置支付密码"></balance-header>
         <div class="content">
             <div class="line"></div>
             <div class="pass-word"> 
-                <span>New password:</span>
+                <span class="margin-l-30">New password:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input" placeholder="请输入6-20个字符的密码">
-                    <img src="@/assets/img/login/hidden@3x.png" alt="图标" class="password-icon">
+                    <input type="text" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码">
+                    <van-icon :name="eyeName" class="eye" @click="eyeStatus = !eyeStatus" size="18px"/>
                 </div>
                 <div class="line"></div>
             </div>
             <div class="re-enter"> 
-                <span>Re-enter:</span>
+                <span class="margin-l-30">Re-enter:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input" placeholder="请再次输入新密码">
+                    <input type="text" class="name-input bgc-moren" placeholder="请再次输入新密码">
                 </div>
                  <div class="line"></div>
             </div>
@@ -26,13 +27,15 @@
 </template>
 
 <script>
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
     },
     data() {
         return {
-
+            eyeStatus:false,
+            eyeName:'closed-eye',
         };
     },
     computed: {
@@ -45,7 +48,12 @@ export default {
 
     },
     watch: {
-
+        eyeStatus:{
+            handler:function(newVal, oldVal){
+                this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
+                console.log(newVal,'newVal')
+            },
+        },
     },
     methods: {
         confirm(){
@@ -53,20 +61,22 @@ export default {
         }
     },
     components: {
-
+        balanceHeader
     },
 };
 </script>
 
 <style scoped lang="less">
 .revise-password{
-    width: 100%;
-    height: 100%;
-    padding:28px 40px 0 40px;
-    box-sizing: border-box;
     .content{
         width: 100%;
         position: relative;
+        p{
+            font-size: 36px;
+            color:#333333;
+            margin-bottom: 38px;
+            margin-top:40px;
+        }
         .line{
             width: 100%;
             height: 2px;
@@ -77,20 +87,20 @@ export default {
             padding:0;
             height:88px;
             position: absolute;
-            top:258px;
+            top:358px;
             box-sizing: border-box;
             overflow: hidden;
+            padding: 0 30px;
             .load-btn{
                 height:100%;
                 background-color: #999;
             }
         }
-        
     }
     .re-enter{
         width: 100%;
         position: absolute;
-        top:130px;
+        top:247px;
         left:0;
         display: inline-block;
         .input-con{
@@ -106,7 +116,7 @@ export default {
             position: absolute;
             width: 350px;
             border: 0;
-            left:80px;
+            left:110px;
         }
         .password-icon{
             position: absolute;
@@ -126,9 +136,10 @@ export default {
     .pass-word{
         width: 100%;
         position: absolute;
-        top:30px;
+        top:130px;
         left:0;
         display: inline-block;
+        // padding: 0 30px;
         .input-con{
             position: absolute;
             top:-5px;
@@ -137,12 +148,15 @@ export default {
             height:60px;
             font-size: 26px;
             margin-bottom: 50px;
+            .eye{
+                float:right
+            }
         }
         .name-input{
             position: absolute;
             width: 350px;
             border: 0;
-            left:80px;
+            left:110px;
         }
         .password-icon{
             position: absolute;
@@ -159,5 +173,8 @@ export default {
             top:58px;
         }
     }
+}
+.margin-l-30{
+    margin-left:30px;
 }
 </style>

@@ -1,38 +1,40 @@
 <template>
 <!-- 支付密码忘记密码 => 输入验证码 -->
     <div class="parrwordOtp">
-            <div class="parrwordOtp-text">
-                <div class="p1 czjz spjz">我们已发送验证码短信到您的手机：</div>
-                <div class="p2">+86 131******00</div>
-            </div>
-            <div class="paymen-content">
-                <van-password-input
-                :value="value"
-                :focused="showKeyboard"
-                :length="4"
-                info="收短信大约需要59秒"
-                @focus="showKeyboard = true"
-                :mask="false"
-                />
-                <!-- 数字键盘 -->
-                <van-number-keyboard
-                :show="showKeyboard"
-                @input="onInput"
-                @delete="onDelete"
-                @blur="showKeyboard = false"
-                delete-button-text ='X'
-                close-button-text="完成"
-                :hide-on-click-outside="false"
-                theme='custom'
-                @close="wancheng"
-                />
-                
-            </div>
+        <balanceHeader></balanceHeader>
+        <div class="parrwordOtp-text">
+            <div class="p1 czjz spjz">我们已发送验证码短信到您的手机：</div>
+            <div class="p2">+86 131******00</div>
+        </div>
+        <div class="paymen-content">
+            <van-password-input
+            :value="value"
+            :focused="showKeyboard"
+            :length="4"
+            info="收短信大约需要59秒"
+            @focus="showKeyboard = true"
+            :mask="false"
+            />
+            <!-- 数字键盘 -->
+            <van-number-keyboard
+            :show="showKeyboard"
+            @input="onInput"
+            @delete="onDelete"
+            @blur="showKeyboard = false"
+            delete-button-text ='X'
+            close-button-text="完成"
+            :hide-on-click-outside="false"
+            theme='custom'
+            @close="wancheng"
+            />
+            
+        </div>
         
     </div>
 </template>
 
 <script>
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -71,7 +73,7 @@ export default {
         }
     },
     components: {
-
+        balanceHeader
     },
 };
 </script>
@@ -104,7 +106,6 @@ export default {
     .paymen-content{
         width: 100%;
         height: 800px;
-        background-color: #fff;
         box-sizing: border-box;
         padding:80px 30px 0;
         position: relative;

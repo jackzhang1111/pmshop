@@ -10,7 +10,7 @@
             <span class="line-right"></span>
         </div>
         <div v-for="(i,index) in 3" :key="index" class="exhibition-con">
-            <div class="exhibition-left" >
+            <div class="exhibition-left" @click="jumpRouter('商品详情')">
                 <img src="@/assets/img/tabbar/home/chanpin@3x.png">
                 <div class="produced">
                     <span class="icon">
@@ -31,7 +31,7 @@
                     <span class="poin">...</span>
                 </div>
             </div>
-            <div class="exhibition-right" >
+            <div class="exhibition-right" @click="jumpRouter('商品详情')">
                 <img src="@/assets/img/tabbar/home/chanpin@3x.png">
                 <div class="produced">
                     <span class="icon">
@@ -82,7 +82,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <search-head @onfocus="onfocus" @onSearch="onSearch" @getInputVal="getInputVal" v-if="searchHidden"></search-head>
         <div class="goods-list">
             <!-- 未失效商品 -->
             <div class="footprint-goods-content" v-for="i in 4" :key="i">
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import searchHead from '@/multiplexing/searchHead.vue'
 export default {
     props: {
         
@@ -45,7 +47,8 @@ export default {
     data() {
         return {
             checked:false,
-            showCheck:false
+            showCheck:false,
+            searchHidden:true
         };
     },
     computed: {
@@ -68,11 +71,24 @@ export default {
         onShowCheck(){
             this.showCheck = !this.showCheck
             console.log(this.showCheck,123);
-        }
+        },
+        //输入框获得焦点时触发
+        onfocus(){
+            this.$router.go(-1)
+        },
+        //点击搜索按钮
+        onSearch(){
+            console.log(123);
+            // this.$router.push({name:'搜索商品1'})
+        },
+        //输入框内容变化时触发
+        getInputVal(value){
+            // console.log(value);
+        },
     },
     components: {
-
-    },
+        searchHead
+    },  
 };
 </script>
 

@@ -8,7 +8,7 @@
             <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
         </div>
         <div class="riqizujian"></div>
-        <div class="footprint-goods" v-for="i in 7" :key="i">
+        <div class="footprint-goods" v-for="i in 7" :key="i" @click="jumpRouter('商品详情')">
            <div class="footprint-goods-header">
                <van-checkbox v-model="checked" icon-size="24px" class="goods-header-checkbox" v-if="showFooter" checked-color="#F83600"></van-checkbox>
                <span class="p1">10月9日 今天</span>

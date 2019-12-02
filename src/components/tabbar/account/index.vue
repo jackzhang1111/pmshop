@@ -29,7 +29,7 @@
             </van-row>
         </div>
         <div class="account-myorder">
-            <div class="order-title">
+            <div class="order-title" @click="toMyOrder(0)">
                 <span>
                     我的订单
                 </span>
@@ -38,19 +38,19 @@
                 <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666" >
                     <!-- <span>自定义</span> -->
                     <!-- <img slot="icon" slot-scope="props" :src="props.active ? icon.active : icon.inactive"> -->
-                    <van-tabbar-item info="3">
+                    <van-tabbar-item info="3" @click="toMyOrder(1)">
                         <span>待付款</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.daifukuan : icon.daifukuan" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item @click="toMyOrder(2)">
                         <span>待发货</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.daifahuo : icon.daifahuo" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item @click="toMyOrder(3)">
                         <span>待收货</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.daishouhuo : icon.daishouhuo" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item @click="toMyOrder(4)">
                         <span>已完成</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.yiwancheng : icon.yiwancheng" class="icon-style">
                     </van-tabbar-item>
@@ -59,14 +59,14 @@
         </div>
 
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="$router.push({name:'评价列表'})">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="jumpRouter('评价列表')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/pingjia@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="售后" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="售后" left-icon="arrow" disabled @click="jumpRouter('售后内容')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/shouhou@2x.png" alt="">
                 </div>
@@ -80,7 +80,7 @@
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户余额" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户余额" left-icon="arrow" disabled @click="jumpRouter('账户余额')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/zhanghuyue@2x.png" alt="">
                 </div>
@@ -100,11 +100,11 @@
                         <span>心愿单</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xinyuandan : icon.xinyuandan" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item @click="jumpRouter('我的足迹')">
                         <span>最近浏览</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.zuijinliulan : icon.zuijinliulan" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item @click="jumpRouter('消息')">
                         <span>消息提醒</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xiaoxitixing : icon.xiaoxitixing" class="icon-style">
                     </van-tabbar-item>
@@ -123,14 +123,14 @@
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户设置" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="账户设置" left-icon="arrow" disabled @click="jumpRouter('账户设置')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/zhanghushezhi@2x.png" alt="">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled @click="jumpRouter('语言')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png" alt="">
                 </div>
@@ -187,6 +187,9 @@ export default {
     methods: {
         jumpRouter(name){
             this.$router.push({name})
+        },
+        toMyOrder(num){
+            this.$router.push({name:'我的订单',query:{active:num}})
         }
     },
     components: {

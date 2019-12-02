@@ -6,7 +6,7 @@ var protocol=window.location.protocol;
 var host=window.location.host;
 var urlHead=protocol+"//"+host;
 var urlPk=urlHead+'/api/';
-
+//map
 function main(params){
     let base = {
         baseURL:urlPk
@@ -14,7 +14,7 @@ function main(params){
     let reqParam = Object.assign({}, base, params)
     return mainAxios(reqParam)
 }
-
+//实体
 function park(params){
     let base = {
         baseURL:urlPk

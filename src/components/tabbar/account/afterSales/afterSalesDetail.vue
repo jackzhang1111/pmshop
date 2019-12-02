@@ -4,7 +4,7 @@
         <div class="after-sales-status">
             待审核
         </div>
-        <div class="cell">
+        <div class="cell" @click="jumpRouter('售后流程')">
             <span>退款原因</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
@@ -68,7 +68,7 @@
             <div class="phone-icon">
                 <img src="@/assets/img/confirmOrder/phone@2x.png">
             </div>
-            <span>拨打电话</span>
+            <span @click="show2 = true">拨打电话</span>
         </div>
         <div style="height:100px"></div>
         <div class="footer">
@@ -76,6 +76,15 @@
                 撤销申请
             </div>
         </div>
+
+        <van-overlay :show="show2" @click="show2 = false" class="overlay">
+            <!-- 客服电话 -->
+            <div class="kefu">
+                <div class="top">联系电话</div>
+                <div class="bottom">233-5616 1166</div>
+            </div>
+        </van-overlay>
+
     </div>
 </template>
 
@@ -86,7 +95,8 @@ export default {
     },
     data() {
         return {
-            arrowDown:true
+            arrowDown:true,
+            show2:false
         };
     },
     computed: {
@@ -102,7 +112,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 
@@ -311,6 +323,29 @@ export default {
                 }
             }
         }
+    }
+}
+.kefu{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height: 220px;
+    background-color: #fff;
+    .top,.bottom{
+        height: 110px;
+        text-align: center;
+        line-height: 110px;
+    }
+    .top{
+        font-size:36px;
+        color: #333;
+    }
+    .bottom{
+        font-size:40px;
+        color: #0E6CCC;
+        border-top:1px solid #DCDCDC;
     }
 }
 .margin-l-40{

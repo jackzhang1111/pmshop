@@ -50,7 +50,7 @@ export default {
 .no-search{
     position: relative;
     padding: 39px 30px 0;
-    height: calc(100vh - 88px);
+    height: calc(100vh - 90px);
     box-sizing: border-box;
     .content{
         position: relative;

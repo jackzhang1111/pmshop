@@ -1,7 +1,7 @@
 <template>
 <!-- 支付成功页面 -->
     <div>
-        <van-action-sheet v-model="show" title="" class="action-sheet-sucess">
+        <van-action-sheet v-model="showAction" title="" class="action-sheet-sucess">
             <div class="sucess-content">
                 <div class="sucess-img">
                     <img src="@/assets/img/confirmOrder/icon-05@2x.png" alt="">
@@ -22,7 +22,7 @@ export default {
     },
     data() {
         return {
-            show:false
+            showAction:false
         };
     },
     computed: {

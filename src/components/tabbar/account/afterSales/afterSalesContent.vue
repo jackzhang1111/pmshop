@@ -69,7 +69,10 @@ export default {
     methods: {
         toDetail(){
             this.$router.push({name:'售后详情'})
-        }
+        },
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 

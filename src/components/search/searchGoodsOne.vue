@@ -1,6 +1,7 @@
 <template>
 <!-- 商品搜索模式一 -->
     <div class="search-goods-one">
+        <search-head @onfocus="onfocus" @getInputVal="getInputVal" @onSearch="onSearch"></search-head>
         <van-dropdown-menu active-color="#DB9000">
             <van-dropdown-item v-model="value1" :options="option1" class="scj"></van-dropdown-item>
             <van-dropdown-item v-model="value2" :options="option2"  class="scj"/>
@@ -42,6 +43,7 @@
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
+import searchHead from '@/multiplexing/searchHead.vue'
 export default {
     props: {
 
@@ -89,10 +91,24 @@ export default {
         },
         viewModel(){
             this.goodsShow1 = !this.goodsShow1
+        },
+        //输入框获得焦点时触发
+        onfocus(){
+            // if(this.$route.name == '历史记录' || this.$route.name == '收藏夹历史记录' || this.$route.name == '我的订单历史记录') return
+            this.$router.go(-1)
+        },
+        //输入框内容变化时触发
+        getInputVal(value){
+            console.log(value);
+        },
+        //点击搜索按钮
+        onSearch(){
+            console.log(123);
         }
     },
     components: {
-        footerExhibition
+        footerExhibition,
+        searchHead
     },
 };
 </script>

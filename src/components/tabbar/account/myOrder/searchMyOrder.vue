@@ -17,7 +17,7 @@ export default {
 
     },
     mounted() {
-        console.log(123);
+
     },
     watch: {
 
@@ -25,7 +25,7 @@ export default {
     methods: {
          //点击搜索按钮
         onSearch(){
-           this.$router.push({name:'收藏夹搜索商品'})
+           this.$router.push({name:'我的订单搜索商品'})
         }
     },
     components: {

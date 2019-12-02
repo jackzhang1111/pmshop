@@ -1,6 +1,6 @@
 <template>
     <div class="settings-header">
-        <van-icon name="arrow-left" class="arrow-left"/>
+        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
         <span class="header-t1">{{title}}</span>
         <span class="header-t2 c-orange" v-if="title2Show" @click="toAddAdder">{{title2}}</span>
     </div>

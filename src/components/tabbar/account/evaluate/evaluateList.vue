@@ -28,10 +28,10 @@
                             </div>
                             <div style="height:35px;"></div>
                             <div class="btns">
-                                <div class="pj">
+                                <div class="pj" @click="jumpRouter('发表评价')">
                                     评价
                                 </div>
-                                <div class="ckdd">
+                                <div class="ckdd" @click="jumpRouter('订单详情')">
                                     查看订单
                                 </div>
                             </div>
@@ -64,10 +64,10 @@
                             </div>
                             <div style="height:35px;"></div>
                             <div class="btns">
-                                <div class="pj">
+                                <div class="pj" @click="jumpRouter('追加评价')">
                                     追评
                                 </div>
-                                <div class="ckdd">
+                                <div class="ckdd" @click="jumpRouter('订单详情')">
                                     查看订单
                                 </div>
                             </div>
@@ -106,7 +106,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         footerExhibition

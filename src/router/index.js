@@ -45,12 +45,15 @@ import search from '@/components/search/index.vue'
 import searchRecord from '@/components/search/searchRecord.vue'
 import noSearch from '@/components/search/noSearch.vue'
 import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
+import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
+import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord'
+import searchMyOrder from '@/components/tabbar/account/myOrder/searchMyOrder'
+import myOrderGood from '@/components/tabbar/account/myOrder/myOrderGood'
 
 //收藏夹
 import favorites from '@/components/tabbar/account/favorites/index.vue'
-import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
-import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord'
+
 
 
 
@@ -62,6 +65,7 @@ import orderDetail from '@/components/tabbar/account/myOrder/orderDetail'
 import addressList from '@/components/tabbar/account/myOrder/addressList'
 import addAdderss from '@/components/tabbar/account/myOrder/addAdderss'
 import refund from '@/components/tabbar/account/myOrder/refund'
+
 
 //售后
 import afterSales from '@/components/tabbar/account/afterSales/index'
@@ -160,11 +164,17 @@ export default new Router({
       name: '商品详情评价',
       component: evaluaDetails
     },
+
+
+
     {
       path: '/footprint',
       name: '我的足迹',
       component: footprint
     },
+
+
+    
     {
       path: '/myOrder',
       name: '我的订单',
@@ -377,10 +387,20 @@ export default new Router({
           component: searchGoodsOne
         },
         {
-          path: 'favoriteRecord',
+          path: 'favorites/favoriteRecord',
           name: '收藏夹历史记录',
           component: favoriteRecord
-        }
+        },
+        {
+          path: 'myOrder/searchMyOrder',
+          name: '我的订单历史记录',
+          component: searchMyOrder
+        },
+        {
+          path: 'myOrder/myOrderGood',
+          name: '我的订单搜索商品',
+          component: myOrderGood
+        },
       ]
     },
     {

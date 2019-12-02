@@ -1,11 +1,11 @@
 <template>
 <!-- 确认付款弹窗 -->
     <div>
-        <van-action-sheet v-model="show2" title="确认付款" class="action-sheet-paymen">
+        <van-action-sheet v-model="showAction" title="确认付款" class="action-sheet-paymen">
             <div class="paymen-content">
-                <div class="paymen-content-top">
+                <div class="paymen-content-top" @click="payMode">
                     <span>付款方式</span>
-                    <span class="c-999">></span>
+                    <van-icon name="arrow" class="fl-right"/>
                     <span>中国银行</span>
                 </div>
                 <div class="paymen-content-top">
@@ -28,7 +28,7 @@ export default {
     },
     data() {
         return {
-            show2:false
+            showAction:false
         };
     },
     computed: {
@@ -44,8 +44,13 @@ export default {
 
     },
     methods: {
+        //立即付款
         confirm(){
-            
+            this.$emit('showpassword')
+        },
+        //付款方式
+        payMode(){
+            this.$emit('showyinhang')
         }
     },
     components: {

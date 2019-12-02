@@ -72,7 +72,8 @@ export default {
 
     },
     mounted() {
-        
+        // 收藏夹搜索商品组件搜索头隐藏
+        this.$refs.goodList.searchHidden = false
     },
     watch: {
         showFooter:{

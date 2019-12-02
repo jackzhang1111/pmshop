@@ -1,7 +1,7 @@
 <template>
 <!-- 选择付款方式弹窗 -->
     <div>
-        <van-action-sheet v-model="show1" title="选择付款方式" class="action-sheet-yinhang">
+        <van-action-sheet v-model="showAction" title="选择付款方式" class="action-sheet-yinhang">
             <div class="paymen-content">
                 <div class="paymen-content-top" v-for="i in list" :key="i.num" @click="paymen(i)">
                     <span class="yh-icon czjz">
@@ -12,7 +12,7 @@
                     </span>
                     <span>中国银行</span>
                 </div>
-                <div class="paymen-content-top">
+                <div class="paymen-content-top" @click="toaddBankcar">
                     <span></span>
                     <span class="c-999">></span>
                     <span>添加银行卡</span>
@@ -56,7 +56,7 @@ export default {
             message:'',
             checked:true,
             show:true,
-            show1:false,
+            showAction:false,
             radio:true
         };
     },
@@ -73,7 +73,23 @@ export default {
 
     },
     methods: {
-
+        paymen(item){
+            this.list.forEach(element => {
+                element.a = false
+                if(item.num == element.num){
+                    element.a = true
+                }
+            });
+        },
+        //显示支付弹窗
+        showpaymen(){
+            this.$emit('showpassword')
+            // this.$emit('showsucess')
+        },
+        //添加银行卡
+        toaddBankcar(){
+            this.$router.push({name:'添加银行卡'})
+        }
     },
     components: {
 

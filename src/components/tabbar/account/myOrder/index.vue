@@ -2,9 +2,11 @@
 <!-- 我的订单 -->
     <div class="my-order">
         <div class="footprint-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">我的订单</span>
-            <span class="header-t2"><van-icon name="search" class="search"/></span>
+            <span class="header-t2" @click="jumpRouter('我的订单历史记录')">
+                <van-icon name="search" class="search"/>
+            </span>
             <van-icon name="ellipsis" class="ellipsis"/>
         </div>
         <div class="commodity-tab">
@@ -54,9 +56,9 @@ export default {
     },
     data() {
         return {
-            active:0,
-            show:true,
-            show2:true,
+            active:3,
+            show:false,
+            show2:false,
         };  
     },
     computed: {
@@ -66,13 +68,15 @@ export default {
 
     },
     mounted() {
-
+        this.active = this.$route.query.active
     },
     watch: {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         dfh,
@@ -137,7 +141,9 @@ export default {
                     background-color: #FA5300;
                 }
             }
-            
+            /deep/ .van-tabs__content{
+                padding: 20px 30px;
+            }
         }
     }
     .good-detail{

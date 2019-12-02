@@ -39,10 +39,10 @@
             </div>
             <div class="good-detail">
                 <div class="good-detail-content" >
-                    <div class="good-detail-img">
+                    <div class="good-detail-img" @click="jumpRouter('商品详情')">
                         <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                     </div>
-                    <div class="good-detail-title">
+                    <div class="good-detail-title" @click="jumpRouter('商品详情')">
                         <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
                         <div class="guige">
                             红色/L
@@ -109,11 +109,9 @@
             <div class="phone-icon">
                 <img src="@/assets/img/confirmOrder/phone@2x.png">
             </div>
-            <span>拨打电话</span>
+            <span @click="show2 = true">拨打电话</span>
         </div>
-        <div style="height:100px">
-
-        </div>
+        <div style="height:100px"></div>
         <div class="good-detail-footer">
             <!-- 待付款按钮栏 -->
             <div class="lan">
@@ -122,6 +120,15 @@
                 <div class="btn-xgdz fl-right">修改地址</div>
             </div>
         </div>
+
+        <van-overlay :show="show2" @click="show2 = false" class="overlay">
+            <!-- 客服电话 -->
+            <div class="kefu">
+                <div class="top">联系电话</div>
+                <div class="bottom">233-5616 1166</div>
+            </div>
+        </van-overlay>
+
 
     </div>
 </template>
@@ -133,7 +140,7 @@ export default {
     },
     data() {
         return {
-
+            show2:false
         };
     },
     computed: {
@@ -149,7 +156,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 
@@ -353,6 +362,29 @@ export default {
         top:50%;
         transform: translateY(-50%);
         margin-right:20px;
+    }
+}
+.kefu{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height: 220px;
+    background-color: #fff;
+    .top,.bottom{
+        height: 110px;
+        text-align: center;
+        line-height: 110px;
+    }
+    .top{
+        font-size:36px;
+        color: #333;
+    }
+    .bottom{
+        font-size:40px;
+        color: #0E6CCC;
+        border-top:1px solid #DCDCDC;
     }
 }
 .font-24{

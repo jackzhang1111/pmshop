@@ -1,9 +1,9 @@
 <template>
     <div class="account-security">
         <div class="security-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
         </div>
         <div class="cell" @click="$router.push({name:'修改昵称'})">
             <span class="c-333">昵称</span>
@@ -59,7 +59,9 @@ export default {
 
     },
     methods: {
-        
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 

@@ -1,22 +1,26 @@
 <template>
 <!-- 订单提交成功页面 -->
-    <div class="confirm-success">
-        <div class="confirm-success-con">
-            <div class="confirm-success-img">
-                <img src="@/assets/img/confirmOrder/icon-04@2x.png">
+    <div>
+        <balance-header title="确认订单"></balance-header>
+        <div class="confirm-success">
+            <div class="confirm-success-con">
+                <div class="confirm-success-img">
+                    <img src="@/assets/img/confirmOrder/icon-04@2x.png">
+                </div>
+                
             </div>
-            
-        </div>
-        <div class="p1 c-orange">
-            订单提交成功
-        </div>
-        <div class="p2">
-            您的订单已成功提交,我们会以最快的速度将商品交到您的手上
+            <div class="p1 c-orange">
+                订单提交成功
+            </div>
+            <div class="p2">
+                您的订单已成功提交,我们会以最快的速度将商品交到您的手上
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -42,7 +46,7 @@ export default {
 
     },
     components: {
-
+        balanceHeader
     },
 };
 </script>

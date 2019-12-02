@@ -1,6 +1,7 @@
 <template>
     <!-- 点击搜索框弹出的历史记录 -->
     <div class="search-record" >
+        <search-head @onfocus="onfocus" @getInputVal="getInputVal" @onSearch="onSearch"></search-head>
         <div v-if="lishiShow" class="record">
             <div class="search-title">
                 <span class="title-p1">历史搜索</span>
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+import searchHead from '@/multiplexing/searchHead.vue'
 export default {
     props: {
         
@@ -90,10 +92,25 @@ export default {
         },
         toGoodsOne(){
             this.$router.push({name:'搜索商品1'})
+        },
+        //输入框获得焦点时触发
+        onfocus(){
+            // if(this.$route.name == '历史记录' || this.$route.name == '收藏夹历史记录' || this.$route.name == '我的订单历史记录') return
+            // this.$router.push({name:'历史记录'})
+        },
+        //输入框内容变化时触发
+        getInputVal(value){
+            console.log(value);
+        },
+        //点击搜索按钮
+        onSearch(){
+            console.log(123);
+            this.$router.push({name:'搜索商品1'})
         }
+
     },
     components: {
-
+        searchHead
     },
 };
 </script>
@@ -102,7 +119,7 @@ export default {
 .search-record{
     position: relative;
     background-color: #fff;
-    height: calc(100vh - 88px);
+    height: calc(100vh - 90px);
     box-sizing: border-box;
     .record{
         padding: 39px 30px 0;

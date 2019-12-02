@@ -2,9 +2,9 @@
 <!-- 订单头部 -->
     <div class="orderTitle">
         <div class="footprint-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="ellipsis" class="ellipsis" @click="$router.push({name:'消息'})"/>
         </div>
         <router-view></router-view>
     </div>

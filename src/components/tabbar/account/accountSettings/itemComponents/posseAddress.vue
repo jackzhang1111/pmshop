@@ -13,7 +13,7 @@
                 <span>邮政编码：100020</span>
             </div>
             <div class="content-btns">
-                <div class="btn-bj" @click="editRedord">编辑</div>
+                <div class="btn-bj" @click="jumpRouter('新增地址')">编辑</div>
                 <div class="btn-sc" @click="deleteRedord">删除</div>
             </div>
         </div>
@@ -67,7 +67,10 @@ export default {
         //编辑
         editRedord(){
 
-        }
+        },
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 

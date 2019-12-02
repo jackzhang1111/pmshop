@@ -2,15 +2,15 @@
 <!-- 账户设置 -->
     <div class="account-settings">
         <div class="settings-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left"  @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
         </div>
-        <div class="cell" @click="toAddress">
+        <div class="cell"  @click="jumpRouter('收货地址')">
             <span>我的收货地址</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
-        <div class="cell">
+        <div class="cell" @click="jumpRouter('账户安全')">
             <span>账户与安全</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
@@ -67,7 +67,10 @@ export default {
     methods: {
         toAddress(){
             this.$router.push({name:'收货地址'})
-        }
+        },
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         

@@ -1,7 +1,7 @@
 <template>
     <div class="append-evaluate">
         <div class="evaluate-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
             <span class="header-t2 c-orange">发表追评</span>
         </div>
@@ -51,7 +51,7 @@ export default {
             title:'发表追评',
             fileList:[],
             fileList2:[],
-            show:true
+            show:false
         };
     },
     computed: {

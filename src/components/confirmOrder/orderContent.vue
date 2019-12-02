@@ -30,10 +30,10 @@
                 <span>DJKLD561261</span>
             </div>
             <div class="good-detail-content" v-for="i in 2" :key="i">
-                <div class="good-detail-img">
+                <div class="good-detail-img" @click="jumpRouter('商品详情')">
                     <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                 </div>
-                <div class="good-detail-title">
+                <div class="good-detail-title" @click="jumpRouter('商品详情')">
                     <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
                     <div class="guige">
                         红色/L
@@ -116,22 +116,22 @@
         <div class="settlement" >
             <span class="settlement-p1">总金额：</span>
             <span class="settlement-p2 c-orange">￥1137</span>
-            <div class="settlement-btn" @click="submit">
+            <div class="settlement-btn" @click="showpaymen">
                 <span>提交订单</span>
             </div>
         </div>
 
         <!-- 确认付款弹窗 -->
-        <action-sheet-paymen></action-sheet-paymen>
+        <action-sheet-paymen ref="paymen" @showpaymen="showpaymen" @showyinhang="showyinhang" @showpassword="showpassword"></action-sheet-paymen>
         
         <!-- 选择付款方式弹窗 -->
-        <action-sheet-yinhang></action-sheet-yinhang>
+        <action-sheet-yinhang ref="yinhang" @showyinhang="showyinhang" @showpassword="showpassword" @showsucess="showsucess"></action-sheet-yinhang>
 
         <!-- 支付成功弹窗 -->
-        <action-sheet-sucess></action-sheet-sucess>
+        <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
 
         <!-- 支付密码 -->
-        <action-sheet-password></action-sheet-password>
+        <action-sheet-password ref="password" @showpassword="showpassword"></action-sheet-password>
     </div>
 </template>
 
@@ -178,7 +178,8 @@ export default {
             checked:true,
             show:true,
             show1:false,
-            radio:true
+            radio:true,
+            yinhangTitle:'确认付款'
         };
     },
     computed: {
@@ -212,6 +213,22 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        //弹出银行
+        showyinhang(){
+            this.$refs.yinhang.showAction = true
+        },
+        //弹出支付
+        showpaymen(){
+            this.$refs.paymen.showAction = true
+        },
+        //弹出支付成功
+        showsucess(){
+            this.$refs.sucess.showAction = true
+        },
+        //弹出密码框
+        showpassword(){
+            this.$refs.password.showAction = true
+        }
     },
     components: {
         actionSheetPaymen,
@@ -352,7 +369,6 @@ export default {
                 }
                 .selection-right-stepper{
                     position: relative;
-                    width: 100%;
                     height: 156px;
                     .add-btn{
                         position: absolute;
