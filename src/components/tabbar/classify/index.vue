@@ -20,7 +20,6 @@
                                     <span class="name">高跟鞋</span>
                                 </div>
                             </van-col>
-                           
                         </van-row>
                     </div>
                 </div>
@@ -34,7 +33,6 @@
                                     <span class="name">高跟鞋</span>
                                 </div>
                             </van-col>
-                           
                         </van-row>
                     </div>
                 </div>
@@ -82,14 +80,14 @@ export default {
     position: relative;
     .van-sidebar{
         width: 176px;
-        margin: 15px 0 0 0;
+        // margin: 15px 0 0 0;
         display: inline-block;
-        max-height: 1109px;
+        max-height: 1139px;
         overflow: auto;
         .van-sidebar-item{
             height: 110px;
             line-height: 70px;
-            background-color: #F2F3F5;
+            // background-color: #F2F3F5;
             margin-bottom: 2px;
         }
         
@@ -98,10 +96,11 @@ export default {
         width: 524px;
         height: 100%;
         float: right;
-        max-height: 1109px;
+        max-height: 1139px;
         overflow-x: hidden;
         overflow-y: auto;
         padding-right:30px;
+        margin: 15px 0 0 0;
         .banner{
             width: 524px;
             height: 180px;

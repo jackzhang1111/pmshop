@@ -5,26 +5,26 @@
         <div class="user-name">
             <img src="@/assets/img/login/user@3x.png" alt="图标" class="name-icon">
             <div class="input-con">
-                <input type="text" class="name-input" placeholder="请输入用户名">
+                <input type="text" class="name-input" placeholder="请输入用户名" v-model="userData.username">
             </div>
         </div>
         <div class="pass-word">
              <img src="@/assets/img/login/password@3x.png" alt="图标" class="name-icon">
              <div class="input-con">
-                <input type="text" class="name-input" placeholder="请输入密码">
+                <input :type="inputType" class="name-input" placeholder="请输入密码" v-model="userData.password">
                 <van-icon :name="eyeName" class="password-icon" size="20px" @click="eyeStatus = !eyeStatus"/>
             </div>
         </div>
         <div class="forgetPassword">
-            <span class="c1" @click="toForgot">Forgot Password？</span>
+            <span class="c1" @click="jumpRouter('忘记密码')">Forgot Password？</span>
         </div>
         <div class="upload">
-            <div class="load-btn" @click="logIn">
+            <div class="load-btn" @click="logIn" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
                 Log In
             </div>
         </div>
         <div class="remarks-option">
-            <span class="c2" @click="toRegister">Create Account</span>
+            <span class="c2" @click="jumpRouter('注册')">Create Account</span>
         </div>
         <div class="footer">
             <div class="line left-80"></div>
@@ -55,36 +55,38 @@
 </template>
 
 <script>
-import {aaa,bbb} from '@/api/login/login';
+import {loginApi} from '@/api/login/index';
+import {accReg,passReg} from '@/common/reg.js'
 export default {
     props: {
 
     },
     data() {
         return {
+            inputType:'password',
             eyeName:'closed-eye',
-            eyeStatus:false,
-            value:'',
-            search:{
-            "addressAreaId": 111111,
-            "addressId": 1111,
-            "addressStatus": 1,
-            "areaCode": "DS",
-            "createTime": "",
-            "isDefault": 0,
-            "name": "SA",
-            "phoneNumber": "ASS",
-            "userAddress": "SAS",
-            "userId": 8
+            eyeStatus:Boolean,
+            userData:{
+                username:'',
+                password:'',
             },
-            search1:{
-                username:'132123',
-                password:'23123'
+            rules:{
+                username:{
+                    required: true,
+                    messages: "姓名格式不正确"
+                },
+                password:{
+                    required: true,
+                    messages: "姓名格式不正确"
+                }
+               
             }
         };
     },
     computed: {
-
+        disabledSubmit() {
+            return !this.$fn.isDisabled(this.userData,this.rules);
+        }
     },
     created() {
         
@@ -96,30 +98,25 @@ export default {
         eyeStatus:{
             handler:function(newVal, oldVal){
                 this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
-                console.log(newVal,'newVal')
+                this.eyeStatus ? this.inputType = 'text':this.inputType = 'password'
             },
         },
     },
     methods: {
-        toForgot(){
-            this.$router.push({name:'忘记密码'})
-            // bbb(this.search).then(res => {
-            //     console.log(this.search);
-            // })
-        },
-
-
-        toRegister(){
-            this.$router.push({name:'注册'})
-            // aaa(this.search1).then(res => {
-            //     // console.log(this.search);
-            // })
-        },
         //登录按钮
         logIn(){
-            this.$router.push({name:'首页'})
-        }
-        
+            if(this.disabledSubmit){
+                loginApi(this.userData).then(res => {
+                    if(res.code == 0){
+                        localStorage.token = res.token
+                        this.$router.push({name:'首页'})
+                    }
+                })
+            }
+        },
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 
