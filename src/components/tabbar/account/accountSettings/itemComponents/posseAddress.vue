@@ -1,20 +1,20 @@
 <template>
     <div class="posse-address">
-        <div class="address-content">
+        <div class="address-content" v-for="data in dataList" :key="data.addressId">
             <div class="content-p1">
-                <span class="name">路人甲</span>
-                <span class="phone">+86 15056161646</span>
-                <span class="dqmr">当前默认</span>
+                <span class="name">{{data.name}}</span>
+                <span class="phone">{{data.areaCode}} {{data.phoneNumber}}</span>
+                <span class="dqmr" v-if="data.isDefault == 1">当前默认</span>
             </div>
             <div class="content-p2">
-                <span>收货地址：中国-北京市 市辖区 朝阳区 北京市朝阳区曙光西里甲5号院17号楼</span>
+                <span>收货地址：{{data.addreCitys}} {{data.userAddress}}</span>
             </div>
             <div class="content-p3">
-                <span>邮政编码：100020</span>
+                <span>地区编码：{{data.areaCode}}</span>
             </div>
             <div class="content-btns">
-                <div class="btn-bj" @click="jumpRouter('新增地址')">编辑</div>
-                <div class="btn-sc" @click="deleteRedord">删除</div>
+                <div class="btn-bj" @click="editRedord(data)">编辑</div>
+                <div class="btn-sc" @click="deleteRedord(data.addressId)">删除</div>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
                 </div>
                 <div class="overlay-wrapper-btns">
                     <span class="btn-no" @click="redordshow = false">否</span>
-                    <span class="btn-yes" @click="redordshow = false"> 是</span>
+                    <span class="btn-yes" @click="$emit('deladdress',addressId)"> 是</span>
                 </div>
             </div>
         </van-overlay>
@@ -41,11 +41,17 @@
 <script>
 export default {
     props: {
-
+        posseData:{
+            type:Object,
+            default:{}
+        },
     },
     data() {
         return {
-            redordshow:false
+            redordshow:false,
+            posseObj:{},
+            dataList:[],
+            addressId:''
         };
     },
     computed: {
@@ -55,22 +61,34 @@ export default {
 
     },
     mounted() {
-
+        this.getData()
     },
     watch: {
-
+        posseData:{
+            handler:function(newVal, oldVal){
+                this.getData()
+            },
+        },
     },
     methods: {
-        deleteRedord(){
+        deleteRedord(id){
             this.redordshow = true
-        },
-        //编辑
-        editRedord(){
-
+            this.addressId = id
         },
         jumpRouter(name){
             this.$router.push({name})
         },
+        //编辑地址
+        editRedord(obj){
+            this.$fn.deepnull(this.$store.state.addreData)
+            this.$store.state.posseObj = obj
+            this.$router.push({name:'新增地址',query:{type:'edit'}})
+        },
+        //获取地址数据列表
+        getData(){
+            this.posseObj = Object.assign({},this.posseObj,this.posseData)
+            this.dataList = this.posseObj.list
+        }
     },
     components: {
 

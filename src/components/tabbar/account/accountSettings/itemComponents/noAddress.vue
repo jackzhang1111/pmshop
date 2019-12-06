@@ -7,7 +7,7 @@
             <span>TOSPINO友情提示：此处我们只开放可配送区域的地址，若没有您需要的收获地址，请联系</span>
             <span class="c-orange" @click="show2=true">TOSPINO</span>
         </div>
-       <div class="address-p3">
+       <div class="address-p3" @click="jumpRouter('新增地址')">
             <span>添加新地址</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
@@ -45,7 +45,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 

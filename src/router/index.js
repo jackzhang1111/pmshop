@@ -50,6 +50,8 @@ import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord
 import searchMyOrder from '@/components/tabbar/account/myOrder/searchMyOrder'
 import myOrderGood from '@/components/tabbar/account/myOrder/myOrderGood'
 
+
+
 //收藏夹
 import favorites from '@/components/tabbar/account/favorites/index.vue'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
@@ -95,6 +97,7 @@ import editEmail from '@/components/tabbar/account/accountSettings/editEmail'
 import editLogpawo from '@/components/tabbar/account/accountSettings/editLogpawo'
 import editPaypawo from '@/components/tabbar/account/accountSettings/editPaypawo'
 import companyInformation from '@/components/tabbar/account/accountSettings/companyInformation'
+import choiceList from '@/multiplexing/choiceList'
 
 // 账户余额
 import accountBalance from '@/components/tabbar/account/accountBalance/index'
@@ -233,6 +236,11 @@ export default new Router({
       path: '/accountSettings/accountAddress/addAddress',
       name: '新增地址',
       component: addAddress,
+    },
+    {
+      path: '/accountSettings/accountAddress/addAddress/choiceList',
+      name: '选择列表',
+      component: choiceList,
     },
     {
       path: '/accountSettings/accountSecurity',

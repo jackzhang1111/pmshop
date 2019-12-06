@@ -25,3 +25,21 @@ export function searchProductApi(params) {
         data:params
     })
 }
+
+//搜索发现
+export function searchFindApi(params) {
+    return park({
+        url:`/appbrowserachistory/getsearchhistory`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//删除所有历史记录
+export function delHistoryApi(params) {
+    return park({
+        url:`/appbrowserachistory/deletesearchname`,
+        method: 'POST',
+        data:params
+    })
+}

@@ -3,34 +3,21 @@
     <div class="classify">
         <search-header></search-header>
         <div class="classify-con">
-            <van-sidebar v-model="activeKey">
-                <van-sidebar-item title="标签名称" v-for="(i,index) in 15" :key="index"/>
+            <van-sidebar v-model="activeKey" @change="changeSidebar">
+                <van-sidebar-item :title="leftGoods.categoryName" v-for="leftGoods in leftList" :key="leftGoods.categoryId"/>
             </van-sidebar>
             <div class="classify-right">
                 <div class="banner">
-                    <img src="@/assets/img/tabbar/classify/banner@2x.png">
+                    <img :src="$webUrl+leftImgSrc">
                 </div>
-                <div class="recommend">
-                    <span class="title">热门推荐</span>
+                <div class="recommend" v-for="rightGoods in rightList" :key="rightGoods.categoryId">
+                    <span class="title">{{rightGoods.categoryName}}</span>
                     <div>
                         <van-row gutter="40">
-                            <van-col span="7" v-for="i in 3" :key="i">
-                                <div class="aaa" style="margin-bottom:0">
-                                    <img src="@/assets/img/tabbar/classify/01@2x.png">
-                                    <span class="name">高跟鞋</span>
-                                </div>
-                            </van-col>
-                        </van-row>
-                    </div>
-                </div>
-                <div class="recommend" v-for="i in 2" :key="i + '5'">
-                    <span class="title">热门推荐</span>
-                    <div>
-                        <van-row gutter="40" v-for="i in 3" :key="i">
-                            <van-col span="7" v-for="i in 3" :key="i">
+                            <van-col span="7" v-for="product in rightGoods.productCategory" :key="product.categoryId">
                                 <div class="aaa">
-                                    <img src="@/assets/img/tabbar/classify/01@2x.png">
-                                    <span class="name">高跟鞋</span>
+                                    <img :src="$webUrl+product.categoryImg">
+                                    <span class="name">{{product.categoryName}}</span>
                                 </div>
                             </van-col>
                         </van-row>
@@ -45,13 +32,21 @@
 
 <script>
 import searchHeader from '@/multiplexing/searchHeader'
+import {procategorylistApi} from '@/api/classify/index'
 export default {
     props: {
 
     },
     data() {
         return {
-            activeKey:0
+            activeKey:0,
+            formData:{
+                category_level: 1,
+                parent_id:0
+            },
+            leftList:[],
+            rightList:[],
+            leftImgSrc:''
         };
     },
     computed: {
@@ -60,14 +55,33 @@ export default {
     created() {
 
     },
-    mounted() {
-
+    mounted() { 
+        this.procategorylist()
     },
     watch: {
 
     },
     methods: {
-
+        procategorylist(){
+            procategorylistApi(this.formData).then(res => {
+                if(res.code == 0){
+                    this.leftList = res.leftdataList
+                    this.rightList = res.righdataList
+                    this.leftImgSrc = res.leftdataList[0].categoryImg
+                }
+            })
+        },
+        //更改侧边导航
+        changeSidebar(index){
+            this.leftImgSrc = this.leftList[index].categoryImg
+            this.formData.category_level = 2
+            this.formData.parent_id = this.leftList[index].categoryId
+            procategorylistApi(this.formData).then(res => {
+                if(res.code == 0){
+                    this.rightList = res.righdataList
+                }
+            })
+        }
     },
     components: {
         searchHeader

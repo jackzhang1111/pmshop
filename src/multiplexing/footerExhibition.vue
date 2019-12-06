@@ -9,47 +9,26 @@
             <span class="nknxh-p1">你可能还喜欢</span>
             <span class="line-right"></span>
         </div>
-        <div v-for="(i,index) in 3" :key="index" class="exhibition-con">
-            <div class="exhibition-left" @click="jumpRouter('商品详情')">
-                <img src="@/assets/img/tabbar/home/chanpin@3x.png">
+        <div class="exhibition-con clearfix">
+            <div class="exhibition-left" @click="toProduDetail(good.skuId)" v-for="good in dataList" :key="good.skuId">
+                <img :src="webUrl+good.imgUrl">
                 <div class="produced">
                     <span class="icon">
-                        <img src="@/assets/img/tabbar/home/guojia@3x.png" alt="">
+                        <img :src="webUrl+good.locationUrl">
                     </span>
-                    <span class="produced-font">瑞士</span>
+                    <span class="produced-font">{{good.locationName}}</span>
                 </div>
-                <div>
-                    <span>欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</span>
+                <div class="produced-title">
+                    <span>{{good.supplyTitle}}</span>
                 </div>
                 <div class="score">
-                    <van-rate v-model="value" readonly  color="#FA5300"/>
-                    <span>477</span>
+                    <van-rate v-model="good.starNumber" readonly  color="#FA5300"/>
+                    <span>{{good.manNumber}}</span>
                 </div>
                 <div class="price">
-                    <span class="price1">¥199.00</span>
-                    <span class="price2">258.00</span>
-                    <span class="poin">...</span>
-                </div>
-            </div>
-            <div class="exhibition-right" @click="jumpRouter('商品详情')">
-                <img src="@/assets/img/tabbar/home/chanpin@3x.png">
-                <div class="produced">
-                    <span class="icon">
-                        <img src="@/assets/img/tabbar/home/guojia@3x.png" alt="">
-                    </span>
-                    <span class="produced-font">瑞士</span>
-                </div>
-                <div>
-                    <span>欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</span>
-                </div>
-                <div class="score">
-                    <van-rate v-model="value" readonly  color="#FA5300"/>
-                    <span>477</span>
-                </div>
-                <div class="price">
-                    <span class="price1">¥199.00</span>
-                    <span class="price2">258.00</span>
-                    <span class="poin">...</span>
+                    <span class="price1">￥{{good.discountPrice}}</span>
+                    <span class="price2" v-if="good.salePriceFlag">￥{{good.salePrice}}</span>
+                    <!-- <span class="poin">...</span> -->
                 </div>
             </div>
         </div>
@@ -62,11 +41,21 @@ export default {
         showIlike:{
             type:Boolean,
             default:true
+        },
+        footerData:{
+            type:Object,
+            default:{}
+        },
+        webUrl:{
+            type:String,
+            default:''
         }
     },
     data() {
         return {
-            value:1
+            value:1,
+            footerObj:{},
+            dataList:[]
         };
     },
     computed: {
@@ -76,15 +65,34 @@ export default {
 
     },
     mounted() {
-        console.log(456789);
+        this.getData()
     },
     watch: {
-
+        footerData:{
+            handler:function(newVal, oldVal){
+                this.getData()
+            },
+        },
     },
     methods: {
         jumpRouter(name){
             this.$router.push({name})
         },
+        //跳转到商品详情
+        toProduDetail(skuId){
+            this.$router.push({name:'商品详情',query:{skuId}})
+        },
+        getData(){
+            this.footerObj = Object.assign({},this.footerObj,this.footerData)
+            this.dataList = this.footerObj.list
+            this.dataList.forEach(item => {
+                item.salePriceFlag = true
+                if(item.discountPrice == null){
+                    item.discountPrice = item.salePrice
+                    item.salePriceFlag = false
+                }
+            })
+        }
     },
     components: {
 
@@ -136,7 +144,6 @@ export default {
     }
     .exhibition-con{
         width: 100%;
-        height: 570px;
         margin-bottom: 10px;
     }
     .exhibition-left{
@@ -144,6 +151,10 @@ export default {
         height: 570px;
         float: left;
         background-color: #fff;
+        margin-bottom: 10px;
+        &:nth-child(2n+0){
+            margin-left:10px;
+        }
         img{
             width: 340px;
             height: 340px;
@@ -163,6 +174,14 @@ export default {
                 color: #DB9000;
                 margin-left:10px;
             }
+        }
+        .produced-title{
+            padding-left:10px;
+            height: 75px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
         }
         .score{
             margin:10px 0 20px;
@@ -190,57 +209,17 @@ export default {
             }
         }
     }
-    .exhibition-right{
-        width: 340px;
-        height: 570px;
-        float: right;
-        background-color: #fff;
-        img{
-            width: 340px;
-            height: 340px;
-        }
-        .icon{
-            position: relative;
-            top:8px;
-            img{
-                width: 30px;
-                height: 30px;
-                margin-left: 10px;
-            }
-        }
-        .produced{
-            margin-bottom: 18px;
-            .produced-font{
-                color: #DB9000;
-                margin-left:10px;
-            }
-        }
-        .score{
-            margin:10px 0 20px;
-            .van-rate{
-                margin-right:8px;
-            }
-        }
-        .price{
-            position: relative;
-            .price1{
-                font-size:28px;
-                color: #FA5300;
-                margin-right:11px;
-            }
-        .price2{
-            font-size:18px;
-            color: #666666;
-            text-decoration:line-through
-        }
-        .poin{
-            position: absolute;
-            font-size: 60px;
-            top: -35px;
-            right: 0;
-                }
-        }
-        
-    }
+    
+}
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: "";
+  clear: both;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
 }
 </style>

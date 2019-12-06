@@ -13,7 +13,7 @@
                 </div>
                 <van-field v-model="username" placeholder="请输入您的手机号"  class="iphone-input"/>
                 <van-field v-model="username" placeholder="请输入验证码" class="register-otp">
-                    <van-button slot="button" size="small" type="primary" @click="aaa">发送验证码</van-button>
+                    <van-button slot="button" size="small" type="primary" @click="toOtp">发送验证码</van-button>
                 </van-field>
                 <van-field v-model="username" placeholder="请输入您的邮箱(可不填）" />
                 <van-field v-model="username" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password"/>
@@ -51,7 +51,7 @@
                         <div class="uploader-name">公司正面照</div>
                     </van-col>
                     <van-col span="8">
-                        <van-uploader v-model="fileList" multiple :max-count="1"/>
+                        <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead"/>
                         <div class="uploader-name">公司内部照</div>
                     </van-col>
                     <van-col span="8">
@@ -64,7 +64,7 @@
             <div class="uploader">
                 <van-row type="flex" justify="space-around">
                     <van-col span="8">
-                        <van-uploader/>
+                        <van-uploader />
                         <div class="uploader-name">法人/人像照</div>
                     </van-col>
                     <van-col span="8">
@@ -114,6 +114,7 @@
 
 import navar from '@/multiplexing/navar'
 import areaList from '@/assets/json/address.js'
+import {uploadImgApi} from '@/api/register/index'
 export default {
     props: {
 
@@ -150,8 +151,13 @@ export default {
     },
     methods: {
         afterRead(file) {
-        // 此时可以自行将文件上传至服务器
-            console.log(file);
+            let content = file.file;
+            let data = new FormData();
+            data.append('aaa',content);
+            // 此时可以自行将文件上传至服务器
+           
+            //文件流
+            console.log(data,'data',file.file);
             // this.fileList.push(file)
         },
         showAddre(){
@@ -160,9 +166,8 @@ export default {
         toRevise(){
             this.show2 = true;
         },
-        aaa(){
-            console.log(this.$refs.as.rightIcon);
-            this.eyeStatus = 'closed-eye'
+        toOtp(){
+            // this.eyeStatus = 'closed-eye'
         }
 
     },

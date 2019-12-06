@@ -2,29 +2,29 @@
     <div class="evaluaDetails">
         <details-header></details-header>
         <div class="commodity-tab">
-            <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
-                <van-tab title="有内容的评价(2)">
-                    <div class="pingjia" v-for="i in 3" :key="i">
+            <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
+                <van-tab :title="i.title+`(${i.num})`" v-for="(i,index) in tabs" :key="index">
+                    <div class="pingjia" v-for="data in dataList" :key="data.evaluaId">
                         <div class="diyi">
                             <div class="touxiang">
                                 <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
                             </div>
-                            <span class="name">树**猫</span>
-                            <van-rate v-model="value" disabled disabled-color="#FA5300"/>
+                            <span class="name">{{data.nickName}}</span>
+                            <van-rate v-model="data.starNumber" disabled disabled-color="#FA5300"/>
                         </div>
                         <div class="dier">
                             <span>
-                                老板人很好，服务态度一流。虽然这次拿货不多老板也给了优惠。期待下一次合作!!!
+                                {{data.evaContent}}
                             </span>
                         </div>
                         <div class="disan">
-                            <span class="p1">数量:259</span>
-                            <span class="p2">规格：黑色/XL、粉色/2XL</span>
-                            <span class="p3">2019-09-06</span>
+                            <span class="p1">数量:{{data.buyCount}}</span>
+                            <span class="p2">规格：{{data.proUnit}}</span>
+                            <span class="p3">{{data.evaTiem}}</span>
                         </div>
                     </div>
                 </van-tab>
-               <van-tab title="全部评价(10)">
+               <!-- <van-tab title="全部评价(10)">
                     <div class="pingjia" v-for="i in 3" :key="i">
                         <div class="diyi">
                             <div class="touxiang">
@@ -34,9 +34,7 @@
                             <van-rate v-model="value" disabled disabled-color="#FA5300"/>
                         </div>
                         <div class="dier">
-                            <span>
-                                穿上后的效果不错，适合我的风格，老板，下次来要优惠给我哦
-                            </span>
+                            
                         </div>
                         <div class="disan">
                             <span class="p1">数量:259</span>
@@ -44,7 +42,7 @@
                             <span class="p3">2019-09-06</span>
                         </div>
                     </div>
-                </van-tab>
+                </van-tab> -->
             </van-tabs>
         </div>
     </div>
@@ -52,6 +50,7 @@
 
 <script>
 import detailsHeader from '@/multiplexing/detailsHeader'
+import {productevaluationlistApi} from '@/api/home/commodityDetails'
 export default {
     props: {
 
@@ -60,6 +59,23 @@ export default {
         return {
             active:0,
             value:2,
+            formData:{
+                skuid:'',
+                page:1,
+                limit:10,
+                type:1
+            },
+            dataList:[],
+            tabs:[
+                {
+                    title:'有内容的评价',
+                    num:0
+                },
+                {
+                    title:'全部评价',
+                    num:0
+                }
+            ]
         };
     },
     computed: {
@@ -69,13 +85,31 @@ export default {
 
     },
     mounted() {
-
+        this.formData.skuid = this.$route.query.skuid
+        this.productevaluationlist()
     },
     watch: {
 
     },
     methods: {
+        //商品评论列表
+        productevaluationlist(){
+            productevaluationlistApi(this.formData).then(res => {
+                if(res.code == 0){
+                    this.dataList = res.Data.list
+                    this.tabs[0].num = res.totalleft
+                    this.tabs[1].num = res.totalright
+                }
+            })
+        },
+        //切换tab
+        changeTab(index,title){
+            this.formData.type = index+1
+            this.formData.page = 1
+            this.formData.limit = 10
 
+            this.productevaluationlist()
+        }
     },
     components: {
         detailsHeader

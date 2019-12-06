@@ -3,7 +3,7 @@
     <div class="commodity-details">
         <!-- 头部搜索框 -->
         <details-header></details-header>
-        <div class="commodity-tab">
+        <div class="commodity-tab" v-if="true">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
                 <van-tab title="宝贝" ></van-tab>
                 <van-tab title="评价"></van-tab>
@@ -14,33 +14,33 @@
         </div>
         <div class="commodity-swipe">
             <van-swipe @change="onChange">
-                <van-swipe-item v-for="i in 5" :key="i">
+                <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
                     <div class="w1">
-                        <img src="@/assets/img/tabbar/home/commodityDetails/chanpin@2x.png" alt="">
+                        <img :src="$webUrl+banner.imgUrl">
                     </div>
                 </van-swipe-item>
                 <div class="custom-indicator" slot="indicator">
-                    {{ current + 1 }}/{{5}}
+                    {{ current + 1 }}/{{leng}}
                 </div>
             </van-swipe>
         </div>
         <div class="good-content">
             <div class="prices">
                 <span class="mark c-orange">￥</span>
-                <span class="p1 c-orange">259.00</span>
-                <span class="p2 through">￥369</span>
+                <span class="p1 c-orange">{{detailmData.discountPrice}}</span>
+                <span class="p2 through" v-if="detailmData.salePriceFlag">￥{{detailmData.salePrice}}</span>
             </div>
             <div>
-                <span class="p3">起订量200件</span>
+                <span class="p3">起订量{{detailmData.numIntervalStart}}件</span>
             </div>
             <div class="miaoshu">
-                <span class="p4">美康粉黛口红女学生款持久滋润防水平价小辣椒巧克力小众品牌正品</span>
+                <span class="p4">{{detailmData.supplyTitle}}</span>
                 <span >
                     <img src="@/assets/img/tabbar/home/commodityDetails/share-02@2x.png" class="fenxiang">
                     <span class="fenxiang-txt">分享</span>
                 </span>
             </div>
-            <div class="supplement">
+            <div class="supplement" v-if="false">
                 <span class="t1">物流</span>
                 <span class="t2">
                     浙江省 金华市
@@ -51,27 +51,27 @@
         </div>
 
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="颜色:21#(复古正红色);196#(朱砂橘);" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" :placeholder="detailmData.skuValuesTitle" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="text-left">
                     <span>规格</span>
                     <span>选择</span>
                     <span class="erect-line1"></span>
-                </div>
+                </div>  
             </van-field>
         </van-cell-group>
 
-        <div class="good-comment" @click="$router.push({name:'商品详情评价'})">
+        <div class="good-comment" @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})">
             <div class="comment-top">
                 <span class="p1">评价</span>
-                <span class="p2">4.9</span>
-                <van-rate v-model="value" void-color="#FA5300"  color="#FA5300"/>
+                <span class="p2">{{detailmData.starNumber}}</span>
+                <van-rate v-model="detailmData.starNumber" void-color="#FA5300"  color="#FA5300"/>
             </div>
             <div class="comment-describe">
-                <span> 魅**生:颜色好看,但是质量有问题,刚刚用过一两次口红就转不出来了,用过挺好用的,上色也不错，就是如果...包装有待改进</span>
+                <span> {{detailmData.nickName}}:{{detailmData.evaContent}}</span>
             </div>
             <div class="comment-specifications">
                 <span>
-                    颜色:316#(泫雅色)
+                    {{detailmData.proUnit}}
                 </span>
             </div>
             <div class="comment-arrow">
@@ -83,22 +83,20 @@
             <span class="bbxq-p1">宝贝详情</span>
             <span class="line-right"></span>
         </div>
-        <div class="banner">
-            <img src="@/assets/img/tabbar/home/commodityDetails/01@2x.png">
-            <img src="@/assets/img/tabbar/home/commodityDetails/02@2x.png">
-        </div>  
+        <div class="banner" v-html="detailmData.supplyDetail"></div>  
         <!-- 推荐宝贝 -->
-        <footer-exhibition></footer-exhibition>
+        <footer-exhibition :footerData="footerData" :webUrl="$webUrl" v-if="showfooter"></footer-exhibition>
         <div style="height:50px;"></div>
         <!-- 底部导航 -->
         <van-tabbar v-model="active" class="footer-tab">
             <div class="icon-collection">
-                <img src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png">
+                <img src="@/assets/img/tabbar/home/commodityDetails/collection-02@2x.png" v-if="isCollection">
+                <img src="@/assets/img/tabbar/home/commodityDetails/collection@2x.png" v-else>
                 <span class="icon-collection-p">收藏</span>
             </div>
             <div class="icon-service" @click="service">
                 <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png">
-                <span class="icon-collection-p">收藏</span>
+                <span class="icon-collection-p">客服</span>
             </div>
             <van-button type="default" class="add-shopping-cat">加入购物车</van-button>
             <van-button type="primary" class="spend">立即购买</van-button>
@@ -126,6 +124,7 @@
 import detailsHeader from '@/multiplexing/detailsHeader'
 import footerExhibition from '@/multiplexing/footerExhibition'
 import commoditySelection from '@/multiplexing/commoditySelection'
+import {productdetailApi} from '@/api/home/commodityDetails'
 export default {
     props: {
 
@@ -135,9 +134,16 @@ export default {
             current: 0,
             username:'',
             value:4,
-            active:1,
+            active:0,
             show: false,
             show2:false,
+            detailmData:{},
+            leng:0,
+            footerData:{
+                list:[]
+            },
+            showfooter:false,
+            isCollection:true
         };
     },
     computed: {
@@ -147,7 +153,7 @@ export default {
 
     },
     mounted() {
-
+        this.productdetail()
     },
     watch: {
 
@@ -158,6 +164,22 @@ export default {
         },
         service(){
             this.show2 = true
+        },
+        //商品详情
+        productdetail(){
+            productdetailApi({skuid:Number(this.$route.query.skuId)}).then(res => {
+                if(res.code == 0){
+                    this.detailmData = res.Data
+                    this.leng = res.Data.productImgList.length
+                    if(this.detailmData.discountPrice == null){
+                        this.detailmData.discountPrice = this.detailmData.salePrice
+                        this.detailmData.salePriceFlag = false
+                    }
+                    this.footerData.list = res.GuessyouLike
+                    this.showfooter = true //数据回调回来,显示猜你喜欢
+                    this.isCollection = res.Data.isCollection //收藏状态
+                }
+            })
         }
     },
     components: {
@@ -189,6 +211,10 @@ export default {
     }
     .commodity-tab{
         height: 80px;
+        position: fixed;
+        top:80px;
+        z-index: 5;
+        width: 100%;
         .tab-list{
             height: 80px;
             /deep/ .van-tabs__wrap{
@@ -210,7 +236,6 @@ export default {
     }
     .good-content{
         width: 100%;
-        height: 235px;
         padding: 30px 30px 0;
         box-sizing: border-box;
     }
@@ -219,7 +244,7 @@ export default {
         margin-bottom: 19px;
         .fenxiang{
             position: absolute;
-            top:0;
+            top:-50px;
             right:0;
             width: 34px;
             height: 34px;
@@ -228,7 +253,7 @@ export default {
         .fenxiang-txt{
             position: absolute;
             right:0;
-            bottom: -10px;
+            top: 0px;
             font-size: 20px;
             color:#999999;
         }
@@ -237,6 +262,7 @@ export default {
         .t1{
             color: #000000;
             font-size:18px;
+            font-weight: bold;
         }
         .t2{
             font-size: 18px;
@@ -249,12 +275,12 @@ export default {
             background-color: #999999;
         }
         .t3{
-            width:70px;
             height:18px;
             background:rgba(153,153,153,1);
-            border-radius:9px;
+            border-radius:12px;
             font-size: 12px;
             color: #FFFEFE;
+            padding: 0 5px;
         }
     }
     .border-0{ //跳转栏
@@ -450,6 +476,7 @@ export default {
     .p4{
         display: inline-block;
         width: 606px;
+        // height: 60px;
         font-size: 30px;
         color: #010101
     }

@@ -1,30 +1,26 @@
 <template>
     <!-- 点击搜索框弹出的历史记录 -->
     <div class="search-record" >
-        <search-head @onfocus="onfocus" @getInputVal="getInputVal" @onSearch="onSearch"></search-head>
+        <search-head @onfocus="onfocus" @getInputVal="getInputVal" @onSearch="onSearch" :searName="searName"></search-head>
         <div v-if="lishiShow" class="record">
-            <div class="search-title">
-                <span class="title-p1">历史搜索</span>
-                <van-icon name="delete" @click="deleteRecord"/>
+            <div class="m-b-60" v-if="historyList.length>0">
+                <div class="search-title" >
+                    <span class="title-p1">历史搜索</span>
+                    <van-icon name="delete" @click="deleteRecord"/>
+                </div>
+                <div class="search-labels">
+                    <span class="label" v-for="history in historyList" :key="history.tableId" @click="toSearchGood(history.keyWord)">{{history.keyWord}}</span>
+                </div>
             </div>
-            <div class="search-labels">
-                <span class="label" v-for="history in historyList" :key="history.tableId">{{history.keyWord}}</span>
-                
-            </div>
-            <div v-if="faxian">
-                <div class="search-title m-t-60" >
+            
+            <div v-if="findList.length>0">
+                <div class="search-title">
                     <span class="title-p1">搜索发现</span>
                     <van-icon name="eye-o" v-if='iconShow' @click="iconShow = !iconShow"/>
                     <van-icon name="closed-eye" v-else @click="iconShow = !iconShow"/>
                 </div>
-                <div class="search-labels" v-if="iconShow">
-                    <span class="label">历史搜索</span>
-                    <span class="label">历史搜索</span>
-                    <span class="label">历史搜索</span>
-                    <span class="label">搜索</span>
-                    <span class="label">历史搜索</span>
-                    <span class="label">历史搜索</span>
-                    <span class="label">搜索</span>
+                <div class="search-labels" v-show="iconShow">
+                    <span class="label" v-for="find in findList" :key="find.productId" @click="toSearchGood(find.productName)">{{find.productName}}</span>
                 </div>
             </div>
             
@@ -47,8 +43,8 @@
                     确认删除全部历史记录？
                 </div>
                 <div class="overlay-wrapper-btns">
-                    <span>取消</span>
-                    <span>确定</span>
+                    <span @click="redordshow = false">取消</span>
+                    <span @click="delHistory">确定</span>
                 </div>
             </div>
         </van-overlay>
@@ -57,7 +53,7 @@
 
 <script>
 import searchHead from '@/multiplexing/searchHead.vue'
-import {searchGoodApi,searchHistoryApi,searchProductApi} from '@/api/search/index';
+import {searchGoodApi,searchHistoryApi,searchFindApi,delHistoryApi} from '@/api/search/index';
 export default {
     props: {
         
@@ -67,17 +63,12 @@ export default {
             iconShow:true,
             redordshow:false,
             lishiShow:true,
-            faxian:true,
             flag:true,
             goodName:'',
-            searGoodList:[],
-            historyList:[],
-            formData:{
-                limit: 1,
-                page: 1,
-                seraname: "",
-                sort: 1
-            }
+            searName:'',
+            searGoodList:[],//搜索商品列表
+            historyList:[],//历史记录列表
+            findList:[],//搜索发现列表
         };
     },
     computed: {
@@ -86,16 +77,29 @@ export default {
     created() {
 
     },
+    
     mounted() {
-        this.searchHistory()
+        this.searchHistory();
+        this.searchFind();
+        this.searName = this.$store.state.serchName
+        
+    },
+    beforeDestroy(){
+        this.$store.state.serchName = ''
     },
     watch: {
         goodName:{
             handler:function(newVal, oldVal){
                 this.lishiShow = newVal=='' ? true : false
-                console.log(newVal,'newVal');
             },
         },
+        searName:{
+            handler:function(newVal, oldVal){
+                this.lishiShow = newVal=='' ? true : false
+                this.goodName = newVal
+                this.searchGood(newVal)
+            },
+        }
     },
     methods: {
         deleteRecord(){
@@ -106,7 +110,7 @@ export default {
         },
         //输入框获得焦点时触发
         onfocus(){
-            this.lishiShow = false
+            // this.lishiShow = false
             // if(this.$route.name == '历史记录' || this.$route.name == '收藏夹历史记录' || this.$route.name == '我的订单历史记录') return
             // this.$router.push({name:'历史记录'})
         },
@@ -119,7 +123,6 @@ export default {
                 setTimeout(()=>{
                     this.flag = true
                 },500)
-                 console.log(123);
             }
         },
         //搜索商品
@@ -140,20 +143,30 @@ export default {
         },
         //点击搜索按钮
         onSearch(){
-            // 
-            if(this.goodName == '') return
-            this.searchProduct()
+            this.$router.push({name:'搜索商品1',query:{seraname:this.goodName}})
+            this.$store.state.serchName = this.goodName
         },
-        //搜索商品
-        searchProduct(){
-            searchProductApi(this.formData).then(res => {
+        toSearchGood(goodName){
+            this.$router.push({name:'搜索商品1',query:{seraname:goodName}})
+        },
+        //搜索发现
+        searchFind(){
+            searchFindApi().then(res => {
                 if(res.code == 0){
-                    this.$router.push({name:'搜索商品1'})
+                    this.findList = res.Data
+                }
+            })
+        },
+        //删除所有历史记录
+        delHistory(){
+            delHistoryApi().then(res => {
+                if(res.code == 0){
+                    this.redordshow = false
+                    this.searchHistory();
+                    this.searchFind();
                 }
             })
         }
-
-
     },
     components: {
         searchHead
@@ -171,7 +184,7 @@ export default {
         padding: 39px 30px 0;
     }
     .search-title{
-        height: 60px;
+        // height: 60px;
         .title-p1{
             font-size: 30px;
             color: #333;

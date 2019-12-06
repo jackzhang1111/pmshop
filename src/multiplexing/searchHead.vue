@@ -26,7 +26,10 @@
 <script>
 export default {
     props: {
-
+        searName:{
+            type:String,
+            default:''
+        },
     },
     data() {
         return {
@@ -44,7 +47,11 @@ export default {
 
     },
     watch: {
-
+        searName:{
+            handler:function(newVal, oldVal){
+                this.value = newVal
+            },
+        },
     },
     methods: {
         //搜索按钮

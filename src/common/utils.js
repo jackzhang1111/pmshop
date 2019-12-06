@@ -80,3 +80,15 @@ export function priceReg(row){
     }
     return price
 }
+
+export function deepnull(obj){
+    for(let k in obj){
+        if(typeof obj[k] == 'object'){
+            deepnull(obj[k])
+        }else if(obj[k] == ''){
+            obj[k] = null
+        }else{
+            obj[k] = null
+        }
+    }
+}
