@@ -85,7 +85,7 @@
         </div>
         <div class="banner" v-html="detailmData.supplyDetail"></div>  
         <!-- 推荐宝贝 -->
-        <footer-exhibition :footerData="footerData" :webUrl="$webUrl" v-if="showfooter"></footer-exhibition>
+        <footer-exhibition :footerData="footerData" :webUrl="$webUrl" v-if="showfooter" @clickPro="clickPro"></footer-exhibition>
         <div style="height:50px;"></div>
         <!-- 底部导航 -->
         <van-tabbar v-model="active" class="footer-tab">
@@ -143,7 +143,7 @@ export default {
                 list:[]
             },
             showfooter:false,
-            isCollection:true
+            isCollection:true,
         };
     },
     computed: {
@@ -153,7 +153,7 @@ export default {
 
     },
     mounted() {
-        this.productdetail()
+        this.productdetail(this.$route.query.skuId)
     },
     watch: {
 
@@ -166,8 +166,8 @@ export default {
             this.show2 = true
         },
         //商品详情
-        productdetail(){
-            productdetailApi({skuid:Number(this.$route.query.skuId)}).then(res => {
+        productdetail(id){
+            productdetailApi({skuid:id}).then(res => {
                 if(res.code == 0){
                     this.detailmData = res.Data
                     this.leng = res.Data.productImgList.length
@@ -180,6 +180,10 @@ export default {
                     this.isCollection = res.Data.isCollection //收藏状态
                 }
             })
+        },
+        //猜你喜欢点击了商品
+        clickPro(skuid){
+            this.productdetail(skuid)
         }
     },
     components: {

@@ -44,7 +44,9 @@ export default {
         },
         footerData:{
             type:Object,
-            default:{}
+            default: ()=>{
+                return {}
+            }
         },
         webUrl:{
             type:String,
@@ -80,10 +82,13 @@ export default {
         },
         //跳转到商品详情
         toProduDetail(skuId){
-            this.$router.push({name:'商品详情',query:{skuId}})
+            this.$emit('clickPro',skuId)
+            console.log(123123);
+            // this.$router.push({name:'商品详情',query:{skuId}})
         },
         getData(){
             this.footerObj = Object.assign({},this.footerObj,this.footerData)
+            if(!this.footerObj.list) return
             this.dataList = this.footerObj.list
             this.dataList.forEach(item => {
                 item.salePriceFlag = true

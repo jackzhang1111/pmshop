@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <footerExhibition v-if="false"></footerExhibition>
+                    <footer-exhibition v-if="false"></footer-exhibition>
                 </van-tab>
                 <van-tab title="追评(4)">
                    <div class="good-detail" v-for="i in 4" :key="i">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <footerExhibition v-if="false"></footerExhibition>
+                    <footer-exhibition v-if="false"></footer-exhibition>
                 </van-tab>
                
             </van-tabs>

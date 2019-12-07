@@ -1,108 +1,120 @@
 <template>
 <!-- 注册页面 -->
     <div class="register">
-        <navar title="注册"></navar>
-        <div class="item-title">创建用户</div>
-        <div class="create-user">
-            <van-cell-group>
-                <van-field v-model="username" placeholder="用户名称"/>
-                <div class="iphone-option">
-                    <select name=""> 
-                        <option value="0">+86</option> 
-                    </select> 
+        <div v-show="choiceShow">
+            <navar title="注册"></navar>
+            <div class="item-title">创建用户</div>
+            <div class="create-user">
+                <van-cell-group>
+                    <van-field v-model="formData.nickName" placeholder="用户名称"/>
+                    <div class="iphone-option">
+                        <select name=""> 
+                            <option value="0">+86</option> 
+                        </select> 
+                    </div>
+                    <van-field v-model="formData.mobile" placeholder="请输入您的手机号"  class="iphone-input"/>
+                    <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp">
+                        <van-button slot="button" size="small" type="primary" @click="getCode" v-show="countTrue">{{countdown}}</van-button>
+                        <van-button slot="button" size="small" type="primary" v-show="!countTrue">{{count}}S</van-button>
+                    </van-field>
+                    <van-field v-model="formData.email" placeholder="请输入您的邮箱(可不填）" />
+                    <van-field v-model="formData.userPwd" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password" :type="fieldType" />
+                    <van-field v-model="formData.userPwd2" placeholder="确认密码" type="password"/>
+                </van-cell-group>
+            </div>
+            <div class="item-title">公司信息</div>
+            <div class="create-user">
+                <van-cell-group class="m-10-b border-0">
+                    <van-field v-model="formData.companyName" placeholder="公司名称"/>
+                </van-cell-group>
+                <div class="cell" @click="toChoiceList(1,0)">
+                    <input type="text" :class="{'c-333':isBace}" class="input-xt" placeholder="请选择国家" v-model="form.lev1" :disabled='true'>
+                    <van-icon name="arrow" class="arrow c-999"/>
                 </div>
-                <van-field v-model="username" placeholder="请输入您的手机号"  class="iphone-input"/>
-                <van-field v-model="username" placeholder="请输入验证码" class="register-otp">
-                    <van-button slot="button" size="small" type="primary" @click="toOtp">发送验证码</van-button>
-                </van-field>
-                <van-field v-model="username" placeholder="请输入您的邮箱(可不填）" />
-                <van-field v-model="username" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password"/>
-                <van-field v-model="username" placeholder="确认密码" />
-            </van-cell-group>
-        </div>
+                <div class="cell" @click="toChoiceList(2,choiceForm.lev1.id)">
+                    <input type="text" :class="{'c-333':isBace}" class="input-xt" placeholder="州/省/地区" v-model="form.lev2" :disabled='true'>
+                    <van-icon name="arrow" class="arrow c-999"/>
+                </div>
+                <div class="cell " @click="toChoiceList(3,choiceForm.lev2.id)">
+                    <input type="text" :class="{'c-333':isBace}" class="input-xt" placeholder="城市/县/镇" v-model="form.lev3" :disabled='true'>
+                    <van-icon name="arrow" class="arrow c-999"/>
+                </div>
+                <div class="cell" @click="toChoiceList(4,choiceForm.lev3.id)">
+                    <input type="text" :class="{'c-333':isBace}" class="input-xt" placeholder="县/区/街道" v-model="form.lev4" :disabled='true'>
+                    <van-icon name="arrow" class="arrow c-999"/>
+                </div>
+                <van-cell-group class="m-10-b border-0 textarea">
+                    <van-field
+                        v-model="formData.companyAddress"
+                        rows="5"
+                        autosize
+                        type="textarea"
+                        placeholder="详细地址"
+                    />
+                </van-cell-group>
+                <van-cell-group class="border-0" @click="show=true">
+                    <van-field v-model="formData.mainBusinessName" clearable right-icon="arrow" placeholder="主营业务" :disabled='true'/>
+                </van-cell-group>
 
-
-        <div class="item-title">公司信息</div>
-        <div class="create-user">
-            <van-cell-group class="m-10-b border-0">
-                <van-field v-model="username" placeholder="公司名称"/>
-            </van-cell-group>
-            <van-cell-group class="m-10-b border-0 ">
-                <van-field v-model="username" clearable right-icon="arrow" placeholder="公司地址" @click='showAddre' disabled/>
-            </van-cell-group>
-             <van-cell-group class="m-10-b border-0 textarea">
-                <van-field
-                    v-model="username"
-                    rows="5"
-                    autosize
-                    type="textarea"
-                    placeholder="详细地址"
-                />
-            </van-cell-group>
-             <van-cell-group class="border-0">
-                <van-field v-model="username" clearable right-icon="arrow" placeholder="主营业务"/>
-            </van-cell-group>
-
-            <div class="item-title">拍照上传</div>
-            <div class="uploader">
-                <van-row type="flex" justify="space-around">
-                    <van-col span="8">
-                        <van-uploader :after-read="afterRead" />
-                        <div class="uploader-name">公司正面照</div>
-                    </van-col>
-                    <van-col span="8">
-                        <van-uploader v-model="fileList" multiple :max-count="1" :after-read="afterRead"/>
-                        <div class="uploader-name">公司内部照</div>
-                    </van-col>
-                    <van-col span="8">
-                        <van-uploader/>
-                        <div class="uploader-name">营业执照</div>
-                    </van-col>
-                </van-row>
-                
+                <div class="item-title">拍照上传</div>
+                <div class="uploader">
+                    <van-row type="flex" justify="space-around">
+                        <van-col span="8">
+                            <upload-one @getfilePath="getfilePath" imgName="公司正面照"></upload-one>
+                            <div class="uploader-name">公司正面照</div> 
+                        </van-col>
+                        <van-col span="8">
+                            <upload-one @getfilePath="getfilePath" imgName="公司内部照"></upload-one>
+                            <div class="uploader-name">公司内部照</div>
+                        </van-col>
+                        <van-col span="8">
+                            <upload-one @getfilePath="getfilePath" imgName="营业执照"></upload-one>
+                            <div class="uploader-name">营业执照</div>
+                        </van-col>
+                    </van-row>
+                    
+                </div>
+                <div class="uploader">
+                    <van-row type="flex" justify="space-around">
+                        <van-col span="8">
+                        <upload-one @getfilePath="getfilePath" imgName="人像照"></upload-one>
+                            <div class="uploader-name">法人/人像照</div>
+                        </van-col>
+                        <van-col span="8">
+                            <upload-one @getfilePath="getfilePath" imgName="法人证件正面照"></upload-one>
+                            <div class="uploader-name">法人证件正面照</div>
+                        </van-col>
+                        <van-col span="8">
+                            <upload-one @getfilePath="getfilePath" imgName="法人证件背面照"></upload-one>
+                            <div class="uploader-name">法人证件背面照</div>
+                        </van-col>
+                    </van-row>
+                </div>
             </div>
-            <div class="uploader">
-                <van-row type="flex" justify="space-around">
-                    <van-col span="8">
-                        <van-uploader />
-                        <div class="uploader-name">法人/人像照</div>
-                    </van-col>
-                    <van-col span="8">
-                        <van-uploader/>
-                        <div class="uploader-name">法人证件正面照</div>
-                    </van-col>
-                    <van-col span="8">
-                        <van-uploader />
-                        <div class="uploader-name">法人证件背面照</div>
-                    </van-col>
-                </van-row>
+            <div class="agreement">
+                <!-- <div class="checkbox"></div> -->
+                <input type="checkbox" class="checkbox">
+                <span>
+                    <span class="c1">我已阅读并同意网站的</span>
+                </span>
             </div>
-        </div>
-        <div class="agreement">
-            <!-- <div class="checkbox"></div> -->
-            <input type="checkbox" class="checkbox">
-            <span>
-                <span class="c1">我已阅读并同意网站的</span>
-            </span>
-        </div>
-        <div class="confirm-btn" @click="toRevise">
-            <div class="btn-zc">
-                注册
+            <div class="confirm-btn" @click="toRevise">
+                <div class="btn-zc" :style="{backgroundColor:(registDisabled?'#999':'#FA5300')}">
+                    注册
+                </div>
+            </div>
+            <div class="to-login" @click="$router.push({name:'登录'})">
+                已有账户,去登录
             </div>
         </div>
-        <div class="to-login" @click="$router.push({name:'登录'})">
-            已有账户,去登录
-        </div>
-        <van-popup
-            v-model="show"
-            position="bottom"
-            :style="{ height: '30%' }">
-            <van-area :area-list="areaList" :columns-placeholder="['请选择', '请选择', '请选择']"/>
-        </van-popup>
+        
+        <choiceList v-show="!choiceShow" @getchoice="getchoice" @choiceStatus="choiceStatus" ref="choiceList"></choiceList>
+
+        <van-action-sheet v-model="show" :actions="memberList" @select="onSelect" cancel-text="取消" class="my-sheet" />
 
         <van-popup v-model="show2">
             <div class="revise-success">
-                <img src="@/assets/img/login/icon@3x.png" alt="">
+                <img src="@/assets/img/login/icon@3x.png">
                 <div class="txt1">恭喜您!</div>
                 <div class="txt2">已注册成功</div>
             </div>
@@ -113,23 +125,78 @@
 <script>
 
 import navar from '@/multiplexing/navar'
-import areaList from '@/assets/json/address.js'
-import {uploadImgApi} from '@/api/register/index'
+import {membertypelitApi,userregisterApi} from '@/api/register/index'
+import uploadOne from '@/multiplexing/uploadOne'
+import choiceList from '@/multiplexing/choiceList.vue'
 export default {
     props: {
 
     },
     data() {
         return {
+            countdown:'发送验证码',
+            count: '',
+            timer: null,
+            countTrue:true,
             username:'',
-            password:'',
-            sms:'',
-            areaList,
             show:false,
             show2:false,
             eyeStatus:false,
+            choiceShow:true,
+            isBace:true,
+            registDisabled:true,
             eyeName:'closed-eye',
-            fileList:[]
+            fieldType:'password',
+            fileList:[],
+            formData:{
+                nickName:'',//用户名称
+                mobile:'',//用户手机号码
+                mobileCode:'+86',//用户手机号码所在国家的编号
+                smsCode:'',//验证码
+                email:'',//邮箱
+                userPwd:'',//密码
+                userPwd2:'',//确认密码
+                companyName:'',//公司名称
+                companyAreaId:'',//公司地址ID(最小area_id)
+                companyAddress:'',//公司详细地址
+                mainBusiness:'',//主营业务
+                mainBusinessName:'',//主营业务名称
+                companyFrontImg:'',//公司正面照
+                companyInterImg :'',//公司内部照
+                businessLicense:'',//营业执照
+                legalPersonImg :'',//法人人像照
+                legalPersonBack:'',//法人证件反面照
+                legalPersonFront:'',//法人证件正面照
+            },
+            form:{
+                lev1:null,
+                lev2:null,
+                lev3:null,
+                lev4:null,
+            },
+            choiceForm:{
+                lev1:{
+                    id:'',
+                    name:'',
+                    areaCode:''
+                },
+                lev2:{
+                    id:'',
+                    name:'',
+                    areaCode:''
+                },
+                lev3:{
+                    id:'',
+                    name:'',
+                    areaCode:""
+                },
+                lev4:{
+                    id:'',
+                    name:'',
+                    areaCode:''
+                }
+            },
+            memberList: []//主营业务列表
         };
     },
     computed: {
@@ -139,40 +206,125 @@ export default {
 
     },
     mounted() {
-
+        this.membertypelit()
     },
     watch: {
         eyeStatus:{
             handler:function(newVal, oldVal){
                 this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
+                this.fieldType =  this.eyeStatus ? 'text' : 'password'
                 console.log(newVal,'newVal')
             },
         },
     },
     methods: {
-        afterRead(file) {
-            let content = file.file;
-            let data = new FormData();
-            data.append('aaa',content);
-            // 此时可以自行将文件上传至服务器
-           
-            //文件流
-            console.log(data,'data',file.file);
-            // this.fileList.push(file)
-        },
-        showAddre(){
-            this.show = true;
-        },
         toRevise(){
-            this.show2 = true;
-        },
-        toOtp(){
-            // this.eyeStatus = 'closed-eye'
-        }
+            // if(this.registDisabled) return
+            // console.log(123);
+            let addressAreaId = ''
+            if(this.choiceForm.lev4.id != null){
+                addressAreaId = this.choiceForm.lev4.id
+            }else if(this.choiceForm.lev3.id != null){
+                addressAreaId = this.choiceForm.lev3.id
+            }else if(this.choiceForm.lev2.id != null){
+                addressAreaId = this.choiceForm.lev2.id
+            }
+            this.formData.companyAreaId = addressAreaId
 
+            this.userregister()
+        },
+        getCode(){
+            const TIME_COUNT = 60;
+            if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.countTrue = false;
+                this.timer = setInterval(() => {
+                    if (this.count > 0 && this.count <= TIME_COUNT) {
+                        this.count--;
+                    } else {
+                        this.countTrue = true;
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }, 1000)
+            }
+        } ,
+        getfilePath(path,imgName){
+            if(imgName == '公司正面照'){
+                this.formData.companyFrontImg = path
+            }else if(imgName == '公司内部照'){
+                this.formData.companyInterImg = path
+            }else if(imgName == '营业执照'){
+                this.formData.businessLicense = path
+            }else if(imgName == '人像照'){
+                this.formData.legalPersonImg = path
+            }else if(imgName == '法人证件背面照'){
+                this.formData.legalPersonBack = path
+            }else if(imgName == '法人证件正面照'){
+                this.formData.legalPersonFront = path
+            }
+        },
+        
+        //点击选择地址
+        toChoiceList(level,parent){
+            this.choiceShow = false
+            let obj = {
+                area_level:level,
+                parent_id:parent
+            }
+            this.$refs.choiceList.formData.area_level = obj.area_level
+            this.$refs.choiceList.formData.parent_id = obj.parent_id
+            this.$refs.choiceList.basearealist(obj)            
+        },
+        //选择地址组件返回信息
+        getchoice(choicDate){
+            this.choiceForm = Object.assign({},this.choiceForm,choicDate)
+            this.form.lev1 = this.choiceForm.lev1.name
+            this.form.lev2 = this.choiceForm.lev2.name
+            this.form.lev3 = this.choiceForm.lev3.name
+            this.form.lev4 = this.choiceForm.lev4.name
+        },
+        //是否显示选择地址组件
+        choiceStatus(status){
+            this.choiceShow = status
+        },
+        //主营业务列表
+        membertypelit(){
+            membertypelitApi().then(res => {
+                if(res.code == 0){
+                    let arr = res.tpMemberTypeList
+                    arr.forEach(e => {
+                        let obj = {
+                            name:e.typeTitle,
+                            id:e.typeId
+                        }
+                        this.memberList.push(obj)
+                    });
+                }
+            })
+        },
+        //选择主营业务
+        onSelect(item) {
+            // 默认情况下，点击选项时不会自动关闭菜单
+            // 可以通过 close-on-click-action 属性开启自动关闭
+            this.show = false;
+            this.formData.mainBusiness = item.id
+            this.formData.mainBusinessName = item.name
+        },
+        //注册
+        userregister(){
+            userregisterApi(this.formData).then(res => {
+                if(res.code == 0){
+                    localStorage.mobile = res.user.mobile
+                    this.$router.push({name:'登录'})
+                }
+            })
+        }
     },
     components: {
-        navar
+        navar,
+        uploadOne,
+        choiceList
     },
 };
 </script>
@@ -294,7 +446,6 @@ export default {
         text-align: center;
         line-height: 88px;
         .btn-zc{
-            background-color: #999;
             color: #fff;
         }
     }
@@ -337,6 +488,52 @@ export default {
         }
         .txt2{
             margin-top: 16px;
+        }
+    }
+    .cell{
+        height: 88px;
+        line-height: 88px;
+        padding: 0 16px;
+        background-color: #fff;
+        color: #999;
+        position: relative;
+        font-size: 26px;
+        margin-bottom: 10px;
+        &:nth-last-child(1){
+            border:0
+        }
+        .arrow{
+            position: absolute;
+            right:30px;
+            top:50%;
+            transform: translateY(-50%);
+            
+        }
+        .text{
+            position: absolute;
+            right:60px;
+        }
+        .text-tk{
+            position: absolute;
+            right:30px;
+        }
+        .input-xt{
+            height: 40px;
+            border: 0;
+            width: 80%;
+            background-color: #fff;
+        }
+        .hm{
+            position: absolute;
+            right:80px;
+            top:50%;
+            transform: translateY(-50%);
+        }
+        .switch{
+            position: absolute;
+            top:50%;
+            transform: translateY(-50%);
+            right:57px;
         }
     }
 }

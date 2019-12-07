@@ -71,7 +71,7 @@
             
         </div>
         <div>
-            <footerExhibition></footerExhibition>
+            <footer-exhibition></footer-exhibition>
         </div>
         <div class="settlement">
             <span class="settlement-text" v-if="showMange">

@@ -92,7 +92,9 @@ export default {
         
     },
     mounted() {
-        
+        if(localStorage.mobile){
+            this.userData.username = localStorage.mobile
+        }
     },
     watch: {
         eyeStatus:{

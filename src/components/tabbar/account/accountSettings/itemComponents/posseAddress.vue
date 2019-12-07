@@ -43,7 +43,9 @@ export default {
     props: {
         posseData:{
             type:Object,
-            default:{}
+            default: ()=>{
+                return {}
+            }
         },
     },
     data() {

@@ -15,7 +15,7 @@
                     <div>
                         <van-row gutter="40">
                             <van-col span="7" v-for="product in rightGoods.productCategory" :key="product.categoryId">
-                                <div class="aaa">
+                                <div class="aaa" @click="toSearOne(product.categoryId)">
                                     <img :src="$webUrl+product.categoryImg">
                                     <span class="name">{{product.categoryName}}</span>
                                 </div>
@@ -81,6 +81,10 @@ export default {
                     this.rightList = res.righdataList
                 }
             })
+        },
+        //去到搜索里面
+        toSearOne(categoryId){
+            this.$router.push({name:'搜索商品1',query:{categoryId:categoryId}})
         }
     },
     components: {

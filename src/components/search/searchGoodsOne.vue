@@ -32,6 +32,7 @@
                     <div class="good-price">
                         <span class="p1">￥{{good.discountPrice}}</span>
                         <span class="p3" v-if="good.salePriceFlag">￥{{good.salePrice}}</span>
+                        <!-- 省略号,暂时先隐藏 -->
                         <!-- <span class="p2">
                             <van-icon name="ellipsis" />
                         </span> -->
@@ -41,7 +42,7 @@
         </div>
         <!-- 模式二 -->
         <div v-else>
-            <footer-exhibition :showIlike="false" :footerData="footerData" :webUrl="webUrl"></footer-exhibition>
+            <footer-exhibition :showIlike="false" :footerData="footerData" :webUrl="webUrl" @clickPro="clickPro"></footer-exhibition>
         </div>
     </div>
 </template>
@@ -157,6 +158,10 @@ export default {
         toProduDetail(skuId){
             this.$router.push({name:'商品详情',query:{skuId}})
         },
+        //猜你喜欢点击了商品
+        clickPro(skuId){
+            this.$router.push({name:'商品详情',query:{skuId}})
+        }
     },
     components: {
         footerExhibition,

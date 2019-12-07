@@ -19,7 +19,7 @@ export default {
 	},
 	mounted(){
 		setTimeout(()=>{
-			this.$router.push({name:'登录'})
+			this.$router.push({name:'首页'})
 		},3000)
 	}
 }

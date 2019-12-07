@@ -2,7 +2,7 @@
 <!-- 取消订单遮罩 -->
     <div class="cancel-order">
         <div class="balance-header">
-            <van-icon name="arrow-left" class="arrow-left"/>
+            <van-icon name="arrow-left" class="arrow-left" @click="$emit('choiceStatus',true)"/>
             <span class="header-t1">{{title}}</span>
         </div>
         <div class="yuanyin-list" v-for="nationalCity in nationalCityList" :key="nationalCity.areaId" @click="choiceCity(nationalCity.areaId,nationalCity.areaName,nationalCity.areaCode)">
