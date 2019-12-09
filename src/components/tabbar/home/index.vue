@@ -8,16 +8,6 @@
                 <span class="put-line"></span>
                 <span class="t1">限时</span>
                 <span class="t2">抢购</span>
-                <span class="t3">即将开始</span>
-                <van-count-down :time="time">
-                    <template v-slot="timeData">
-                        <span class="item">{{ timeData.hours }}</span>
-                        <span class="c-666">:</span>
-                        <span class="item">{{ timeData.minutes }}</span>
-                        <span class="c-666">:</span>
-                        <span class="item">{{ timeData.seconds }}</span>
-                    </template>
-                </van-count-down>
             </div>
             <div class="flash-sale-2">
                 <div class="pictures">
@@ -245,7 +235,6 @@ export default {
     },
     data() {
         return {
-            time:1574049704,
             active:0,
             value:2
         };

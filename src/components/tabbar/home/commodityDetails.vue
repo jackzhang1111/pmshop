@@ -98,16 +98,20 @@
                 <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png">
                 <span class="icon-collection-p">客服</span>
             </div>
-            <van-button type="default" class="add-shopping-cat">加入购物车</van-button>
+            <van-button type="default" class="add-shopping-cat" @click="comStatus=true">加入购物车</van-button>
             <van-button type="primary" class="spend">立即购买</van-button>
         </van-tabbar>
         
-        <van-overlay :show="show" @click="show = false" class="overlay">
+        <van-overlay :show="false"  class="overlay">
             <!-- 遮罩层商品选择规格(未完成) -->
             <div class="overlay-wrapper">
                 <commodity-selection></commodity-selection>
             </div>
         </van-overlay>
+
+        <commodity-selection v-show="comStatus" @changeComStatus="changeComStatus" :selectionData="selectionData"></commodity-selection>
+
+
 
         <van-overlay :show="show2" @click="show2 = false" class="overlay">
             <!-- 客服电话 -->
@@ -144,6 +148,8 @@ export default {
             },
             showfooter:false,
             isCollection:true,
+            comStatus:false,
+            selectionData:{}
         };
     },
     computed: {
@@ -171,6 +177,7 @@ export default {
                 if(res.code == 0){
                     this.detailmData = res.Data
                     this.leng = res.Data.productImgList.length
+                    this.selectionData = res.Data
                     if(this.detailmData.discountPrice == null){
                         this.detailmData.discountPrice = this.detailmData.salePrice
                         this.detailmData.salePriceFlag = false
@@ -184,12 +191,15 @@ export default {
         //猜你喜欢点击了商品
         clickPro(skuid){
             this.productdetail(skuid)
+        },
+        changeComStatus(flag){
+            this.comStatus = flag
         }
     },
     components: {
         detailsHeader,
         footerExhibition,
-        commoditySelection
+        commoditySelection,
     },
 };
 </script>
@@ -486,11 +496,13 @@ export default {
     }
     .overlay{
         // position: relative;
+         overflow-y: auto;
         .overlay-wrapper{
             width: 100%;
             height: 1062px;
             position: absolute;
             bottom: 0;
+           
         }
         .kefu{
             position: absolute;
