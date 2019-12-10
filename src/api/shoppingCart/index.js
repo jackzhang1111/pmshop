@@ -7,3 +7,11 @@ export function addshopcartApi(params) {
         data:params
     })
 }
+//购物车列表
+export function shopcartlistApi(params) {
+    return park({
+        url:`/apporder/getshopcartlist`,
+        method: 'POST',
+        data:params
+    })
+}

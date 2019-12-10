@@ -7,47 +7,48 @@
         </div>
         <div class="shopping-cart-container" v-if="true">
             <!-- 有商品的页面 -->
-            <div class="shopping-cart-content" v-for="(i,index) in 2" :key="index">
+            <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
                 <div class="serial-number">
-                    <van-checkbox v-model="checked" icon-size="24px" checked-color="#F83600">DJF161611616</van-checkbox>
+                    <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600">DJF161611616</van-checkbox>
                 </div>
-                <div class="goods-content" v-for="(i,index) in 2" :key="index">
+                <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
                     <van-checkbox v-model="checked" icon-size="24px" checked-color="#F83600"></van-checkbox>
                     <div class="good-img" @click="toDetail">
                         <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
-                    <span class="good-describe" @click="toDetail">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
+                    <span class="good-describe" @click="toDetail">{{dataitem.skuName}}</span>
                     <div class="good-seclet">
                         <select name="" disabled> 
-                            <option value="0">红色/s码</option> 
+                            <option value="0">{{dataitem.skuValuesTitle}}</option> 
                         </select> 
                     </div>
                     <div class="good-logistics">
                         <span>物流：TOSPINO物流</span>
                     </div>
                     <div class="good-price">
-                        <span class="price-p1">¥50.40</span>
-                        <span class="price-p2">159.00</span>
-                        <van-stepper class="price-quantity" v-model="value" />
-                        <span class="price-batch">起订量100件</span>
+                        <span class="price-p1">¥{{dataitem.discountPrice}}</span>
+                        <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
+                        <van-stepper class="price-quantity" v-model="dataitem.shopNumber" />
+                        <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
                     </div>
                 </div>
             </div>
+            <!-- 失效商品 -->
             <div class="shopping-cart-content">
                 <div class="serial-number">
                     <span class="invalid-num">失效宝贝2件</span>
                     <span class="empty">清空</span>
                 </div>
-                <div class="goods-content" v-for="(i,index) in 2" :key="index">
+                <div class="goods-content" v-for="(wuxiao,index) in wuxiaoList" :key="index">
                     <span class="invalid">
                         失效
                     </span>
                     <div class="good-img">
                         <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
-                    <span class="good-describe">超软美妆蛋 葫芦海绵粉扑干湿两用扑不吃粉气垫rt彩妆化妆工具粉底扑妆容扑456787979789</span>
+                    <span class="good-describe">{{wuxiao.skuName}}</span>
                     <div class="good-seclet">
-                        <span class="specifications">红色/s码</span>
+                        <span class="specifications">{{wuxiao.skuValuesTitle}}</span>
                     </div>
                     <div class="good-price">
                         <span class="price-batch-left">已下架</span>
@@ -71,7 +72,7 @@
             
         </div>
         <div>
-            <footer-exhibition></footer-exhibition>
+            <footer-exhibition v-if="footerShow"></footer-exhibition>
         </div>
         <div class="settlement">
             <span class="settlement-text" v-if="showMange">
@@ -88,6 +89,7 @@
                 <span class="p1">全选</span>
             </span>
         </div>
+        <!-- <div style="height:60px"></div> -->
 
 
         <van-overlay :show="show">
@@ -107,6 +109,7 @@
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
+import {shopcartlistApi} from '@/api/shoppingCart/index'
 export default {
     props: {
 
@@ -114,9 +117,17 @@ export default {
     data() {
         return {
             checked:'',
-            value:1,
             show:false,
-            showMange:true
+            showMange:true,
+            scroll:'',
+            footerShow:false,
+            formData:{
+                page:1,
+                limit:10
+            },
+            dataList:[],
+            youxiaoList:[],
+            wuxiaoList:[]
         };
     },
     computed: {
@@ -126,7 +137,8 @@ export default {
 
     },
     mounted() {
-
+        // window.addEventListener('scroll', this.menu)
+        this.shopcartlist()
     },
     watch: {
 
@@ -140,6 +152,62 @@ export default {
         },
         toXiangsi(){
             this.$router.push({name:'找相似商品'})
+        },
+        //获取滚动条距离底部距离
+        menu() {
+            // this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            // console.log(this.scroll,'scroll')
+            console.log(document.documentElement.scrollHeight-document.documentElement.scrollTop-document.documentElement.clientHeight);
+        },
+        //购物车列表
+        shopcartlist(){
+            shopcartlistApi(this.formData).then(res => {
+                if(res.code == 0){
+                    let arr = res.Data.list
+                    arr.forEach(item => {
+                        if(item.isValid == 1){
+                            this.youxiaoList.push(item)
+                        }else{
+                            this.wuxiaoList.push(item)
+                        }
+                    })
+                    
+                    this.dataList = this.groupArr(this.youxiaoList,'businessId')
+                    this.dataList.forEach(item => {
+                        item.list.forEach(listitem => {
+                            listitem.salePriceFlag = true
+                            listitem.checkStatus = false
+                            if(listitem.discountPrice == null){
+                                listitem.discountPrice = listitem.salePrice
+                                listitem.salePriceFlag = false
+                            }
+                        })
+                    })
+                }
+            })
+        },
+        //通过某个字段进行分组
+        groupArr(list,field){
+            let obj = {};
+            let item = '';
+            // let list = [];
+            for(var i=0;i<list.length;i++){
+                for(item in list[i]){
+                    if(item==field){
+                        obj[list[i][item]] = {
+                            list:obj[list[i][field]]?obj[list[i][field]].list:[],
+                        };
+                    }
+                }
+                obj[list[i][field]].list.push(list[i])
+            }
+            let att = [];
+            for(item in obj){
+                att.push({
+                    list:obj[item].list,
+                })
+            }
+            return att;
         }
     },
     components: {
@@ -257,6 +325,7 @@ export default {
                 position: absolute;
                 top:209px;
                 left:320px;
+                width: 400px;
                 .price-p1{
                     font-size:40px;
                     color: #FA5300;
@@ -274,6 +343,7 @@ export default {
                     text-align: center;
                     line-height: 36px;
                     position: absolute;
+                    right:0;
                     /deep/ .van-stepper__input{
                         width: 76px
                     }

@@ -21,7 +21,7 @@
                 
             </div>
             <div class="jump-btn-con">
-                <van-button type="primary" size="large" class="jump-btn">
+                <van-button type="primary" size="large" class="jump-btn" @click="jumpRouter('限时抢购')">
                     <span>进入主会场</span>
                     <span class="jump-btn-icon"></span>
                 </van-button>
@@ -252,7 +252,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
         searchHeader,

@@ -178,6 +178,7 @@ export default {
                     this.detailmData = res.Data
                     this.leng = res.Data.productImgList.length
                     this.selectionData = res.Data
+                    this.detailmData.salePriceFlag = true
                     if(this.detailmData.discountPrice == null){
                         this.detailmData.discountPrice = this.detailmData.salePrice
                         this.detailmData.salePriceFlag = false

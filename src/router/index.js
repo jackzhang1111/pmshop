@@ -25,7 +25,8 @@ import person from '@/components/tabbar/person.vue'
 import home from '@/components/tabbar/home/index.vue'
 import commodityDetails from '@/components/tabbar/home/commodityDetails.vue'
 import evaluaDetails from '@/components/tabbar/home/evaluaDetails.vue'
-
+import homeItem from '@/components/tabbar/home/homeItem/index.vue'
+import flashSale from '@/components/tabbar/home/homeItem/flashSale.vue'
 //我的足迹
 import footprint from '@/components/tabbar/account/footprint/index.vue'
 
@@ -168,6 +169,8 @@ export default new Router({
       component: evaluaDetails
     },
 
+
+    
 
 
     {
@@ -453,6 +456,20 @@ export default new Router({
         },
       ]
     },
+    
+    {
+      path: '/control/home/homeItem',
+      name: '主页子页面',
+      component: homeItem,
+      children:[
+        {
+          path: 'flashSale',
+          name: '限时抢购',
+          component: flashSale,
+        },
+      ]
+    },
+
     {
       path: '/control',
       name: '控制',
@@ -509,5 +526,6 @@ export default new Router({
       component: inforDetails
     },
 
-  ]
+  ],
+  
 })
