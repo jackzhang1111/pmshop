@@ -1,29 +1,10 @@
 <template>
 <!-- 商品详情头部搜素 -->
-    <div>
-        <div class="detailsHeader c-b-gray">
-            <div class="logo">
-                <van-icon name="arrow-left" size="17px" @click="$router.go(-1)"/>
-            </div>
-            <div class="search">
-                <van-search
-                    v-model="value"
-                    placeholder="请输入搜索关键词"
-                    shape="round"
-                    @focus="onSearch">
-                </van-search>
-                <div class="zntj">
-
-                </div>
-            </div>
-            <div class="icons">
-                <!-- 最好能用icon做出显示消息数 -->
-                <img src="@/assets/img/tabbar/home/cart@3x.png" class="img1" @click="$router.push({name:'购物车'})">
-            </div>
+    <div class="footprint-header">
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
+            <span class="header-t1">相似产品</span>
+            <van-icon name="shopping-cart-o" class="ellipsis" info="10" @click="$router.push({name:'购物车'})"/>
         </div>
-        <div style="height:44px"></div>
-        
-    </div>
     
 </template>
 
@@ -61,53 +42,40 @@ export default {
 </script>
 
 <style scoped lang="less">
-.detailsHeader{
-    height: 88px;
-    position: fixed;
-    top:0;
-    z-index: 5;
+.footprint-header{
     width: 100%;
-    padding-right: 30px;
-    box-sizing: border-box;
-    
-    .logo{
+    height: 88px;
+    background-color: #f2f3f5;
+    text-align: center;
+    position: relative;
+    .arrow-left{
         position: absolute;
+        top:20px;
         left:30px;
-        top:50%;
-        transform: translateY(-50%);
-        img{
-            width: 100%;
-            height: 100%;
-        }
+        font-size: 40px;
+        
     }
-    .search{
+    .header-t1{ 
+        display: inline-block;
+        line-height: 88px;
+        font-size: 36px;
+        color: #010101;
+    }
+    .header-t2{
         position: absolute;
-        left:100px;
-        top:50%;
-        width: 540px;
-        height: 58px;
-        // overflow: hidden;
-        transform: translateY(-50%);
-        /deep/ .van-search{
-            background: #F2F3F5 !important;
+        font-size:30px;
+        right: 100px;
+        top:30px;
+    }
+    .ellipsis{
+        position: absolute;
+        top:20px;
+        right: 30px;
+        font-size: 40px;
+        .van-info{
+            line-height: 20px;
+            text-align: center;
         }
     }
-    .icons{
-        float: right;
-        height: 100%;
-        line-height: 100px;
-        .img1{
-            width: 34px;
-            height: 34px;
-            margin-right: 25px;
-        }
-    }
-    .zntj{
-        height: 200px;
-        position: relative;
-        background-color: red;
-        z-index: 555
-    }
-    
 }
 </style>

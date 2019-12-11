@@ -88,6 +88,7 @@ import evaluateDetail from '@/components/tabbar/account/evaluate/evaluateDetail'
 
 //账户设置
 import accountSettings from '@/components/tabbar/account/accountSettings/index'
+import settingsItem from '@/components/tabbar/account/accountSettings/settingsItem'
 import accountAddress from '@/components/tabbar/account/accountSettings/accountAddress'
 import addAddress from '@/components/tabbar/account/accountSettings/addAddress'
 import accountSecurity from '@/components/tabbar/account/accountSettings/accountSecurity'
@@ -99,7 +100,11 @@ import editLogpawo from '@/components/tabbar/account/accountSettings/editLogpawo
 import editPaypawo from '@/components/tabbar/account/accountSettings/editPaypawo'
 import companyInformation from '@/components/tabbar/account/accountSettings/companyInformation'
 import choiceList from '@/multiplexing/choiceList'
-
+import aboutTospino from '@/components/tabbar/account/accountSettings/aboutTospino'
+import helpCenter from '@/components/tabbar/account/accountSettings/aboutItem/helpCenter'
+import introduce from '@/components/tabbar/account/accountSettings/aboutItem/introduce'
+import privacyPolicy from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy'
+import userAgreement from '@/components/tabbar/account/accountSettings/aboutItem/userAgreement'
 // 账户余额
 import accountBalance from '@/components/tabbar/account/accountBalance/index'
 import commentDetail from '@/components/tabbar/account/accountBalance/commentDetail'
@@ -170,9 +175,6 @@ export default new Router({
     },
 
 
-    
-
-
     {
       path: '/footprint',
       name: '我的足迹',
@@ -231,59 +233,93 @@ export default new Router({
       component: accountSettings,
     },
     {
-      path: '/accountSettings/accountAddress',
-      name: '收货地址',
-      component: accountAddress,
-    },
-    {
-      path: '/accountSettings/accountAddress/addAddress',
-      name: '新增地址',
-      component: addAddress,
-    },
-    {
-      path: '/accountSettings/accountAddress/addAddress/choiceList',
-      name: '选择列表',
-      component: choiceList,
-    },
-    {
-      path: '/accountSettings/accountSecurity',
-      name: '账户安全',
-      component: accountSecurity,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editName',
-      name: '修改昵称',
-      component: editName,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editPhone',
-      name: '修改手机号码',
-      component: editPhone,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editPhone/acceptOtp',
-      name: '接受验证码',
-      component: acceptOtp,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editEmail',
-      name: '修改邮箱',
-      component: editEmail,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editLogpawo',
-      name: '修改登录密码',
-      component: editLogpawo,
-    },
-    {
-      path: '/accountSettings/accountSecurity/editPaypawo',
-      name: '修改支付密码',
-      component: editPaypawo,
-    },
-    {
-      path: '/accountSettings/accountSecurity/companyInformation',
-      name: '公司信息',
-      component: companyInformation,
+      path: '/accountSettings/settingsItem',
+      name: '账户设置子页面',
+      component: settingsItem,
+      children:[
+        {
+          path: 'accountAddress',
+          name: '收货地址',
+          component: accountAddress,
+        },
+        {
+          path: 'accountAddress/addAddress',
+          name: '新增地址',
+          component: addAddress,
+        },
+        {
+          path: 'accountAddress/addAddress/choiceList',
+          name: '选择列表',
+          component: choiceList,
+        },
+        {
+          path: 'accountSecurity',
+          name: '账户安全',
+          component: accountSecurity,
+        },
+        {
+          path: 'accountSecurity/editName',
+          name: '修改昵称',
+          component: editName,
+        },
+        {
+          path: 'accountSecurity/editPhone',
+          name: '修改手机号码',
+          component: editPhone,
+        },
+        {
+          path: 'accountSecurity/editPhone/acceptOtp',
+          name: '接受验证码',
+          component: acceptOtp,
+        },
+        {
+          path: 'accountSecurity/editEmail',
+          name: '修改邮箱',
+          component: editEmail,
+        },
+        {
+          path: 'accountSecurity/editLogpawo',
+          name: '修改登录密码',
+          component: editLogpawo,
+        },
+        {
+          path: 'accountSecurity/editPaypawo',
+          name: '修改支付密码',
+          component: editPaypawo,
+        },
+        {
+          path: 'accountSecurity/companyInformation',
+          name: '公司信息',
+          component: companyInformation,
+        },
+        {
+          path: 'aboutTospino',
+          name: '关于TOSPINO',
+          component: aboutTospino,
+          children:[
+            {
+              path: 'helpCenter',
+              name: '帮助中心',
+              component: helpCenter,
+            },
+            {
+              path: 'introduce',
+              name: '平台介绍',
+              component: introduce,
+            },
+            {
+              path: 'privacyPolicy',
+              name: '隐私政策',
+              component: privacyPolicy,
+            },
+            {
+              path: 'userAgreement',
+              name: '用户协议',
+              component: userAgreement,
+            },
+          ]
+        },
+      ]
     },
     
     

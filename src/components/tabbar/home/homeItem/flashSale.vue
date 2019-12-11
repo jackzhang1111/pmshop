@@ -102,6 +102,7 @@ export default {
             }
             .right-p2{
                 font-size:26px;
+                line-height:39px;
                 color: #333;
                 margin: 11px 0 18px;
                 display: -webkit-box;

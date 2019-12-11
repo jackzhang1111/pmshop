@@ -17,7 +17,8 @@
             <div class="icons">
                 <!-- 最好能用icon做出显示消息数 -->
                 <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-                <img src="@/assets/img/tabbar/home/cart@3x.png" class="img1" @click="$router.push({name:'购物车'})">
+                <!-- <img src="@/assets/img/tabbar/home/cart@3x.png" class="img1" @click="$router.push({name:'购物车'})"> -->
+                <van-icon name="shopping-cart-o" class="ellipsis" @click="$router.push({name:'购物车'})"/>
                 <img src="@/assets/img/tabbar/home/commodityDetails/msg@2x.png" class="img2" @click="$router.push({name:'消息'})">
             </div>
         </div>
@@ -96,6 +97,10 @@ export default {
         .img1{
             width: 34px;
             height: 34px;
+            margin-right: 25px;
+        }
+        .ellipsis{
+            font-size: 34px;
             margin-right: 25px;
         }
         .img2{

@@ -96,7 +96,7 @@
                 <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666" >
                     <!-- <span>自定义</span> -->
                     <!-- <img slot="icon" slot-scope="props" :src="props.active ? icon.active : icon.inactive"> -->
-                    <van-tabbar-item info="3">
+                    <van-tabbar-item info='99'>
                         <span>心愿单</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xinyuandan : icon.xinyuandan" class="icon-style">
                     </van-tabbar-item>
@@ -302,6 +302,12 @@ export default {
                 width: 43px;
                 height: 43px;
                 margin-bottom: 3px;
+            }
+            /deep/ .van-tabbar-item__icon{
+                .van-info{
+                    line-height: 20px;
+                    text-align: center;
+                }
             }
            /deep/ .van-hairline--top-bottom{
                &::after{
