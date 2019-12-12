@@ -1,69 +1,16 @@
-<template>
-<!-- 待发货类型 -->
-    <div class="dfh">
-        <div class="good-detail" v-for="dfhData in dfhDataList" :key="dfhData.orderId">
-            <div class="good-detail-header">
-                <span>订单编号：{{dfhData.orderSn}}</span>
-                <span class="dfk c-orange">待发货</span>
-            </div>
-            <div class="good-detail-content" @click="toEditAddress" v-for="detail in dfhData.detailList2" :key="detail.detailId">
-                <div class="good-detail-img">
-                    <img :src="$webUrl+detail.skuImg">
-                </div>
-                <div class="good-detail-title">
-                    <span class="name">{{detail.skuName}}</span>
-                    <div class="guige">
-                        {{detail.skuValuesTitle}}
-                    </div>
-                </div>
-                <div class="price">
-                    <div class="p3">
-                        {{detail.currencySignWebsite}}{{detail.priceWebsite}}
-                    </div>
-                    <div class="p4 through">
-                        {{detail.currencySignWebsite}}{{detail.originPriceWebsite}}
-                    </div>
-                    <div class="p4 fl-right">
-                        x{{detail.detailNum}}
-                    </div>
-                    
-                </div>
-                <div style="height:35px;">
 
-                </div>
-            </div>
-            <div class="good-detail-dfh-footer">
-                <div class="dfh-footer-top" v-if="dfhData.detailListFlag" @click="lookTotal">
-                    <span v-if="arrowDown">查看其他{{dfhData.lengcha}}个商品</span>
-                    <span v-else>收起</span>
-                    <van-icon name="arrow-down" v-if="arrowDown" />
-                    <van-icon name="arrow-up" v-else/>
-                </div>
-                <div class="dfh-footer-bottom">
-                    <span>共{{dfhData.goodCount}}件</span>
-                    <span>合计:</span>
-                    <span class="c-orange font-30">{{dfhData.currencySignWebsite}}{{dfhData.orderProductAmountWebsite}}</span>
-                    <span>(含运费{{dfhData.currencySignWebsite}}{{dfhData.orderFareWebsite}}）</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
 
 <script>
+//待收货
+import dfk from './dfk.vue'
 export default {
     props: {
-        dfhList:{
-            type:Array,
-            default: () => {
-                return []
-            }
-        }
+
     },
+    extends:dfk,
     data() {
         return {
-            arrowDown:true,
-            dfhDataList:[]
+
         };
     },
     computed: {
@@ -76,49 +23,13 @@ export default {
 
     },
     watch: {
-        dfhList:{
-            handler:function(newVal){
-                this.getData()
-            }
-        }
+
     },
     methods: {
-        toEditAddress(){
-            this.$router.push({name:'订单详情'})
-        },
-        //获取数据
-        getData(){
-            this.dfhDataList = this.dfhList.map(o => Object.assign({}, o));
-            this.shousuo(this.dfhDataList)
-        },
-        //收缩栏逻辑
-        shousuo(list){
-           list.forEach(item => {
-                if(item.detailList.length > 2){
-                    item.detailListFlag = true
-                    item.lengcha = item.detailList.length - 2
-                    item.detailList2 = item.detailList.slice(0,2);
-                    
-                }else{
-                    item.detailListFlag = false
-                    item.detailList2 = item.detailList
-                }
-            })
-        },
-        //查看全部商品
-        lookTotal(){
-            if(this.arrowDown){
-                this.dfhDataList.forEach(item => {
-                    item.detailList2 = item.detailList
-                })
-            }else{
-                this.shousuo(this.dfhDataList)
-            }
-            this.arrowDown = !this.arrowDown 
-        }
+
     },
     components: {
-
+        
     },
 };
 </script>
@@ -196,6 +107,7 @@ export default {
                 color: #999;
                 font-size: 20px;
             }
+            
             .selection-right-stepper{
                 position: relative;
                 width: 100%;
@@ -238,6 +150,17 @@ export default {
             }
         }
     }
+    .total{
+        background-color: #fff;
+        padding: 0 30px 19px;
+        span{
+            &:nth-child(3){
+                font-size: 30px;
+            }
+        }
+        
+    }
+    
     .good-detail-footer{
         height: 100px;
         border-top: 1px solid #F2F3F5;
@@ -256,8 +179,8 @@ export default {
             text-align: center;
             position: relative;
             top:50%;
-            transform: translateY(-50%)
-
+            transform: translateY(-50%);
+            margin-right:20px;
         }
         .btn-qxdd,.btn-xgdz{
             width:180px;
@@ -272,25 +195,12 @@ export default {
             margin-right:20px;
         }
     }
-    .good-detail-dfh-footer{
-        // height: 120px;
-        border-top: 1px solid #F2F3F5;
-        font-size: 30px;
-        color: #333;
+    .dfh-footer-top{
+        height: 60px;
+        text-align: center;
+        font-size: 20px;
+        line-height:60px;
         background-color: #fff;
-            
-        .dfh-footer-top{
-            height: 60px;
-            text-align: center;
-            font-size: 20px;
-            line-height:60px;
-        }
-        .dfh-footer-bottom{
-            height: 60px;
-            text-align: right;
-            font-size: 20px;
-            line-height:60px;
-        }
     }
 }
 </style>

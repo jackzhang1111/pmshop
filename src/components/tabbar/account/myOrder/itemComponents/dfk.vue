@@ -1,68 +1,87 @@
 <template>
 <!-- 带付款类型 -->
     <div class="dfk">
-        <div class="good-detail">
+        <div class="good-detail" v-for="dfkData in dfkDataList" :key="dfkData.orderId">
             <div class="good-detail-header">
-                <span>订单编号：DJKLD561261</span>
-                <span class="dfk c-orange">待付款</span>
+                <span>订单编号：{{dfkData.orderSn}}</span>
+                <span class="dfk c-orange">{{orderStatus(dfkData.orderStatusApp)}}</span>
             </div>
-            <div class="good-detail-content" @click="toOrderDetail">
+            <div class="good-detail-content" @click="toOrderDetail(detail.orderId)" v-for="detail in dfkData.detailList2" :key="detail.detailId">
                 <div class="good-detail-img">
-                    <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                    <img :src="$webUrl+detail.skuImg">
                 </div>
                 <div class="good-detail-title">
-                    <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
+                    <span class="name">{{detail.skuName}}</span>
                     <div class="guige">
-                        红色/L
+                        {{detail.skuValuesTitle}}
                     </div>
                 </div>
                 <div class="price">
                     <div class="p3">
-                        ￥596.00
+                        {{detail.currencySignWebsite}}{{detail.priceWebsite}}
                     </div>
                     <div class="p4 through">
-                        ￥1137.13
+                        {{detail.currencySignWebsite}}{{detail.originPriceWebsite}}
                     </div>
                     <div class="p4 fl-right">
-                        x1
+                        x{{detail.detailNum}}
                     </div>
-                    <div class="p5 c-orange">
-                        <span>共1件</span>
-                        <span>合计:</span>
-                        <span>￥596</span>
-                    </div>
+                    
                 </div>
-                <div style="height:35px;">
-
+                <div style="height:15px;"></div>
+            </div>
+            <div class="dfh-footer-top" v-if="dfkData.detailListFlag" @click="lookTotal">
+                <span v-if="arrowDown">查看其他{{dfkData.lengcha}}个商品</span>
+                <span v-else>收起</span>
+                <van-icon name="arrow-down" v-if="arrowDown" />
+                <van-icon name="arrow-up" v-else/>
+            </div>
+            <div class="total clearfix">
+                <div class="fl-right">
+                    <span>共{{dfkData.goodCount}}件</span>
+                    <span>合计:</span>
+                    <span class="c-orange">{{dfkData.currencySignWebsite}}{{dfkData.orderProductAmountWebsite}}</span>
                 </div>
                 
             </div>
             <div class="good-detail-footer">
                 <!-- 待付款按钮栏 -->
-                <div class="lan" v-if="lanStatus.dfk">
-                    <div class="btn-qzf fl-right c-orange">去支付</div>
-                    <div class="btn-qxdd fl-right">取消订单</div>
+                <div class="lan" v-if="dfkData.orderStatusApp == 0">
+                    <div class="btn-qzf fl-right c-orange" @click="payMoney">去支付</div>
+                    <div class="btn-qxdd fl-right" @click="cancelOrder">取消订单</div>
                     <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
                 </div>
                 <!-- 待收货按钮栏 -->
-                <div class="lan" v-if="lanStatus.dsh">
+                <div class="lan" v-if="dfkData.orderStatusApp == 2" @click="payMoney">
                     <div class="btn-qxdd fl-right c-orange">确认收货</div>
                 </div>
-                <div class="lan" v-if="lanStatus.pj">
+                <!-- 已完成按钮栏 -->
+                <div class="lan" v-if="dfkData.orderStatusApp == 3">
                     <div class="btn-qzf fl-right c-orange">评价</div>
                 </div>
-                <div class="lan" v-if="lanStatus.scdd">
+                <!-- 订单关闭 -->
+                <div class="lan" v-if="dfkData.orderStatusApp == 4">
                     <div class="btn-qxdd fl-right c-orange">删除订单</div>
                 </div>
             </div>
         </div>
+
+        
+
+
     </div>
 </template>
 
 <script>
+
 export default {
     props: {
-
+        dfkList:{
+            type:Array,
+            default: () => {
+                return []
+            }
+        }
     },
     data() {
         return {
@@ -72,10 +91,20 @@ export default {
                 pj:false,
                 scdd:false
             },
+            dfkDataList:[],
+            arrowDown:true,
+            status:[
+                {type:0,name:'待付款'},
+                {type:1,name:'待发货'},
+                {type:2,name:'待收货'},
+                {type:3,name:'已完成'},
+                {type:4,name:'交易关闭'},
+            ],
+            show:false,
         };
     },
     computed: {
-
+        
     },
     created() {
 
@@ -84,18 +113,69 @@ export default {
 
     },
     watch: {
-
+        dfkList:{
+            handler:function(newVal){
+                this.getData()
+            }
+        }
     },
     methods: {
-        toOrderDetail(){
-            this.$router.push({name:'订单详情'})
+        toOrderDetail(id){
+            this.$router.push({name:'订单详情',query:{id}})
         },
         toEditAddress(){
             this.$router.push({name:'我的订单修改地址'})
+        },
+        //获取数据
+        getData(){
+            this.dfkDataList = this.dfkList.map(o => Object.assign({}, o));
+            this.shousuo(this.dfkDataList)
+        },
+        //收缩栏逻辑
+        shousuo(list){
+           list.forEach(item => {
+                if(item.detailList.length > 2){
+                    item.detailListFlag = true
+                    item.lengcha = item.detailList.length - 2
+                    item.detailList2 = item.detailList.slice(0,2);
+                }else{
+                    item.detailListFlag = false
+                    item.detailList2 = item.detailList
+                }
+            })
+        },
+        //查看全部商品
+        lookTotal(){
+            if(this.arrowDown){
+                this.dfkDataList.forEach(item => {
+                    item.detailList2 = item.detailList
+                })
+            }else{
+                this.shousuo(this.dfkDataList)
+            }
+            this.arrowDown = !this.arrowDown 
+        },
+        //编译订单状态
+        orderStatus(type){
+            let name = ''
+            this.status.forEach(statu => {
+                if(statu.type == type){
+                    name = statu.name
+                }
+            })
+            return name
+        },
+        //点击取消订单
+        cancelOrder(){
+            this.$emit('closeOverlay',true)
+        },
+        //点击去支付
+        payMoney(){
+            this.$emit('showPay')
         }
     },
     components: {
-
+       
     },
 };
 </script>
@@ -146,12 +226,15 @@ export default {
                 display: inline-block;
                 margin-bottom: 24px;
                 color: #333;
-                font-size: 22px
+                font-size: 22px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
             }
             .guige{
                 color: #999;
                 font-size: 18px;
-                display: inline-block;
                 margin-bottom: 12px;
             }
             
@@ -170,14 +253,7 @@ export default {
                 color: #999;
                 font-size: 20px;
             }
-            .p5{
-                margin-top:75px;
-                span{
-                    &:nth-child(3){
-                        font-size: 30px;
-                    }
-                }
-            }
+            
             .selection-right-stepper{
                 position: relative;
                 width: 100%;
@@ -220,6 +296,17 @@ export default {
             }
         }
     }
+    .total{
+        background-color: #fff;
+        padding: 0 30px 19px;
+        span{
+            &:nth-child(3){
+                font-size: 30px;
+            }
+        }
+        
+    }
+    
     .good-detail-footer{
         height: 100px;
         border-top: 1px solid #F2F3F5;
@@ -254,25 +341,12 @@ export default {
             margin-right:20px;
         }
     }
-    .good-detail-dfh-footer{
-        height: 120px;
-        border-top: 1px solid #F2F3F5;
-        font-size: 30px;
-        color: #333;
+    .dfh-footer-top{
+        height: 60px;
+        text-align: center;
+        font-size: 20px;
+        line-height:60px;
         background-color: #fff;
-            
-        .dfh-footer-top{
-            height: 60px;
-            text-align: center;
-            font-size: 20px;
-            line-height:60px;
-        }
-        .dfh-footer-bottom{
-            height: 60px;
-            text-align: right;
-            font-size: 20px;
-            line-height:60px;
-        }
     }
 }
 </style>

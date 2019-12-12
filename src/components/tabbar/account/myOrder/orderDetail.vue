@@ -3,7 +3,7 @@
     <div class="order-detail">
         <div class="address-p1">
             <div class="p1-top">
-                等待买家付款
+                {{orderStatus(detailObj.orderStatusApp,'status')}}
             </div>
             <div class="p1-bottom">
                 剩18小时47分自动关闭
@@ -14,7 +14,7 @@
                 <div class="car-icon">
                     <img src="@/assets/img/confirmOrder/logistics@2x.png">
                 </div>
-                <span>上门自提</span>
+                <span>{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
             </div>
             <div class="p2-bottom">
                 <div class="bottom-left">
@@ -24,10 +24,10 @@
                 </div>
                 
                 <div class="bottom-right">
-                    <span class="name"> 媛媛</span>
-                    <span class="phone"> 86-13165265218</span>
+                    <span class="name"> {{detailObj.consignee}}</span>
+                    <span class="phone"> 86-{{detailObj.mobile}}</span>
                     <div class="addre">
-                        中国 广东省 深圳市光明区公明街道 风景北路上村同富裕旭发科技园七栋五楼
+                        {{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}
                     </div>
                 </div>
                 
@@ -38,42 +38,42 @@
                 商品信息
             </div>
             <div class="good-detail">
-                <div class="good-detail-content" >
+                <div class="good-detail-content" v-for="data in dataList" :key="data.detailId">
                     <div class="good-detail-img" @click="jumpRouter('商品详情')">
-                        <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                        <img :src="$webUrl+data.skuImg">
                     </div>
                     <div class="good-detail-title" @click="jumpRouter('商品详情')">
-                        <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
+                        <span class="name">{{data.skuName}}</span>
                         <div class="guige">
-                            红色/L
+                            {{data.skuValuesTitle}}
                         </div>
                     </div>
                     <div class="price">
                         <div class="p3">
-                            ￥596.00
+                            {{data.currencySignWebsite}}{{data.priceWebsite}}
                         </div>
                         <div class="p4 through">
-                            ￥1137.13
+                            {{data.currencySignWebsite}}{{data.originPriceWebsite}}
                         </div>
                         <div class="p4 fl-right">
-                            x1
+                            x{{data.detailNum}}
                         </div>
                     </div>
                     <div style="height:15px;">
 
                     </div>
                 </div>
-                <div class="mingxi">
+                <div class="mingxi m-t-29">
                     <span >商品总价：</span>
-                    <span class="fl-right">￥596.00</span>
+                    <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderProductAmountWebsite}}</span>
                 </div>
                 <div class="mingxi">
                     <span>运费：</span>
-                    <span class="fl-right">￥596.00</span>
+                    <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderProductAmountWebsite}}</span>
                 </div>
                 <div class="mingxi">
                     <span>订单总价：</span>
-                    <span class="fl-right c-orange font-24">￥596.00</span>
+                    <span class="fl-right c-orange font-24">{{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}</span>
                 </div>
             </div>
         </div>
@@ -84,24 +84,24 @@
             <div class="p4-middle">
                 <div class="middle-p1">
                     <span>订单备注:</span>
-                    <span>请及时发货！</span>
+                    <span>{{detailObj.orderRemark}}</span>
                 </div>
                 <div class="middle-p2">
                     <span>订单编号:</span>
-                    <span>XSD16562532362562546</span>
+                    <span>{{detailObj.orderSn}}</span>
                     <span class="fl-right c-orange">复制</span>
                 </div>
                 <div class="middle-p1">
                     <span>下单时间:</span>
-                    <span>2019-10-21 19:20:30</span>
+                    <span>{{detailObj.orderAddtime}}</span>
                 </div>
                 <div class="middle-p1">
                     <span>支付时间:</span>
-                    <span>2019-10-21 19:20:30</span>
+                    <span>{{detailObj.orderPaytime}}</span>
                 </div>
                 <div class="middle-p1">
                     <span>支付方式:</span>
-                    <span>在线支付</span>
+                    <span>{{orderStatus(detailObj.payType,'payTypes')}}</span>
                 </div>
             </div>
         </div>
@@ -109,19 +109,33 @@
             <div class="phone-icon">
                 <img src="@/assets/img/confirmOrder/phone@2x.png">
             </div>
-            <span @click="show2 = true">拨打电话</span>
+            <span @click="show3 = true">拨打电话</span>
         </div>
         <div style="height:100px"></div>
         <div class="good-detail-footer">
             <!-- 待付款按钮栏 -->
-            <div class="lan">
-                <div class="btn-qzf fl-right c-orange">付款</div>
-                <div class="btn-qxdd fl-right">取消订单</div>
-                <div class="btn-xgdz fl-right">修改地址</div>
+            <div class="lan" v-if="detailObj.orderStatusApp == 0">
+                <div class="btn-qzf fl-right c-orange" @click="showPay">付款</div>
+                <div class="btn-qxdd fl-right" @click="closeOverlay(true)">取消订单</div>
+                <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
+            </div>
+            <div class="lan" v-if="detailObj.orderStatusApp == 1">
+                <div class="btn-qzf fl-right c-orange" @click="toRefund">退款</div>
+            </div>
+            <div class="lan" v-if="detailObj.orderStatusApp == 2">
+                <div class="btn-qzf fl-right c-orange" @click="showPay">确认收货</div>
+                <div class="btn-xgdz fl-right" @click="toRefund">退货退款</div>
+            </div>
+            <div class="lan" v-if="detailObj.orderStatusApp == 3">
+                <div class="btn-qzf fl-right c-orange">评价</div>
+                <div class="btn-xgdz fl-right" @click="toRefund">退货退款</div>
+            </div>
+            <div class="lan" v-if="detailObj.orderStatusApp == 4">
+                <div class="btn-qzf fl-right c-orange">退款成功</div>
             </div>
         </div>
 
-        <van-overlay :show="show2" @click="show2 = false" class="overlay">
+        <van-overlay :show="show3" @click="show3 = false" class="overlay">
             <!-- 客服电话 -->
             <div class="kefu">
                 <div class="top">联系电话</div>
@@ -130,17 +144,53 @@
         </van-overlay>
 
 
+        <transition name="canorder">
+            <zhezhao v-show="show">
+                <cancel-order @closeOverlay="closeOverlay" ref="cancelorder"></cancel-order>
+            </zhezhao>
+        </transition>
+
+        <action-sheet-password ref="actionSheetPassword"></action-sheet-password>
+
     </div>
 </template>
 
 <script>
+import {orderinfoApi} from '@/api/myOrder/index.js'
+import cancelOrder from './itemComponents/cancelOrder'
+import actionSheetPassword from '@/multiplexing/actionSheetPassword'
+import zhezhao from '@/multiplexing/zhezhao'
 export default {
     props: {
 
     },
     data() {
         return {
-            show2:false
+            show:false,
+            show2:false,
+            show3:false,
+            formData:{
+                order_id:""
+            },
+            dataList:[],
+            detailObj:{},
+            status:[
+                {type:0,name:'等待买家付款'},
+                {type:1,name:'买家已付款'},
+                {type:2,name:'卖家已发货'},
+                {type:3,name:'交易成功'},
+                {type:4,name:'交易关闭'},
+            ],
+            deliverTypes:[
+                {type:1,name:'Tospino物流'},
+                {type:2,name:'上门自取'},
+                {type:3,name:'第三方物流'},
+            ],
+            payTypes:[
+                {type:1,name:'货到付款'},
+                {type:2,name:'在线支付'},
+                {type:3,name:'余额支付'},
+            ],
         };
     },
     computed: {
@@ -150,7 +200,7 @@ export default {
 
     },
     mounted() {
-
+        this.orderinfo()
     },
     watch: {
 
@@ -159,9 +209,52 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        orderinfo(){
+            this.formData.order_id = this.$route.query.id
+            orderinfoApi(this.formData).then(res => {
+                if(res.code == 0){
+                    this.detailObj = res.Data
+                    this.dataList = res.Data.detailList
+                }   
+            })
+        },
+        //秒转化成时分
+        settingTime(){
+            var hours = Math.floor(second / 3600);
+            var minutes = Math.floor((second % 3600) / 60);
+        },
+        //编译状态
+        orderStatus(type,list){
+            let name = ''
+            this[list].forEach(statu => {
+                if(statu.type == type){
+                    name = statu.name
+                }
+            })
+            return name
+        },
+        //控制取消订单弹窗
+        closeOverlay(falg){
+            this.show = falg
+            this.$refs.cancelorder.anima = true
+        },
+        //弹出付款弹窗
+        showPay(){
+            this.$refs.actionSheetPassword.showAction = true
+        },
+        //修改地址
+        toEditAddress(){
+            this.$router.push({name:'我的订单修改地址'})
+        },
+        //退款
+        toRefund(){
+            this.$router.push({name:'退货退款页面'})
+        }
     },
     components: {
-
+        cancelOrder,
+        actionSheetPassword,
+        zhezhao
     },
 };
 </script>
@@ -308,7 +401,6 @@ export default {
             .guige{
                 color: #999;
                 font-size: 18px;
-                display: inline-block;
                 margin-bottom: 12px;
             }
             
@@ -340,9 +432,9 @@ export default {
         height: 100%;
     }
     .btn-qzf{
-        width:150px;
+        padding: 0 25px;
         height:60px;
-        border:1px solid rgba(250,83,0,1);
+        border:2px solid rgba(250,83,0,1);
         border-radius:30px;
         line-height: 60px;
         text-align: center;
@@ -354,7 +446,7 @@ export default {
     .btn-qxdd,.btn-xgdz{
         width:180px;
         height:60px;
-        border:1px solid rgba(153,153,153,1);
+        border:2px solid rgba(153,153,153,1);
         border-radius:30px;
         line-height: 60px;
         text-align: center;
@@ -388,6 +480,9 @@ export default {
     }
 }
 .font-24{
-    font-size: 24px
+    font-size: 24px;
+}
+.m-t-29{
+    margin-top:29px;
 }
 </style>

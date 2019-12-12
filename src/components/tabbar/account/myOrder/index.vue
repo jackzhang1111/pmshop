@@ -10,36 +10,32 @@
             <van-icon name="ellipsis" class="ellipsis"/>
         </div>
         <div class="commodity-tab">
-            <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
-                <van-tab title="全部" >
-                    <div v-if="true">
+            <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
+                <van-tab :title="tab.title" v-for="tab in tabList" :key="tab.id" >
+                    <div v-if="noSearchStatus">
                         <!-- 待付款 -->
-                        <dfk></dfk>
+                        <dfk :dfkList="dfkList" @closeOverlay="closeOverlay" @showPay="showPay"></dfk>
                         <!-- 待发货 -->
-                        <dfh></dfh>
+                        <dfh :dfhList="dfhList"></dfh>
+                        <!-- 已完成 -->
+                        <ywc :dfkList="ywcList"></ywc>
+                        <!-- 待收货 -->
+                        <dsh :dfkList="dshList" @showPay="showPay"></dsh>
+                        <!-- 订单关闭 -->
+                        <ddgb :dfkList="ddgbList"></ddgb>
                     </div>
                     <noSearch v-else></noSearch>
-                </van-tab>
-                <van-tab title="待付款">
-                    <dfk></dfk>
-                </van-tab>
-                <van-tab title="待发货">
-                    <dfh></dfh>
-                </van-tab>
-                <van-tab title="待收货">
-                    <dfk></dfk>
-                </van-tab>
-                <van-tab title="已完成">
-                    <dfk></dfk>
                 </van-tab>
             </van-tabs>
         </div>
 
-        <van-overlay :show="show" >
-            <cancel-order></cancel-order>
-        </van-overlay>
-        
-        <action-sheet-password v-if="show2"></action-sheet-password>
+        <transition name="canorder">
+            <zhezhao v-show="show">
+                <cancel-order @closeOverlay="closeOverlay" ref="cancelorder"></cancel-order>
+            </zhezhao>
+        </transition>
+
+        <action-sheet-password ref="actionSheetPassword"></action-sheet-password>
        
     </div>
 </template>
@@ -47,18 +43,59 @@
 <script>
 import dfh from './itemComponents/dfh'
 import dfk from './itemComponents/dfk'
-import noSearch from './itemComponents/noSearch'
+import ddgb from './itemComponents/ddgb'
+import ywc from './itemComponents/ywc'
+import dsh from './itemComponents/dsh'
+import zhezhao from '@/multiplexing/zhezhao'
 import cancelOrder from './itemComponents/cancelOrder'
+import noSearch from './itemComponents/noSearch'
+
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
+import {orderlistApi} from '@/api/myOrder/index.js'
 export default {
     props: {
 
     },
     data() {
         return {
+            tabList:[
+                {
+                    title:'全部',
+                    id:null
+                },
+                {
+                    title:'待付款',
+                    id:1
+                },
+                {
+                    title:'待发货',
+                    id:2
+                },
+                {
+                    title:'待收货',
+                    id:3
+                },
+                {
+                    title:'已完成',
+                    id:4
+                },
+            ],
             active:3,
-            show:false,
             show2:false,
+            noSearchStatus:true,
+            formData:{
+                product_key_name:'',
+                order_status_app:null,
+                page:1,
+                limit:10
+            },
+            dfhList:[],
+            dfkList:[],
+            ddgbList:[],
+            ywcList:[],
+            dshList:[],
+            dataList:[],
+            show:false
         };  
     },
     computed: {
@@ -69,6 +106,7 @@ export default {
     },
     mounted() {
         this.active = this.$route.query.active
+        this.orderlist(this.formData)
     },
     watch: {
 
@@ -77,13 +115,70 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        orderlist(data){
+            this.clerStatuList()
+            orderlistApi(data).then(res => {
+                if(res.code == 0){
+                    this.dataList = res.Data.list
+                    if(this.dataList.length > 0){
+                        this.noSearchStatus = true
+                        this.dataList.forEach(item => {
+                            if(item.orderStatusApp == 1){
+                                this.dfhList.push(item)
+                            }else if(item.orderStatusApp == 0){
+                                this.dfkList.push(item)
+                            }else if(item.orderStatusApp == 2){
+                                this.dshList.push(item)
+                            }else if(item.orderStatusApp == 3){
+                                this.ywcList.push(item)
+                            }else if(item.orderStatusApp == 4){
+                                this.ddgbList.push(item)
+                            }
+                        });
+                    }else{
+                        this.noSearchStatus = false
+                    }
+                    
+                }
+            })
+        },
+        //更改tab
+        changeTab(index,title){
+            if(index==0){
+                this.formData.order_status_app = null
+            }else{
+                this.formData.order_status_app = index-1
+            }
+            this.orderlist(this.formData)
+        },
+        //清空每个状态数组
+        clerStatuList(){
+            this.dfhList = []
+            this.dfkList = []
+            this.dshList = []
+            this.ywcList = []
+            this.ddgbList = []
+        },
+        //控制取消订单弹窗
+        closeOverlay(falg){
+            this.show = falg
+            this.$refs.cancelorder.anima = true
+        },
+        //弹出付款弹窗
+        showPay(){
+            this.$refs.actionSheetPassword.showAction = true
+        },
     },
     components: {
         dfh,
         dfk,
+        ddgb,
+        ywc,
+        dsh,
         noSearch,
-        cancelOrder,
-        actionSheetPassword
+        actionSheetPassword,
+        zhezhao,
+        cancelOrder
     },
 };
 </script>

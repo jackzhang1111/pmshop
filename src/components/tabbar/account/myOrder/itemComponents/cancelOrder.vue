@@ -1,55 +1,33 @@
 <template>
 <!-- 取消订单遮罩 -->
-    <div class="cancel-order">
-        <div class="cancel-list">
-            <div class="cancel-title">
-                <span>取消订单</span>
-                <van-icon name="cross" class="cross"/>
-            </div>
-            <div class="yuanyin">
-                请选择取消订单的原因
-            </div>
-            <div class="yuanyin-list">
-                <span>我不想买了</span>
-                <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
-                <div class="yuan-img" v-else @click="istrue =!istrue">
-                    <img src="@/assets/img/confirmOrder/icon-02@2x.png">
+    <transition name="updown">
+        <div class="cancel-order" v-show="anima">
+            <div class="cancel-list" >
+                <div class="cancel-title">
+                    <span>取消订单</span>
+                    <van-icon name="cross" class="cross" @click="closeCancel"/>
                 </div>
-            </div>
-            <div class="yuanyin-list">
-                <span>信息填写错误，重新拍</span>
-                <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
-                <div class="yuan-img" v-else @click="istrue =!istrue">
-                    <img src="@/assets/img/confirmOrder/icon-02@2x.png">
+                <div class="yuanyin">
+                    请选择取消订单的原因
                 </div>
-            </div>
-            <div class="yuanyin-list">
-                <span>卖家缺货</span>
-                <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
-                <div class="yuan-img" v-else @click="istrue =!istrue">
-                    <img src="@/assets/img/confirmOrder/icon-02@2x.png">
+                <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index">
+                    <span>{{reason.name}}</span>
+                    <div class="yuan" v-if="reason.istrue" @click="reason.istrue =!reason.istrue"></div>
+                    <div class="yuan-img" v-else @click="reason.istrue =!reason.istrue">
+                        <img src="@/assets/img/confirmOrder/icon-02@2x.png">
+                    </div>
                 </div>
-            </div>
-            <div class="yuanyin-list">
-                <span>其他原因</span>
-                <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
-                <div class="yuan-img" v-else @click="istrue =!istrue">
-                    <img src="@/assets/img/confirmOrder/icon-02@2x.png">
-                </div>
-            </div>
-            <div class="btns">
-                <div class="btn-zbqx">
-                    暂不取消
-                </div>
-                <div class="btn-qdqx">
-                    确定取消
+                <div class="btns">
+                    <div class="btn-zbqx" @click="closeCancel">
+                        暂不取消
+                    </div>
+                    <div class="btn-qdqx">
+                        确定取消
+                    </div>
                 </div>
             </div>
         </div>
-        
-        
-        
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -59,7 +37,25 @@ export default {
     },
     data() {
         return {
-            istrue:false
+            reasonList:[
+                {
+                    name:'我不想买了',
+                    istrue:true
+                },
+                {
+                    name:'信息填写错误，重新拍',
+                    istrue:true
+                },
+                {
+                    name:'卖家缺货',
+                    istrue:true
+                },
+                {
+                    name:'其他原因',
+                    istrue:true
+                },
+            ],
+            anima:false
         };
     },
     computed: {
@@ -75,7 +71,11 @@ export default {
 
     },
     methods: {
-
+        //关闭弹窗
+        closeCancel(){
+            this.$emit('closeOverlay',false)
+            this.anima = false
+        }
     },
     components: {
 
@@ -128,14 +128,16 @@ export default {
         position: absolute;
         border-radius: 50%;
         border:2px solid rgba(153,153,153,1);
-        top:0;
+        top:50%;
+        transform: translateY(-50%);
         right:30px;
     }
     .yuan-img{
         width:40px;
         height:40px;
         position: absolute;
-        top:0;
+        top:50%;
+        transform: translateY(-50%);
         right:30px;
         img{
             position: absolute;

@@ -33,9 +33,9 @@
                     <div style="height:35px;"></div>
                 </div>
             </div>
-            <div class="cell" @click="aaa">
+            <div class="cell" @click="showReason">
                 <span>退款原因</span>
-                <span class="text c-999">请选择</span>
+                <span class="text " :class="{'c-999':reasonText=='请选择'}">{{reasonText}}</span>
                 <van-icon name="arrow" class="arrow c-999"/>
             </div>
             <div class="cell">
@@ -55,19 +55,20 @@
                 上传凭证
             </div>
             <div class="uploader">
-                <van-uploader v-model="fileList" multiple :max-count="3"/>
+                <upload-all @getfilePathList="getfilePathList" :maxCount="6"></upload-all>
             </div>
         </div>
         <div class="btn-submit">
             提交
         </div>
         <!-- 退款原因 -->
-        <refundReason ref="refundReason"></refundReason>
+        <refundReason ref="refundReason" @getReasonText="getReasonText"></refundReason>
     </div>
 </template>
 
 <script>
 import refundReason from './itemComponents/refundReason.vue'
+import uploadAll from '@/multiplexing/uploadAll.vue'
 export default {
     props: {
 
@@ -75,7 +76,9 @@ export default {
     data() {
         return {
             fileList:[],
-            show1:false
+            show1:false,
+            reasonText:'请选择',
+            uploadList:[]
         };
     },
     computed: {
@@ -95,13 +98,23 @@ export default {
         // 此时可以自行将文件上传至服务器
             console.log(file);
         },
-        aaa(){
-            this.$refs.refundReason.show5 = true
-            console.log(this.$refs.refundReason);
+        //弹出退款原因弹窗
+        showReason(){
+            this.$refs.refundReason.closeStatu = true
+        },
+        //获取退款原因
+        getReasonText(text){
+            this.reasonText = text
+        },
+        //获取上传图片列表
+        getfilePathList(list){
+            this.uploadList = list
+            console.log(this.uploadList,'this.uploadList');
         }
     },
     components: {
-        refundReason
+        refundReason,
+        uploadAll
     },
 };
 </script>
@@ -310,42 +323,8 @@ export default {
         font-size: 26px;
     }
     .uploader{
-        height: 220px;
         width: 100%;
         position: relative;
-        /deep/ .van-uploader{
-            display: -webkit-flex;
-            display: flex;
-            -webkit-flex-wrap: wrap;
-            flex-wrap: wrap;
-            -webkit-align-content: center;
-            align-content: flex-start;
-            justify-content : space-between;
-            .van-uploader{
-                width: 100%;
-            }
-            .van-uploader__preview{
-                width: 200px;
-                height: 200px;
-                margin-right:36px;
-                &:nth-child(3){
-                    margin-right:0
-                }
-                .van-image{
-                    width: 100%;
-                    height: 100%;
-                }
-                .van-icon-clear{
-                    font-size: 40px;
-                }
-            }
-            .van-uploader__upload{
-                margin-left: 8px;
-                width: 200px;
-                height: 200px;
-                
-            }
-        }
         /deep/ .van-row{
             .van-col{
                 position: relative;

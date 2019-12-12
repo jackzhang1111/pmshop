@@ -8,6 +8,7 @@
             <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
         </div>
         <div class="riqizujian"></div>
+        <calendar></calendar>
         <div class="footprint-goods" v-for="i in 7" :key="i" @click="jumpRouter('商品详情')">
            <div class="footprint-goods-header">
                <van-checkbox v-model="checked" icon-size="24px" class="goods-header-checkbox" v-if="showFooter" checked-color="#F83600"></van-checkbox>
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+import calendar from '@/multiplexing/calendar'
 export default {
     props: {
 
@@ -79,8 +81,8 @@ export default {
             this.$router.push({name})
         }
     },
-    components: {
-
+    components: {   
+        calendar
     },
 };
 </script>

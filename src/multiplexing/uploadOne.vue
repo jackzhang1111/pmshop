@@ -1,5 +1,5 @@
 <template>
-    <div class="zzz">
+    <div class="upload-one">
         <van-uploader v-model="fileList" :max-count="1" :after-read="afterRead"/>
     </div>
 </template>
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.zzz{
+.upload-one{
     width: 100%;
     position: relative;
     /deep/ .van-uploader{

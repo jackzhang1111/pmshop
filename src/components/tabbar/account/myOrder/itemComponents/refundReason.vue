@@ -1,34 +1,39 @@
 <template>
 <!-- 退款原因 -->
     <div class="refund-reason">
-        <van-overlay :show="show5" >
-            <div class="cancel-order">
-                <div class="cancel-list">
-                    <div class="cancel-title">
-                        <span>退款原因</span>
-                        <van-icon name="cross" class="cross"/>
+        <transition name="canorder">
+            <zhezhao v-show="closeStatu">
+                <transition name="updown">
+                    <div class="cancel-order" v-show="closeStatu">
+                        <div class="cancel-list">
+                            <div class="cancel-title">
+                                <span>退款原因</span>
+                                <van-icon name="cross" class="cross" @click="closeStatu = false"/>
+                            </div>
+                            <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index" @click="obtainText(reason.text)">
+                                <span>{{reason.text}}</span>
+                            </div>
+                            
+                        </div>
+                        <div class="btns" @click="closeStatu = false">
+                            关闭
+                        </div>
                     </div>
-                    <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index" @click="obtainText(reason.text)">
-                        <span>{{reason.text}}</span>
-                    </div>
-                    
-                </div>
-                <div class="btns">
-                    关闭
-                </div>
-            </div>
-        </van-overlay>
+                 </transition>
+        </zhezhao>
+        </transition>
     </div>
 </template>
 
 <script>
+import zhezhao from '@/multiplexing/zhezhao'
 export default {
     props: {
 
     },
     data() {
         return {
-            show5:false,
+            closeStatu:false,
             reasonList:[
                 {
                     text:'商品描述的尺寸与实物不符'
@@ -65,12 +70,12 @@ export default {
     },
     methods: {
         obtainText(text){
-            this.show5 = false
-            console.log(text);
+            this.closeStatu = false
+            this.$emit('getReasonText',text)
         }
     },
     components: {
-
+        zhezhao
     },
 };
 </script>
