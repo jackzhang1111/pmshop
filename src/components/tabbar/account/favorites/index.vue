@@ -8,7 +8,7 @@
             <span class="bj" @click="editBj">{{editBjName}}</span>
         </div>
         <!-- 下拉框 -->
-        <van-dropdown-menu active-color="#DB9000">
+        <van-dropdown-menu active-color="#DB9000" class="adropdown">
             <van-dropdown-item v-model="value1" :options="option1" class="scj"/>
             <van-dropdown-item v-model="value2" :options="option2" disabled />
             <van-dropdown-item v-model="value2" :options="option2" disabled />
@@ -170,71 +170,9 @@ export default {
     }
     .scj{
         /deep/ .van-dropdown-item__option{
-            height: 60px;
-        }
-    }
-    .goods-list{
-        position: relative;
-        .footprint-goods-content{
-            width: 100%;
-            height: 250px;
-            background-color: #fff;
-            position: relative;
-            margin-bottom: 20px;
-            .good-img{
-                width: 210px;
-                height: 210px;
-                position: relative;
-                top:20px;
-                left:30px;
-                .img-checkbox{
-                    position: absolute;
-                    left:20px;
-                    top:20px;
-                    /deep/ .van-icon{
-                        background:rgba(51,51,51,0.5);
-                    }
-                }
-            }
-            .good-desc{
-                position: absolute;
-                top:39px;
-                left:259px;
-                font-size:26px;
-                color: #333;
-                .p1{
-                    line-height:39px;
-                }
-                .p2{
-                    font-size:20px;
-                    color:rgba(102,102,102,1);
-                    margin-top:20px;
-                    display: inline-block;
-                }
-            }
-            .good-price{
-                position: absolute;
-                top:184px;
-                left:260px;
-                color: #FA5300;
-                font-size:36px;
-                .p2{
-                    font-size: 26px;
-                    color: #333333;
-                    width:120px;
-                    height:40px;
-                    margin-left:157px;
-                    display: inline-block;
-                    border:1px solid rgba(102,102,102,1);
-                    border-radius:40%;
-                    text-align: center;
-                    line-height: 40px;
-                }
-                .p3{
-                    font-size: 18px;
-                    color: #666;
-                }
-            }
+            font-size:24px;
+            height: 69px;
+            line-height: 50px;
         }
     }
     .settlement{
@@ -319,5 +257,6 @@ export default {
             border: 2px solid #999
         }
     }
+    
 }
 </style>
