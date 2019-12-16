@@ -49,7 +49,14 @@
                 <span class="c-orange">&nbsp;{{leijia}} &nbsp;</span>  
                 <span>共 </span>
             </div>
-            <div class="success-btn" @click="buyshoppingCar">确定</div>
+            <div>
+                <div class="success-btn"  v-if="btnStatus" @click="buyProduct">确定</div>
+                <div class="success-btn" v-else>
+                    <div class="btn-jrgwc" @click="buyshoppingCar">加入购物车</div>
+                    <div class="btn-qd" @click="buyProduct">确定</div>
+                </div>
+            </div>
+            
         </div>
         
     </div>
@@ -58,6 +65,7 @@
 
 <script>
 import {addshopcartApi} from '@/api/shoppingCart/index'
+import { Toast } from 'vant';
 export default {
     props: {
         selectionData:{
@@ -66,6 +74,10 @@ export default {
                 return {}
             }
         },
+        btnStatus:{
+            type:Boolean,
+            default:false
+        }
     },
     data() {
         return {
@@ -87,7 +99,7 @@ export default {
 
     },
     mounted() {
-
+        this.getData()
     },
     watch: {
         selectionData:{
@@ -95,11 +107,6 @@ export default {
                 this.getData()
             },
         },
-        leftDataItem:{
-            handler:function(newVal, oldVal){
-                console.log(newVal,'newVal');
-            },
-        }
     },
     methods: {
         //关闭规格
@@ -130,7 +137,6 @@ export default {
                     }
                 })
             })
-            console.log(this.dataList);
             this.leftDataItem = this.dataList[0].tpproductskuattrvalue
             this.titleImg = this.leftDataItem[0].imgUrl
             this.attrTitle = this.dataList[0].attrTitle
@@ -171,7 +177,6 @@ export default {
             })
             this.leijia = leijia
             this.money = money
-            console.log(this.leftDataItem);
         },
         //点击确定收入购物车
         buyshoppingCar(){
@@ -179,11 +184,25 @@ export default {
         },
         //添加购物车
         addshopcart(data){
-            addshopcartApi(data).then(res => {
-                if(res.code == 0){
-                    
+            let arr = data
+            data = []
+            arr.forEach(item => {
+                if(item.shopNumber > 0){
+                    data.push(item)
                 }
             })
+            addshopcartApi(data).then(res => {
+                if(res.code == 0){
+                    Toast('成功添加购物车');
+                    setTimeout(()=>{
+                        this.closeModal()
+                    },1000)
+                }
+            })
+        },
+        //确定按钮购买商品
+        buyProduct(){
+            this.$router.push({name:'确认订单详情'})
         }
     },
     components: {
@@ -340,6 +359,19 @@ export default {
         color: #fff;
         text-align: center;
         font-size: 42px;
+        .btn-jrgwc,.btn-qd{
+            width: 50%;
+            float: left;
+            font-size: 42px;
+            text-align: center;
+            line-height: 110px;
+            color: #FA5300;
+            background-color: #FFC4A6;
+        }
+        .btn-qd{
+            background-color: #FA5300;
+            color: #fff;
+        }
     }
 }
 </style>

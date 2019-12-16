@@ -21,7 +21,7 @@
                  <div class="line"></div>
             </div>
             <div class="upload">
-                <van-button type="info" size="large" class="load-btn" @click="confirm">Confirm</van-button>
+                <div class="load-btn" @click="confirm">Confirm</div>
             </div>
             <div class="tips">
                 <span>Secure Password Tips:</span>
@@ -92,16 +92,19 @@ export default {
         }
         .upload{
             width: 100%;
-            padding:0;
+            padding:0 40px;
             height:88px;
             position: absolute;
             top:358px;
             box-sizing: border-box;
             overflow: hidden;
-            padding: 0 30px;
+            font-size:40px;
+            line-height: 88px;
+            background-color: #999;
+            color: #fff;
+            text-align: center;
             .load-btn{
                 height:100%;
-                background-color: #999;
             }
         }
         .tips{
@@ -109,7 +112,6 @@ export default {
             top:500px;
             padding: 0 30px;
             p{
-                margin-top: 13px;
                 font-size: 18px;
                 color: #666666
             }
@@ -120,11 +122,12 @@ export default {
             }
             .spot{
                  position: relative;
+                 font-size: 18px;
                  &:after {
                     content: ' ';
                     position: absolute;
                     left: 0px;
-                    top: 10px;
+                    top: 5px;
                     width: 6px;
                     height: 6px;
                     background-color: #666666;
@@ -153,6 +156,7 @@ export default {
             width: 350px;
             border: 0;
             left:110px;
+            font-size: 30px;
         }
         .password-icon{
             position: absolute;

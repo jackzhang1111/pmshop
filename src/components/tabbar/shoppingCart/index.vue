@@ -2,17 +2,17 @@
 <!-- 购物车 -->
     <div class="shopping-cart">
         <div class="shopping-cart-header">
-            <span class="header-t1">购物车(4)</span>
-            <span class="header-t2" @click="mange">{{showMange?'管理':'完成'}}</span>
+            <span class="header-t1">购物车({{shoplength}})</span>
+            <span class="header-t2" @click="mange" v-if="conditions">{{showMange?'管理':'完成'}}</span>
         </div>
-        <div class="shopping-cart-container" v-if="true">
+        <div class="shopping-cart-container" v-if="conditions">
             <!-- 有商品的页面 -->
             <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
                 <div class="serial-number">
-                    <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600">DJF161611616</van-checkbox>
+                    <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(data,'all')">DJF161611616</van-checkbox>
                 </div>
                 <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
-                    <van-checkbox v-model="checked" icon-size="24px" checked-color="#F83600"></van-checkbox>
+                    <van-checkbox v-model="dataitem.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(dataitem,'',data)"></van-checkbox>
                     <div class="good-img" @click="toDetail">
                         <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
                     </div>
@@ -64,7 +64,7 @@
                 <div class="no-shopping-p1">
                     您还没有选购商品哦
                 </div>
-                <div class="no-shopping-p2">
+                <div class="no-shopping-p2" @click="jumpRouter('首页')">
                     去商城选购商品
                 </div>
             </div>
@@ -72,23 +72,26 @@
             
         </div>
         <div>
-            <footer-exhibition v-if="footerShow"></footer-exhibition>
+            <footer-exhibition v-if="footerShow" :footerData="footerData"></footer-exhibition>
         </div>
-        <div class="settlement">
-            <span class="settlement-text" v-if="showMange">
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
-                <span class="btn" @click="$router.push({name:'确认订单详情'})">结算(0)</span>
-                <span class="p3">¥5</span>
-                <span class="p2">合计:</span>
-                <span class="p1">全选</span>
-            </span>
-            <span class="settlement-text" v-else>
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
-                <span class="btn1" @click="show=true">删除</span>
-                <span class="btn2">移入收藏夹</span>
-                <span class="p1">全选</span>
-            </span>
+        <div style="height:60px" v-if="conditions">
+            <div class="settlement">
+                <span class="settlement-text" v-if="showMange">
+                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
+                    <span class="btn" @click="$router.push({name:'确认订单详情'})">结算(0)</span>
+                    <span class="p3">¥5</span>
+                    <span class="p2">合计:</span>
+                    <span class="p1">全选</span>
+                </span>
+                <span class="settlement-text" v-else>
+                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
+                    <span class="btn1" @click="show=true">删除</span>
+                    <span class="btn2">移入收藏夹</span>
+                    <span class="p1">全选</span>
+                </span>
+            </div>
         </div>
+        
         <!-- <div style="height:60px"></div> -->
 
 
@@ -110,13 +113,14 @@
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
 import {shopcartlistApi} from '@/api/shoppingCart/index'
+import {guessyoulikeApi} from '@/api/search/index'
 export default {
     props: {
 
     },  
     data() {
         return {
-            checked:'',
+            checked:false,
             show:false,
             showMange:true,
             scroll:'',
@@ -127,11 +131,22 @@ export default {
             },
             dataList:[],
             youxiaoList:[],
-            wuxiaoList:[]
+            wuxiaoList:[],
+            youlikeData:{
+                page:1,
+                limit:6
+            },
+            footerData:{},
+            shopList:[]
         };
     },
     computed: {
-
+        conditions(){
+            return this.shopList.length>0
+        },
+        shoplength(){
+            return this.shopList.length
+        }
     },
     created() {
 
@@ -139,6 +154,7 @@ export default {
     mounted() {
         // window.addEventListener('scroll', this.menu)
         this.shopcartlist()
+        this.guessyoulike()
     },
     watch: {
 
@@ -159,19 +175,22 @@ export default {
             // console.log(this.scroll,'scroll')
             console.log(document.documentElement.scrollHeight-document.documentElement.scrollTop-document.documentElement.clientHeight);
         },
+        jumpRouter(name){
+            this.$router.push({name})
+        },
         //购物车列表
         shopcartlist(){
             shopcartlistApi(this.formData).then(res => {
                 if(res.code == 0){
-                    let arr = res.Data.list
-                    arr.forEach(item => {
+                    this.shopList = res.Data.list
+                    this.shopList.forEach(item => {
                         if(item.isValid == 1){
                             this.youxiaoList.push(item)
                         }else{
                             this.wuxiaoList.push(item)
                         }
                     })
-                    
+                    //根据businessId分类
                     this.dataList = this.groupArr(this.youxiaoList,'businessId')
                     this.dataList.forEach(item => {
                         item.list.forEach(listitem => {
@@ -183,6 +202,7 @@ export default {
                             }
                         })
                     })
+                    console.log(this.dataList,'this.dataList');
                 }
             })
         },
@@ -208,6 +228,44 @@ export default {
                 })
             }
             return att;
+        },
+        //猜你喜欢
+        guessyoulike(){
+            guessyoulikeApi(this.youlikeData).then(res => {
+                if(res.code == 0){
+                    this.footerData = res.Data
+                    this.footerShow = true
+                }
+            })
+        },
+        //点击复选框
+        changeCheckbox(item,flag,list){
+            item.checkStatus = !item.checkStatus
+            if(flag == 'all'){
+                item.list.forEach(ele => {
+                    ele.checkStatus = item.checkStatus
+                })
+            }else{
+                //标记
+                let itemFlag = true
+                list.list.forEach(element => {
+                    //如果有一个是没选中的
+                    if(element.checkStatus == false){
+                        itemFlag = false
+                    }
+                })
+                //判断状态
+                if(itemFlag){
+                    //全部选中
+                    list.checkStatus = true
+                }else{
+                    //有一个没选中
+                    list.checkStatus = false
+                }
+            }
+            this.$forceUpdate()
+
+            
         }
     },
     components: {
@@ -481,12 +539,10 @@ export default {
             }
             .no-shopping-p2{
                 display: inline-block;
-                width: 180px;
-                height: 36px;
+                padding: 6px 11px;
                 font-size: 20px;
                 color: #fff;
                 background-color: #FA5300;
-                line-height: 36px;
                 border-radius: 15px;
             }
         }

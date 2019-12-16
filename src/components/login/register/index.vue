@@ -14,8 +14,13 @@
                     </div>
                     <van-field v-model="formData.mobile" placeholder="请输入您的手机号"  class="iphone-input"/>
                     <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp">
-                        <van-button slot="button" size="small" type="primary" @click="getCode" v-show="countTrue">{{countdown}}</van-button>
-                        <van-button slot="button" size="small" type="primary" v-show="!countTrue">{{count}}S</van-button>
+                        <div slot="button" class="daojishi" @click="getCode" v-show="countTrue">
+                            {{countdown}}
+                        </div>
+                        <div slot="button" class="daojishi" v-show="!countTrue">
+                            {{count}}S
+                        </div>
+
                     </van-field>
                     <van-field v-model="formData.email" placeholder="请输入您的邮箱(可不填）" />
                     <van-field v-model="formData.userPwd" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password" :type="fieldType" />
@@ -53,12 +58,15 @@
                     />
                 </van-cell-group>
                 <van-cell-group class="border-0" @click="show=true">
-                    <van-field v-model="formData.mainBusinessName" clearable right-icon="arrow" placeholder="主营业务" :disabled='true'/>
+                    <van-field class="zyyw" v-model="formData.mainBusinessName" clearable right-icon="arrow" placeholder="主营业务" :disabled='true'/>
                 </van-cell-group>
 
-                <div class="item-title">拍照上传</div>
+                
+            </div>
+            <div class="item-title">拍照上传</div>
+            <div class="create-user">
                 <div class="uploader">
-                    <van-row type="flex" justify="space-around">
+                    <van-row type="flex" justify="space-between">
                         <van-col span="8">
                             <upload-one @getfilePath="getfilePath" imgName="公司正面照"></upload-one>
                             <div class="uploader-name">公司正面照</div> 
@@ -75,7 +83,7 @@
                     
                 </div>
                 <div class="uploader">
-                    <van-row type="flex" justify="space-around">
+                    <van-row type="flex" justify="space-between">
                         <van-col span="8">
                         <upload-one @getfilePath="getfilePath" imgName="人像照"></upload-one>
                             <div class="uploader-name">法人/人像照</div>
@@ -96,6 +104,9 @@
                 <input type="checkbox" class="checkbox">
                 <span>
                     <span class="c1">我已阅读并同意网站的</span>
+                    <span class="c-orange">使用条件</span>
+                    <span>及</span>
+                    <span  class="c-orange">隐私声明</span>
                 </span>
             </div>
             <div class="confirm-btn" @click="toRevise">
@@ -103,14 +114,14 @@
                     注册
                 </div>
             </div>
-            <div class="to-login" @click="$router.push({name:'登录'})">
+            <div class="to-login fs-20" @click="$router.push({name:'登录'})">
                 已有账户,去登录
             </div>
         </div>
         
         <choiceList v-show="!choiceShow" @getchoice="getchoice" @choiceStatus="choiceStatus" ref="choiceList"></choiceList>
 
-        <van-action-sheet v-model="show" :actions="memberList" @select="onSelect" cancel-text="取消" class="my-sheet" />
+        <van-action-sheet v-model="show" :actions="memberList" @select="onSelect" cancel-text="取消" class="my-sheet"/>
 
         <van-popup v-model="show2">
             <div class="revise-success">
@@ -316,7 +327,10 @@ export default {
             userregisterApi(this.formData).then(res => {
                 if(res.code == 0){
                     localStorage.mobile = res.user.mobile
-                    this.$router.push({name:'登录'})
+                     this.show2 = true
+                    setTimeout(()=>{
+                        this.$router.push({name:'登录'})
+                    },2000)
                 }
             })
         }
@@ -333,6 +347,7 @@ export default {
 .register{
     /deep/ .van-cell,.van-field{
         height: 88px;
+        font-size: 30px;
         .van-cell__value{
             position: relative;
             border-bottom: 1px solid #DCDCDC;
@@ -367,24 +382,30 @@ export default {
     }
     /deep/ .register-otp{
         position: relative;
-        .van-field__body{
-            .van-field__button{
-                .van-button{
-                    width: 180px;
-                    height: 60px;
-                    background-color: #F2F3F5;
-                    color: #333333;
-                    position: absolute;
-                    top:-20px;
-                    right: -370px;
-                }
-            }
+        .daojishi{
+            width: 180px;
+            height: 60px;
+            background-color: #F2F3F5;
+            color: #333333;
+            line-height: 60px;
+            text-align: center;
+            position: absolute;
+            top:-20px;
+            left: 470px;
         }
     }
-    .password{
+    .password,.zyyw{
         /deep/ .van-cell__value{
             .van-field__body{
                 width: 95%;
+                .van-field__right-icon{
+                    .van-icon{
+                        font-size: 36px;
+                    }
+                    .van-icon-arrow{
+                        font-size: 26px;
+                    }
+                }
             }
         }
     }

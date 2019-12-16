@@ -35,3 +35,12 @@ export function deladdressApi(params) {
         data:params
     })
 }
+
+//修改用户收货地址信息
+export function updateaddressApi(params) {
+    return park({
+        url:`/appusercenter/updateuseraddress`,
+        method: 'POST',
+        data:params
+    })
+}

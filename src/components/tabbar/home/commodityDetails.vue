@@ -50,9 +50,9 @@
             </div>
         </div>
 
-        <van-cell-group class="border-0">
+        <van-cell-group class="border-0" @click="changeComStatus(true,false)">
             <van-field v-model="username" clearable right-icon="arrow" :placeholder="detailmData.skuValuesTitle" left-icon="arrow" disabled>
-                <div slot="left-icon" size="small" type="primary" class="text-left">
+                <div slot="left-icon" size="small" type="primary" class="text-left" >
                     <span>规格</span>
                     <span>选择</span>
                     <span class="erect-line1"></span>
@@ -98,19 +98,14 @@
                 <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png">
                 <span class="icon-collection-p">客服</span>
             </div>
-            <van-button type="default" class="add-shopping-cat" @click="comStatus=true">加入购物车</van-button>
-            <van-button type="primary" class="spend">立即购买</van-button>
-        </van-tabbar>
+            <van-button type="default" class="add-shopping-cat" @click="changeComStatus(true,false)">加入购物车</van-button>
+            <van-button type="primary" class="spend" @click="changeComStatus(true,true)">立即购买</van-button>
+        </van-tabbar>        
         
-        <van-overlay :show="false"  class="overlay">
-            <!-- 遮罩层商品选择规格(未完成) -->
-            <div class="overlay-wrapper">
-                <commodity-selection></commodity-selection>
-            </div>
-        </van-overlay>
 
-        <commodity-selection v-show="comStatus" @changeComStatus="changeComStatus" :selectionData="selectionData"></commodity-selection>
-
+        <transition name="updown">
+            <commodity-selection v-if="comStatus" @changeComStatus="changeComStatus" :selectionData="selectionData" :btnStatus="btnStatus"></commodity-selection>
+        </transition>
 
 
         <van-overlay :show="show2" @click="show2 = false" class="overlay">
@@ -149,7 +144,8 @@ export default {
             showfooter:false,
             isCollection:true,
             comStatus:false,
-            selectionData:{}
+            selectionData:{},
+            btnStatus:false
         };
     },
     computed: {
@@ -193,9 +189,14 @@ export default {
         clickPro(skuid){
             this.productdetail(skuid)
         },
-        changeComStatus(flag){
+        //弹出规格框
+        changeComStatus(flag,btnFlag){
             this.comStatus = flag
-        }
+            //没传值就是从组件内部调用
+            if(typeof(btnFlag) == 'undefined') return
+            this.btnStatus = btnFlag
+        },
+        
     },
     components: {
         detailsHeader,

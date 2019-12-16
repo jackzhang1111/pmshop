@@ -43,3 +43,12 @@ export function delHistoryApi(params) {
         data:params
     })
 }
+
+//猜你喜欢
+export function guessyoulikeApi(params) {
+    return park({
+        url:`/apporder/guessyoulike`,
+        method: 'POST',
+        data:params
+    })
+}

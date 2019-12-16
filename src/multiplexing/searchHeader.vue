@@ -5,7 +5,7 @@
             <img src="@/assets/img/tabbar/home/logo@3x.png">
         </div>
         <div class="search">
-            <van-search placeholder="请输入搜索关键词" v-model="value" shape="round" @click="toSearch"/>
+            <van-search v-model="value" shape="round" @click="toSearch" class="aaa"/>
         </div>
         <div class="icons">
             <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
@@ -73,6 +73,18 @@ export default {
         overflow: hidden;
         /deep/ .van-search{
             background: #F2F3F5 !important;
+            .van-search__content--round{
+                height: 58px;
+                border-radius:29px;
+                margin-top:-12px;
+                .van-field__left-icon{
+                    margin-top:10px;
+                    .van-icon.van-icon-search{
+                        font-size: 27px;
+                        color: #999;
+                    }
+                }
+            }
         }
     }
     .icons{

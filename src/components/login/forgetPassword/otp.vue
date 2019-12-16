@@ -95,6 +95,7 @@ export default {
                 width: 240px;
                 border: 0;
                 background-color: #F8F8FA;
+                font-size: 30px;
             }
         }
         .count-down{
@@ -107,6 +108,7 @@ export default {
                 font-size: 30px;
                 color: #999;
                 background-color: #DCDCDC;
+                border:0
             }
         }
         

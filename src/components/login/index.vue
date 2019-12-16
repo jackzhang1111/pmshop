@@ -1,7 +1,9 @@
 <template>
 <!-- 登录页 -->
     <div class="login">
-        <div class="logo"></div>
+        <div class="logo" >
+            <img src="@/assets/img/login/logo@3x.png">
+        </div>
         <div class="user-name">
             <img src="@/assets/img/login/user@3x.png" alt="图标" class="name-icon">
             <div class="input-con">
@@ -15,16 +17,14 @@
                 <van-icon :name="eyeName" class="password-icon" size="20px" @click="eyeStatus = !eyeStatus"/>
             </div>
         </div>
-        <div class="forgetPassword">
-            <span class="c1" @click="jumpRouter('忘记密码')">Forgot Password？</span>
+        <div class="forgetPassword clearfix">
+            <span class="c1 fl-right fs-24" @click="jumpRouter('忘记密码')">Forgot Password？</span>
         </div>
         <div class="upload">
-            <div class="load-btn" @click="logIn" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
-                Log In
-            </div>
+            <div class="load-btn" @click="logIn" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">Log In</div>
         </div>
         <div class="remarks-option">
-            <span class="c2" @click="jumpRouter('注册')">Create Account</span>
+            <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
         </div>
         <div class="footer">
             <div class="line left-80"></div>
@@ -45,11 +45,27 @@
             </div>
             <div class="agreement">
                 <input type="checkbox" class="checkbox">
-                <span>
-                    <span class="c1">You agree to the TOSPINO Law Aggrement and the Privacy Notice.</span>
+                <span class="c1 fs-24">
+                    <span>You agree to the</span>
+                    <span @click="zhengce=true">TOSPINO</span>
+                    <span>Law Aggrement and the Privacy Notice.</span>
                 </span>
             </div>
         </div>
+
+        <zhezhao v-if="zhengce">
+            <div class="tanchuang">
+                <div class="tanchuang-header">
+                    <span>隐私政策</span>
+                    <div class="fl-right">
+                        <van-icon name="cross" @click="zhengce=false"/>
+                    </div>
+                </div>
+                <div class="tanchuang-content">
+                    <yinsi :showTitle="false"></yinsi>
+                </div>
+            </div>
+        </zhezhao>
         
     </div>
 </template>
@@ -57,6 +73,8 @@
 <script>
 import {loginApi} from '@/api/login/index';
 import {accReg,passReg} from '@/common/reg.js'
+import zhezhao from '@/multiplexing/zhezhao'
+import yinsi from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue'
 export default {
     props: {
 
@@ -80,7 +98,8 @@ export default {
                     messages: "姓名格式不正确"
                 }
                
-            }
+            },
+            zhengce:false,
         };
     },
     computed: {
@@ -121,95 +140,79 @@ export default {
         },
     },
     components: {
-
+        zhezhao,
+        yinsi
     },
 };
 </script>
 
 <style scoped lang="less">
 .login{
-    width: 100%;
-    height: 100%;
+    min-height: 100%;
     position: relative;
     background-color: #fff;
+    padding-top:127px;
+    box-sizing: border-box;
     .logo{
-        width: 250px;
-        height:250px;
-        background-image:url('~@/assets/img/guidePage/logo.png');
-        background-size: 100%;
-        position: absolute;
-        top:150px;
-        left: 50%;
-        right: 50%;
-        transform: translate(-50%)
+        width: 232px;
+        height:172px;
+        margin-left:50%;
+        transform: translateX(-50%);
+        padding-bottom:125px;
     }
     .user-name{
-        width: 100%;
-        position: absolute;
-        top:484px;
+        padding:0 85px;
         .name-icon{
             width: 40px;
             height: 40px;
-            position: absolute;
-            left:80px;
         }
         .input-con{
-            position: absolute;
-            left:140px;
-            width: 530px;
+            display: inline-block;
+            width: 510px;
             height:60px;
             border-bottom: 1px solid #999;
             font-size: 26px;
+            margin-left:20px;
         }
         .name-input{
-            position: absolute;
             width: 450px;
             border: 0;
         }
     }
     .pass-word{
-        width: 100%;
-        position: absolute;
-        top:594px;
+        padding:53px 85px 36px;
         .name-icon{
             width: 40px;
             height: 40px;
-            position: absolute;
-            left:80px;
         }
         .input-con{
-            position: absolute;
-            left:140px;
-            width: 530px;
+            display: inline-block;
+            width: 510px;
             height:60px;
             border-bottom: 1px solid #999;
             font-size: 26px;
+            margin-left:20px;
         }
         .name-input{
-            position: absolute;
             width: 450px;
             border: 0;
         }
         .password-icon{
-            position: absolute;
-            right: 30px;
+            
         }
     }
     .forgetPassword{
-        position: absolute;
-        top:692px;
-        right:80px;
+        padding: 0 80px;
     }
     .upload{
         width: 100%;
         padding:0 80px;
         height:88px;
-        position: absolute;
-        top:742px;
         box-sizing: border-box;
         overflow: hidden;
         line-height: 88px;
         text-align: center;
+        margin:49px 0 29px;
         .load-btn{
             height:100%;
             background-color: #999;
@@ -219,32 +222,23 @@ export default {
         }
     }
     .remarks-option{
-        width: 100%;
-        position: absolute;
-        top:860px;
-        left:290px;
+        text-align: center;
         font-size: 24px;
+        padding-bottom: 156px;
     }
     .footer{
-        width: 100%;
-        // height:100px;
-        position: absolute;
-        bottom: 260px;
+        position: relative;
+        text-align: center;
         .other{
-            position: absolute;
-            top:0;
-            left:306px;
             font-size: 24px;
-            color: #999
+            color: #999;
         }
         .icons{
-            position: absolute;
-            top:50px;
             width: 100%;
-            height:200px;
             box-sizing: border-box;
             overflow: hidden;
             padding:0 100px;
+            margin:49px 0;
         }
         /deep/ .van-row{
             img{
@@ -254,9 +248,6 @@ export default {
         }
         .agreement{
             padding-right: 60px;
-            position: absolute;
-            top: 182px;
-            left: 162px;
             font-size: 20px;
         }
     }
@@ -283,6 +274,29 @@ export default {
         position: absolute;
         right:80px;
         top:10px;
+    }
+    .tanchuang{
+        height: 80%;
+        margin: 80px 30px;
+        background-color: #fff;
+        .tanchuang-header{
+            height: 109px;
+            line-height: 109px;
+            font-size:36px;
+            text-align: center;
+            color: #333;
+            font-weight:bold;
+            padding: 0 40px;
+            border-bottom: 1px solid #C9C9C9;
+            div{
+                display: inline-block;
+            }
+        }
+        .tanchuang-content{
+            max-height: 85%;
+            overflow: auto;
+            padding-top: 29px;
+        }
     }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 <!-- 隐私政策 -->
     <div>
-        <div class="title">隐私政策</div>
+        <div class="title" v-if="showTitle">隐私政策</div>
         <p>
             Tospino（以下或称“我们”）注重保护用户个人信息及个人隐私。本隐私政策解释了用户（“您”）个人信息收集（以下或称“信息”）和使用的有关情况，本隐私政策适用于Tospino向您提供的所有相关服务（包括但不限于电子商务、网络资讯、网络社交、互联网金融服务等，以下称“Tospino服务”或“服务”）。如果您不同意本隐私政策的任何内容，您应立即停止使用Tospino服务。当您使用Tospino提供的任一服务时，即表示您已同意我们按照本隐私政策来合法使用和保护您的个人信息。<br>
             <br>
@@ -81,7 +81,10 @@
 <script>
 export default {
     props: {
-
+        showTitle:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {

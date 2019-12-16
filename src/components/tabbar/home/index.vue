@@ -367,12 +367,14 @@ export default {
         .jump-btn-con{
             margin-top:10px;
             margin-right: 30px;
+            
             .jump-btn{
                 height: 50px;
                 background-color: #fff;
                 color: #333333;
                 font-size: 24px;
                 font-weight:bold;
+                border:none;
                 .jump-btn-icon{
                     display: inline-block;
                     width: 11px;
@@ -565,8 +567,9 @@ export default {
                 box-sizing: border-box;
                 
                 .good-world-best-p1{
+                    padding: 45px 0 16px;
                     width: 200px;
-                    height: 306px;
+                    // height: 306px;
                     display: inline-block;
                     text-align: center;
                     margin-right: 21px;
@@ -591,13 +594,14 @@ export default {
                         height: 175px;
                     }
                     .good-name{
-                        width:100%;
-                        height:50px;
+                        padding: 0 12px;
                         display: -webkit-box;
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
                         overflow: hidden;
                         margin: 10px 0 14px;
+                        color: #000;
+                        font-size: 14px;
                     }
                     .good-price{
                         font-size:16px;

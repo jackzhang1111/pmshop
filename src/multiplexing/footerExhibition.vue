@@ -11,10 +11,10 @@
         </div>
         <div class="exhibition-con clearfix">
             <div class="exhibition-left" @click="toProduDetail(good.skuId)" v-for="good in dataList" :key="good.skuId">
-                <img :src="webUrl+good.imgUrl">
+                <img :src="$webUrl+good.imgUrl">
                 <div class="produced">
                     <span class="icon">
-                        <img :src="webUrl+good.locationUrl">
+                        <img :src="$webUrl+good.locationUrl">
                     </span>
                     <span class="produced-font">{{good.locationName}}</span>
                 </div>
@@ -83,7 +83,6 @@ export default {
         //跳转到商品详情
         toProduDetail(skuId){
             this.$emit('clickPro',skuId)
-            console.log(123123);
             // this.$router.push({name:'商品详情',query:{skuId}})
         },
         getData(){

@@ -41,7 +41,7 @@
 
 <script>
 import settingsHeader from './itemComponents/settingsHeader'
-import {adduseraddressApi} from '@/api/accountSettings/index.js'
+import {adduseraddressApi,updateaddressApi} from '@/api/accountSettings/index.js'
 import { Toast } from 'vant';
 import choiceList from '@/multiplexing/choiceList.vue'
 export default {
@@ -110,6 +110,7 @@ export default {
             this.form.lev2 = this.choiceForm.lev2.name
             this.form.lev3 = this.choiceForm.lev3.name
             this.form.lev4 = this.choiceForm.lev4.name
+            console.log(this.choiceForm);
         },
         //是否显示选择地址组件
         choiceStatus(status){
@@ -127,16 +128,18 @@ export default {
             this.$refs.choiceList.basearealist(obj)            
         },
         rightBtn(){
-            this.adduseraddress()
+            this.axiosAddress()
         },
         //判断是否编辑状态
         isEdit(){
             if(this.$route.query.type == 'edit'){
                 let posseObj = this.$store.state.posseObj
+                posseObj.allParentids = posseObj.allParentids+posseObj.addressAreaId+','
                 if(JSON.stringify(posseObj) == "{}") return
                 let nameArr = posseObj.addreCitys.split('-')
                 //后台返回数据前面前后各有一个多余逗号
                 let parenArr = posseObj.allParentids.split(',')
+                
                 parenArr.pop()
                 parenArr.shift()
 
@@ -144,6 +147,7 @@ export default {
                 this.choiceForm.lev1.id = parenArr[0]
                 this.choiceForm.lev2.id = parenArr[1]
                 this.choiceForm.lev3.id = parenArr[2]
+                console.log(this.choiceForm.lev3.id,'this.choiceForm.lev3.id');
                 //当前城市名字
                 this.form.lev1 = nameArr[0]
                 this.form.lev2 = nameArr[1]
@@ -161,7 +165,7 @@ export default {
                 this.title = '编辑收货地址'
             }
         },
-        adduseraddress(){
+        axiosAddress(){
             let addressAreaId = null
             let areaCode = null
             if(this.choiceForm.lev4.id != null){
@@ -181,10 +185,34 @@ export default {
                 name:this.form.shr,
                 phoneNumber:this.form.sjhm,
                 userAddress:this.form.message,
-                addreCitys:this.form.lev1+'-'+this.form.lev2+'-'+this.form.lev3+'-'+this.form.lev4,
-                areaCode:areaCode
+                addreCitys:this.form.lev1+'-'+this.form.lev2+ (this.form.lev3?'-'+this.form.lev3:'')+(this.form.lev4?'-'+this.form.lev4:''),
+                areaCode:areaCode,
+                country:this.form.lev1,
+                province:this.form.lev2,
+                city:this.form.lev3,
+                district:this.form.lev4,
             }
-            adduseraddressApi(obj).then(res => {
+            if(this.$route.query.type == 'edit'){
+                this.updateaddress(obj)
+            }else if(this.$route.query.type == 'add'){
+                this.adduseraddress(obj)
+            }
+        },
+        //新增地址
+        adduseraddress(data){
+            adduseraddressApi(data).then(res => {
+                if(res.code == 0){
+                    Toast('success');
+                    setTimeout(()=>{
+                        this.$router.go(-1)
+                    },1000)
+                }
+            })
+        },
+        //编辑地址  
+        updateaddress(data){
+            data.addressId = this.$store.state.posseObj.addressId
+            updateaddressApi(data).then(res => {
                 if(res.code == 0){
                     Toast('success');
                     setTimeout(()=>{
