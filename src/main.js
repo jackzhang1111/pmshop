@@ -26,7 +26,7 @@ Vue.prototype.$fn = {
 }
 
 Vue.prototype.$webUrl = "http://192.168.3.161:8091/tospino/test/"
-
+Vue.prototype.jn = '₵'
 
 Vue.config.productionTip = false
 

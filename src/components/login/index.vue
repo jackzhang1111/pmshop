@@ -114,7 +114,14 @@ export default {
         if(localStorage.mobile){
             this.userData.username = localStorage.mobile
         }
+        window.addEventListener("keyup",this.keyupEnter,false);
     },
+    beforeDestroy() {
+        window.removeEventListener("keyup",this.keyupEnter,false);
+    }, //生命周期 - 销毁之前
+    destroyed() {
+        window.removeEventListener("keyup",this.keyupEnter,false);
+    }, //生命周期 - 销毁完成
     watch: {
         eyeStatus:{
             handler:function(newVal, oldVal){
@@ -133,6 +140,14 @@ export default {
                         this.$router.push({name:'首页'})
                     }
                 })
+            }
+        },
+        //回车键
+        keyupEnter(){
+            const that = this;
+            if( window.event.keyCode == 13 ){
+                //执行登录方法
+                this.logIn()
             }
         },
         jumpRouter(name){

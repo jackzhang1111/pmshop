@@ -44,3 +44,12 @@ export function updateaddressApi(params) {
         data:params
     })
 }
+
+//获取用户默认收货地址信息
+export function querydefaultObjectApi(params) {
+    return park({
+        url:`/appusercenter/querydefaultObject`,
+        method: 'POST',
+        data:params
+    })
+}

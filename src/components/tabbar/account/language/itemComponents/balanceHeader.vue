@@ -37,7 +37,6 @@ export default {
     },
     methods: {
         title2Click(){
-            // this.$router.push({name:'新增地址'})
             this.$emit('aaa')
         }
     },

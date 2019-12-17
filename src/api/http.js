@@ -3,7 +3,7 @@ import { Toast } from 'vant';
 import Qs from 'qs'
 //form Data格式
 const mainAxios = axios.create({
-    timeout: 10000,
+    timeout: 30000,
     headers: {
         'Content-Type': 'multipart/form-data'
     },
@@ -26,7 +26,7 @@ mainAxios.interceptors.request.use(function (config) {
         message: 'loading',
         forbidClick: true,
         loadingType: 'spinner',
-        duration:10000
+        duration:30000
       });
     
     return config;

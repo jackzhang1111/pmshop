@@ -48,6 +48,7 @@ export default {
         },
         success(){
             this.$emit('getfilePath',this.filePath,this.imgName)
+            console.log(this.fileList,'this.fileList');
         }
     },
     components: {

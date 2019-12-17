@@ -42,8 +42,6 @@ export default {
     methods: {
         title2Click(){
             if(this.jumpName =='') return
-            console.log(123123);
-            // this.$router.push({name:'新增地址'})
             this.$emit('jumpRouter',this.jumpName)
         }
     },

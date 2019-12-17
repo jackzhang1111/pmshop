@@ -33,26 +33,26 @@ const state = {
         name:'',
         phone:''
     },
-    posseObj:{}//编辑收货地址
+    posseObj:{},//编辑收货地址
+    selectionShopCar:[]
     
 }
 const getters = {
-    getterCount(state) {
-        return (state.count += n)
-    }
+    // getterCount(state) {
+    //     // return (state.count += n)
+    // }
 }
 
 const mutations = {
-	mutationsAddCount(state, n = 0) {
-        return (state.count += n)
+	SETSTOPCARLIST(state, arr=[]) {
+        return (state.selectionShopCar = arr)
     },
-    
 }
 
 const actions = {
-	actionsAddCount(context, n = 0) {
+	setstopcarlist(context, arr=[]) {
         console.log(context)
-        return context.commit('mutationsAddCount', n)
+        return context.commit('SETSTOPCARLIST', arr)
     },
 }
 

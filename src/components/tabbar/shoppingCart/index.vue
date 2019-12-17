@@ -13,22 +13,22 @@
                 </div>
                 <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
                     <van-checkbox v-model="dataitem.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(dataitem,'',data)"></van-checkbox>
-                    <div class="good-img" @click="toDetail">
-                        <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
+                    <div class="good-img" @click="toDetail(dataitem.skuId)">
+                        <img :src="$webUrl+dataitem.imgUrl">
                     </div>
-                    <span class="good-describe" @click="toDetail">{{dataitem.skuName}}</span>
+                    <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
                     <div class="good-seclet">
                         <select name="" disabled> 
                             <option value="0">{{dataitem.skuValuesTitle}}</option> 
                         </select> 
                     </div>
-                    <div class="good-logistics">
+                    <!-- <div class="good-logistics">
                         <span>物流：TOSPINO物流</span>
-                    </div>
+                    </div> -->
                     <div class="good-price">
                         <span class="price-p1">¥{{dataitem.discountPrice}}</span>
                         <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
-                        <van-stepper class="price-quantity" v-model="dataitem.shopNumber" />
+                        <van-stepper class="price-quantity" v-model="dataitem.shopNumber" @change="changeStepper"/>
                         <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         失效
                     </span>
                     <div class="good-img">
-                        <img src="@/assets/img/tabbar/shoppingCart/product@2x.png">
+                        <img :src="$webUrl+wuxiao.imgUrl">
                     </div>
                     <span class="good-describe">{{wuxiao.skuName}}</span>
                     <div class="good-seclet">
@@ -68,8 +68,6 @@
                     去商城选购商品
                 </div>
             </div>
-            
-            
         </div>
         <div>
             <footer-exhibition v-if="footerShow" :footerData="footerData"></footer-exhibition>
@@ -77,15 +75,15 @@
         <div style="height:60px" v-if="conditions">
             <div class="settlement">
                 <span class="settlement-text" v-if="showMange">
-                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
-                    <span class="btn" @click="$router.push({name:'确认订单详情'})">结算(0)</span>
-                    <span class="p3">¥5</span>
+                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="cliAllcheck"></van-checkbox>
+                    <span class="btn" @click="settlementBtn" :style="{background : (totlaNum>0 ? '#FA5300':'#999')}">结算({{totlaNum}})</span>
+                    <span class="p3">¥{{totlaMoney}}</span>
                     <span class="p2">合计:</span>
                     <span class="p1">全选</span>
                 </span>
                 <span class="settlement-text" v-else>
-                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600"></van-checkbox>
-                    <span class="btn1" @click="show=true">删除</span>
+                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="cliAllcheck"></van-checkbox>
+                    <span class="btn1" @click="delOrder">删除</span>
                     <span class="btn2">移入收藏夹</span>
                     <span class="p1">全选</span>
                 </span>
@@ -99,7 +97,7 @@
             <!-- 遮罩层确认购买弹框 -->
             <div class="overlay-wrapper" @click.stop>
                 <div class="overlay-wrapper-p1">
-                    确认删除这4件商品吗？
+                    确认删除这{{totlaNum}}件商品吗？
                 </div>
                 <div class="overlay-wrapper-btns">
                     <span @click="show = false">取消</span>
@@ -114,6 +112,8 @@
 import footerExhibition from '@/multiplexing/footerExhibition'
 import {shopcartlistApi} from '@/api/shoppingCart/index'
 import {guessyoulikeApi} from '@/api/search/index'
+import { Toast } from 'vant';
+import {mapState,mapActions} from 'vuex'
 export default {
     props: {
 
@@ -137,7 +137,10 @@ export default {
                 limit:6
             },
             footerData:{},
-            shopList:[]
+            shopList:[],
+            totlaMoney:0,
+            totlaNum:0,
+            selectionList:[]
         };
     },
     computed: {
@@ -146,7 +149,10 @@ export default {
         },
         shoplength(){
             return this.shopList.length
-        }
+        },
+        ...mapState({
+            selectionShopCar:state=>state.selectionShopCar
+        })
     },
     created() {
 
@@ -160,8 +166,11 @@ export default {
 
     },
     methods: {
-        toDetail(){
-            this.$router.push({name:'商品详情'})
+        ...mapActions( // 语法糖
+            ['setstopcarlist'] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
+        ),
+        toDetail(skuId){
+            this.$router.push({name:'商品详情',query:{skuId}})
         },
         mange(){
             this.showMange = !this.showMange
@@ -242,12 +251,13 @@ export default {
         changeCheckbox(item,flag,list){
             item.checkStatus = !item.checkStatus
             if(flag == 'all'){
+                //订单上的复选框,该订单商品全选中
                 item.list.forEach(ele => {
                     ele.checkStatus = item.checkStatus
                 })
             }else{
-                //标记
-                let itemFlag = true
+                //点击订单某一个商品的复选框
+                let itemFlag = true //标记
                 list.list.forEach(element => {
                     //如果有一个是没选中的
                     if(element.checkStatus == false){
@@ -263,9 +273,64 @@ export default {
                     list.checkStatus = false
                 }
             }
+            this.zongji()
             this.$forceUpdate()
-
+        },
+        //点击全选
+        cliAllcheck(status){
+            this.dataList.forEach(ele => {
+                ele.checkStatus = status
+                ele.list.forEach(item => {
+                    item.checkStatus = status
+                })
+            })
+            this.zongji()
+            this.$forceUpdate()
+            console.log(this.dataList,'this.dataList');
+        },
+        //结算
+        settlementBtn(){
             
+            if(this.totlaNum == 0) {
+                Toast('没有选择商品')
+                return
+            }
+            this.setstopcarlist(this.selectionList.map(o => Object.assign({}, o)))
+            this.$router.push({name:'确认订单详情'})
+        },
+        //总计计算
+        zongji(){
+            let money = 0
+            let num = 0
+            let arr = []
+            this.dataList.forEach(ele => {
+                ele.list.forEach(item => {
+                    if(item.checkStatus){
+                        money += (item.discountPrice * item.shopNumber)
+                        num += item.shopNumber
+                        let obj = {
+                            skuId:item.skuId,
+                            detailNum:item.shopNumber
+                        }
+                        arr.push(obj)
+                    }
+                })
+            })
+            this.totlaMoney = money
+            this.totlaNum = num,
+            this.selectionList = arr.map(o => Object.assign({}, o));
+        },
+        //更改数量
+        changeStepper(){
+            this.zongji()
+        },
+        //删除订单
+        delOrder(){
+            if(this.totlaNum == 0) {
+                Toast('没有可以删除的东西')
+                return
+            }
+            this.show = true
         }
     },
     components: {
@@ -311,7 +376,8 @@ export default {
                 .van-checkbox__label{
                     margin-left:29px;
                     font-size: 32px;
-                    color: #333
+                    color: #333;
+                    font-weight: bold;
                 }
             }
             .invalid-num{
@@ -446,6 +512,7 @@ export default {
                 position: relative;
                 top: -84px;
                 left: 20px;
+                text-align: center;
             }
        }
     }
@@ -486,7 +553,7 @@ export default {
                 float: right;
                 width:160px;
                 height:90px;
-                background:linear-gradient(-90deg,rgba(248,54,0,1),rgba(250,83,0,1));
+                // background:linear-gradient(-90deg,rgba(248,54,0,1),rgba(250,83,0,1));
                 border-radius:45px;
                 color:rgba(255,255,255,1);
                 line-height:90px;

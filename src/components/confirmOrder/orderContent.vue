@@ -4,87 +4,81 @@
         <balance-header title="确认订单"></balance-header>
         <div class="shouhuoxq m-b-20">
             <div class="shouhuoxq-top">
-                <span>收件人：章小楠</span>
-                <span>13415224353</span>
+                <span>收件人：{{defaultAdderss.name}}</span>
+                <span>{{defaultAdderss.phoneCode}}{{defaultAdderss.phoneNumber}}</span>
             </div>
             <div class="shouhuoxq-bottom">
-                <span>收件地址：广东省 深圳市 光明区 公明街道广东省深圳市宝安区公明街道风景北路收件</span>
+                <span>收件地址：{{defaultAdderss.addreCitys}} {{defaultAdderss.userAddress}}</span>
             </div>
             <van-icon name="arrow" class="arrow" @click="jumpRouter('确认订单收货地址')"/>
         </div>
         <div class="payment m-b-20">
             <span>支付方式</span>
             <div class="select">
-                在线支付
+                {{zffs}}
+                 <van-icon name="ellipsis" class="ellipsis" @click="showPayment=!showPayment"/>
                 <div class="xiala" v-if="showPayment" @click="showPayment=false">
                     <ul>
-                        <li>在线支付</li>
-                        <li>货到付款</li>
+                        <li @click="zffs='在线支付'">在线支付</li>
+                        <li @click="zffs='货到付款'">货到付款</li>
                     </ul>
                 </div>
             </div>
-            <van-icon name="ellipsis" class="ellipsis" @click="showPayment=!showPayment"/>
+           
         </div>
-        <div class="good-detail">
+        <div class="good-detail" v-for="order in orderData.orderList" :key="order.sortOrder">
             <div class="good-detail-header">
-                <span>DJKLD561261</span>
+                <span>{{order.sortOrder}}</span>
             </div>
-            <div class="good-detail-content" v-for="i in 2" :key="i">
+            <div class="good-detail-content" v-for="product in order.detailList" :key="product.skuId">
                 <div class="good-detail-img" @click="jumpRouter('商品详情')">
                     <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                 </div>
                 <div class="good-detail-title" @click="jumpRouter('商品详情')">
-                    <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
+                    <span class="name">{{product.skuName}}</span>
                     <div class="guige">
-                        红色/L
+                        {{product.skuValuesTitle}}
                     </div>
                     <div class="p1">
-                        ￥298
+                        {{product.currencySignWebsite}}{{product.priceWebsite}}
                     </div>
                     <div class="p2 through">
-                        ￥500
+                        {{product.currencySignWebsite}}{{product.originPriceWebsite}}
                     </div>
                 </div>
                 <div class="price">
                     <div class="p3">
-                        ￥596.00
+                        {{product.currencySignWebsite}}{{product.totalPriceWebsite}}
                     </div>
                     <div class="p4 through">
-                        ￥1137.13
+                        {{product.currencySignWebsite}}{{product.totalOriginPriceWebsite}}
                     </div>
                     <div class="selection-right-stepper">
-                        <div class="add-btn ">
-                            <van-icon name="plus" />
+                        <div class="add-btn" @click="addCount(product)">+</div>
+                        <div class="center-input">
+                            <input type="number" class="number-input" v-model="product.detailNum">
                         </div>
-                        <div class="num">
-                            <span>1</span>
-                        </div>
-                        <div class="reduce-btn">
-                            <span>一</span>
-                        </div>
+                        <div class="reduce-btn" @click="reduceCount(product)">一</div>
                     </div>
                 </div>
             </div>
             <div class="yunfei b-t-1">
                 <span class="p1">运费</span>
-                <span class="p2">免邮</span>
+                <span class="p2">{{order.orderFareWebsite==0 ? '免邮':order.orderFareWebsite}}</span>
             </div>
             <div class="payment b-t-1">
                 <span>配送</span>
-                <div class="select">
-                    TOSPINO物流
-                    <div class="xiala" v-if="showPayment" @click="showPayment=false">
-                        <ul>
-                            <li>上门提货</li>
-                            <li>TOSPINO物流</li>
-                        </ul>
+                <div class="select" v-if="order.deliverType==1 || order.deliverType==2">{{order.deliverType==1? 'Tospino物流':'上门自取'}}</div>
+                <div class="select" v-else>
+                    <div class="gj-img">
+                        <img :src="$webUrl+order.areaImg">
                     </div>
+                    <span>{{order.areaName}}</span>
                 </div>
-                <van-icon name="ellipsis" class="ellipsis" @click="showPayment=!showPayment"/>
             </div>
             <div class="heji b-t-1">
                 <span class="p1">合计</span>
-                <span class="p2 c-orange">￥6000</span>
+                <span class="p2 c-orange">{{order.currencySignWebsite}}{{order.orderAmountWebsite}}</span>
             </div>
             <div class="beizhu">
                 <van-cell-group>
@@ -103,11 +97,11 @@
         <div class="total">
             <div class="total-top">
                 <span class="p1">商品总额</span>
-                <span class="p2">￥6000</span>
+                <span class="p2">{{orderData.currencySignWebsite}}{{orderData.allOrderProductAmountWebsite}}</span>
             </div>
             <div class="total-bottom">
                 <span class="p1">总运费</span>
-                <span class="p2 c-orange">￥0.00</span>
+                <span class="p2 c-orange">{{orderData.currencySignWebsite}}{{orderData.allOrderFareWebsite}}</span>
             </div>
         </div>
         <div class="niming">
@@ -115,7 +109,7 @@
         </div>
         <div class="settlement" >
             <span class="settlement-p1">总金额：</span>
-            <span class="settlement-p2 c-orange">￥1137</span>
+            <span class="settlement-p2 c-orange">{{orderData.currencySignWebsite}}{{orderData.allOrderAmountWebsite}}</span>
             <div class="settlement-btn" @click="showpaymen">
                 <span>提交订单</span>
             </div>
@@ -141,14 +135,16 @@ import actionSheetYinhang from './itemComponents/actionSheetYinhang'
 import actionSheetSucess from './itemComponents/actionSheetSucess'
 import actionSheetPassword from './itemComponents/actionSheetPassword'
 import balanceHeader from './itemComponents/balanceHeader'
+import {querydefaultObjectApi} from '@/api/accountSettings/index'
+import {getconfirmorderApi} from '@/api/confirmOrder/index'
+import {mapState} from 'vuex'
 export default {
     props: {
 
     },
     data() {
         return {
-            value1: 0,
-            value2: 'a',
+            value1: 1,
             option1: [
                 { text: '全部商品', value: 0 },
                 { text: '新款商品', value: 1 },
@@ -179,17 +175,22 @@ export default {
             show:true,
             show1:false,
             radio:true,
-            yinhangTitle:'确认付款'
+            yinhangTitle:'确认付款',
+            orderData:{},
+            defaultAdderss:{},
+            zffs:'在线支付'
         };
     },
     computed: {
-
+        ...mapState({
+            selectionShopCar:state=>state.selectionShopCar
+        })
     },
     created() {
 
     },
     mounted() {
-
+        this.querydefaultObject()
     },
     watch: {
 
@@ -228,6 +229,43 @@ export default {
         //弹出密码框
         showpassword(){
             this.$refs.password.showAction = true
+        },
+        //获取用户默认收货地址信息
+        querydefaultObject(){
+            querydefaultObjectApi().then(res => {
+                if(res.code == 0){
+                    if(res.Data==null){
+                        this.jumpRouter('确认订单收货地址')
+                        console.log(123);
+                        return
+                    }
+                    this.defaultAdderss = res.Data
+                    let obj = {
+                        addressId:res.Data.addressId,
+                        detailList:this.selectionShopCar
+                    } 
+                    
+                    this.getconfirmorder(obj)
+                    
+                }
+            })
+        },
+        //订单详情
+        getconfirmorder(data){
+            getconfirmorderApi(data).then(res => {
+                if(res.code == 0){
+                    this.orderData = res.Data
+                }   
+            })
+        },
+        //加数量
+        addCount(item){
+            item.detailNum++
+        },
+        //减数量
+        reduceCount(item){
+            item.detailNum--
+            console.log(item);
         }
     },
     components: {
@@ -265,22 +303,17 @@ export default {
         }
     }
     .payment{
-        width:750px;
         height:100px;
         background-color: #fff;
         line-height: 100px;
         position: relative;
         z-index: 1;
+        padding: 0 30px;
         span:nth-child(1){
-            margin-left:30px;
             font-size:26px;
         }
         .select{
-            float: left;
-            position: absolute;
-            top:50%;
-            right:89px;
-            transform: translateY(-50%);
+            float: right;
             font-size:26px;
             color: #333;
             .xiala{
@@ -288,13 +321,19 @@ export default {
                 position: absolute;
                 background-color: #fff;
                 text-align: center;
+                right:29px;
             }
         }
+        .gj-img{
+            width: 45px;
+            display: inline-block;
+            vertical-align: sub;
+            margin-right: 10px;
+        }
         .ellipsis{
-            float: right;
-            top:50%;
-            right:30px;
-            transform: translateY(-50%);
+           vertical-align: middle;
+           font-weight: bold;
+           margin-left:29px;
         }
     }
     .good-detail{
@@ -381,6 +420,8 @@ export default {
                         line-height: 40px;
                         background-color: #EEEEEE;
                         color: #666;
+                        border-left:none;
+                        font-size: 40px;
                     }
                     .reduce-btn{
                         position: absolute;
@@ -389,21 +430,25 @@ export default {
                         width: 40px;
                         height: 40px;
                         border: 1px solid #999999;
+                        border-right:none;
                         text-align: center;
                         line-height: 40px;
                         background-color: #EEEEEE;
                         color: #666;
                     }
-                    .num{
+                    .center-input{
                         position: absolute;
                         top:20px;
                         right:40px;
                         width: 88px;
                         height: 40px;
-                        border-top: 1px solid #999999;
-                        border-bottom: 1px solid #999999;
                         text-align: center;
                         line-height: 40px;
+                        .number-input{
+                            width: 90%;
+                            height: 75%;
+                            text-align: center;
+                        }
                     }
                 }
             }

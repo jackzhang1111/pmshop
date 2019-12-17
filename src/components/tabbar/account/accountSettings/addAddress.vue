@@ -147,7 +147,6 @@ export default {
                 this.choiceForm.lev1.id = parenArr[0]
                 this.choiceForm.lev2.id = parenArr[1]
                 this.choiceForm.lev3.id = parenArr[2]
-                console.log(this.choiceForm.lev3.id,'this.choiceForm.lev3.id');
                 //当前城市名字
                 this.form.lev1 = nameArr[0]
                 this.form.lev2 = nameArr[1]
@@ -194,7 +193,7 @@ export default {
             }
             if(this.$route.query.type == 'edit'){
                 this.updateaddress(obj)
-            }else if(this.$route.query.type == 'add'){
+            }else{
                 this.adduseraddress(obj)
             }
         },

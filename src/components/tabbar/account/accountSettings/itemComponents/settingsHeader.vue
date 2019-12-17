@@ -42,7 +42,6 @@ export default {
     methods: {
         toAddAdder(){
             this.$emit('rightBtn')
-            // this.$router.push({name:'新增地址'})
         }
     },
     components: {
