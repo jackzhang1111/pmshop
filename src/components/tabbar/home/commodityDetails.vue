@@ -12,6 +12,7 @@
                 <van-tab title="推荐"></van-tab>
             </van-tabs>
         </div>
+        <div style="height:40px"></div>
         <div class="commodity-swipe">
             <van-swipe @change="onChange">
                 <van-swipe-item v-for="banner in detailmData.productImgList" :key="banner.imgId">
@@ -98,13 +99,12 @@
                 <img src="@/assets/img/tabbar/home/commodityDetails/service@2x.png">
                 <span class="icon-collection-p">客服</span>
             </div>
-            <van-button type="default" class="add-shopping-cat" @click="changeComStatus(true,false)">加入购物车</van-button>
-            <van-button type="primary" class="spend" @click="changeComStatus(true,true)">立即购买</van-button>
+            <van-button type="default" class="add-shopping-cat" @click="changeComStatus(true,true,'确定')">加入购物车</van-button>
+            <van-button type="primary" class="spend" @click="changeComStatus(true,true,'立即购买')">立即购买</van-button>
         </van-tabbar>        
         
-
         <transition name="updown">
-            <commodity-selection v-if="comStatus" @changeComStatus="changeComStatus" :selectionData="selectionData" :btnStatus="btnStatus"></commodity-selection>
+            <commodity-selection v-if="comStatus" @changeComStatus="changeComStatus" :selectionData="selectionData" :btnStatus="btnStatus" :btnName="btnName"></commodity-selection>
         </transition>
 
 
@@ -145,7 +145,8 @@ export default {
             isCollection:true,
             comStatus:false,
             selectionData:{},
-            btnStatus:false
+            btnStatus:false,
+            btnName:''
         };
     },
     computed: {
@@ -190,7 +191,9 @@ export default {
             this.productdetail(skuid)
         },
         //弹出规格框
-        changeComStatus(flag,btnFlag){
+        //第一个参数:弹窗状态,第二个参数:弹窗按钮类型,弹窗按钮名字
+        changeComStatus(flag,btnFlag,name){
+            this.btnName = name
             this.comStatus = flag
             //没传值就是从组件内部调用
             if(typeof(btnFlag) == 'undefined') return

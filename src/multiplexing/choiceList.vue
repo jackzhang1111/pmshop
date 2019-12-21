@@ -5,6 +5,7 @@
             <van-icon name="arrow-left" class="arrow-left" @click="$emit('choiceStatus',true)"/>
             <span class="header-t1">{{title}}</span>
         </div>
+        <div class="place"></div>
         <div class="yuanyin-list" v-for="nationalCity in nationalCityList" :key="nationalCity.areaId" @click="choiceCity(nationalCity.areaId,nationalCity.areaName,nationalCity.areaCode)">
             <span>{{nationalCity.areaName}}</span>
             <div class="yuan" ></div>
@@ -121,8 +122,9 @@ export default {
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: relative;
+        position: fixed;
         line-height: 88px;
+        z-index: 3;
         .arrow-left{
             position: absolute;
             top:20px;
@@ -141,6 +143,9 @@ export default {
             right: 30px;
             font-size: 30px;
         }
+    }
+    .place{
+        height: 88px;
     }
     .yuanyin-list{
         padding: 0 30px;

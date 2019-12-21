@@ -15,3 +15,21 @@ export function shopcartlistApi(params) {
         data:params
     })
 }
+
+//删除购物车商品
+export function deleteshopcartApi(params) {
+    return park({
+        url:`/apporder/deleteshopcartmodel`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//清空购物车失效商品
+export function emptycartApi(params) {
+    return park({
+        url:`/apporder/emptycart`,
+        method: 'POST',
+        data:params
+    })
+}

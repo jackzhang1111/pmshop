@@ -156,6 +156,7 @@ export default {
         float: left;
         background-color: #fff;
         margin-bottom: 10px;
+        padding-bottom: 20px;
         &:nth-child(2n+0){
             margin-left:10px;
         }
@@ -184,7 +185,7 @@ export default {
             height: 75px;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             overflow: hidden;
         }
         .score{

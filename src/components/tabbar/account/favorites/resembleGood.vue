@@ -7,40 +7,52 @@
             <van-icon name="ellipsis" class="ellipsis"/>
         </div>
         <!-- 未失效商品 -->
-        <div class="footprint-goods-content" v-for="i in 4" :key="i">
+        <div class="footprint-goods-content" v-for="product in footerData.list" :key="product.skuId">
             <div class="good-img">
-                <img src="@/assets/img/tabbar/my/footprint/tiaoxing@2x.png" alt="">
+                <img :src="$webUrl+product.imgUrl">
             </div>
             <div class="good-desc">
-                <span class="p1">哈森2019秋新款羊反绒尖头单鞋时尚婚鞋浅口高跟鞋女细跟HL96505</span><br>
+                <span class="p1 clamp-2">{{product.supplyTitle}}</span><br>
             </div>
             <div class="country">
                 <div class="good-img">
                     <img src="@/assets/img/confirmOrder/guojia@2x.png" alt="">
                 </div>
                 <div class="guojia">
-                     <span>瑞士</span><br>
+                     <span>{{product.locationName}}</span><br>
                 </div>
             </div>
-            <div class="good-price">
-                <span class="p1">￥259.00</span>
-                <span class="p3">已售2953件</span>
-                <span class="p2">购买</span>
+            <div class="good-price" >
+                <span class="p1">{{jn}}{{product.discountPrice}}</span>
+                <span class="p3">已售{{product.skuSalesNum}}件</span>
+                <span class="p2" @click="buyProduct(product)">购买</span>
             </div>
         </div>
-        <footer-exhibition></footer-exhibition>
+        <footer-exhibition :footerData="footerData2"></footer-exhibition>
     </div>
 </template>
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
+import {guessyoulikeApi} from '@/api/search/index'
 export default {
     props: {
 
     },
     data() {
         return {
-
+            footerData:{},
+            footerData2:{},
+            youlikeData:{
+                page:1,
+                limit:10,
+                seraname:''
+            },
+            youlikeData2:{
+                page:1,
+                limit:6,
+                seraname:''
+            },
         };
     },
     computed: {
@@ -50,16 +62,42 @@ export default {
 
     },
     mounted() {
-
+        this.youlikeData.seraname = this.$route.query.skuName
+        this.guessyoulike(this.youlikeData)
+        this.guessyoulike2(this.youlikeData2)
     },
     watch: {
 
     },
     methods: {
-
+        //找相似商品
+        guessyoulike(data){
+            guessyoulikeApi(data).then(res => {
+                if(res.code == 0){
+                    this.footerData = res.Data
+                    this.footerData.list.forEach(item => {
+                        if(item.discountPrice == null){
+                            item.discountPrice = item.salePrice
+                        }
+                    });
+                }
+            })
+        },
+        //猜你喜欢
+        guessyoulike2(data){
+            guessyoulikeApi(data).then(res => {
+                if(res.code == 0){
+                    this.footerData2 = res.Data
+                }
+            })
+        },
+        //点击购买
+        buyProduct(item){
+            this.$router.push({name:'商品详情',query:{skuId:item.skuId}})
+        }
     },
     components: {
-        footerExhibition
+        footerExhibition,
     },
 };
 </script>

@@ -16,9 +16,10 @@
                 @input="onInput"
                 @delete="onDelete"
                 @blur="showKeyboard = false"
-                delete-button-text =' '
                 :hide-on-click-outside="false"
-                />
+                >
+                <span slot="delete" class="delete"><img src="../assets/img/search/detail.svg" alt=""></span>
+                </van-number-keyboard>
                 
             </div>
         </van-action-sheet>
@@ -52,6 +53,9 @@ export default {
     methods: {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
+            if(this.value.length==6){
+                this.$emit('getPassWord',this.value)
+            }
         },
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1);
@@ -115,7 +119,11 @@ export default {
                 height: 110px;
                 line-height: 109px;
                 font-size: 60px;
-
+                .delete{
+                    img{
+                        width: 60px;
+                    }
+                }
             }
         }
         

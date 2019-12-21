@@ -9,34 +9,37 @@
             </span>
             <van-icon name="ellipsis" class="ellipsis"/>
         </div>
-        <div class="commodity-tab">
+        <div class="commodity-tab ">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
-                <van-tab :title="tab.title" v-for="tab in tabList" :key="tab.id" >
-                    <div v-if="noSearchStatus">
-                        <!-- 待付款 -->
-                        <dfk :dfkList="dfkList" @closeOverlay="closeOverlay" @showPay="showPay"></dfk>
-                        <!-- 待发货 -->
-                        <dfh :dfhList="dfhList"></dfh>
-                        <!-- 已完成 -->
-                        <ywc :dfkList="ywcList"></ywc>
-                        <!-- 待收货 -->
-                        <dsh :dfkList="dshList" @showPay="showPay"></dsh>
-                        <!-- 订单关闭 -->
-                        <ddgb :dfkList="ddgbList"></ddgb>
-                    </div>
-                    <noSearch v-else></noSearch>
-                </van-tab>
+                    <van-tab :title="tab.title" v-for="tab in tabList" :key="tab.id" >
+                        <scroll 
+                            class="bscroll-wrapper"
+                            ref="wrapper"
+                            :data="recordGroup"
+                            :pulldown="pulldown"
+                            :pullup="pullup"
+                            @pulldown="_pulldown"
+                            @pullup="_pullup"
+                            >
+                            <div v-show="noSearchStatus">
+                                <order-type :dfkList="recordGroup" @closeOverlay="closeOverlay" @showPay="showPay"></order-type>
+                            </div>
+                            <no-search v-show="!noSearchStatus"></no-search>
+                        </scroll>
+                    </van-tab>
+                
             </van-tabs>
         </div>
-
+        <!-- 打开取消订单 -->
         <transition name="canorder">
             <zhezhao v-show="show">
-                <cancel-order @closeOverlay="closeOverlay" ref="cancelorder"></cancel-order>
+                <cancel-order ref="cancelorder" @closeOverlay="closeOverlay"  :orderId="orderId" @refreshOrder="refreshOrder"></cancel-order>
             </zhezhao>
         </transition>
-
-        <action-sheet-password ref="actionSheetPassword"></action-sheet-password>
-       
+        <!-- 密码弹窗 -->
+        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+        <!-- 付款方式弹窗 -->
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord"></action-sheet-paymen>
     </div>
 </template>
 
@@ -47,17 +50,23 @@ import ddgb from './itemComponents/ddgb'
 import ywc from './itemComponents/ywc'
 import dsh from './itemComponents/dsh'
 import zhezhao from '@/multiplexing/zhezhao'
+import orderType from './itemComponents/orderType'
 import cancelOrder from './itemComponents/cancelOrder'
 import noSearch from './itemComponents/noSearch'
-
+// import BScroll from 'better-scroll'
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
-import {orderlistApi} from '@/api/myOrder/index.js'
+import {orderlistApi,orderlaunchpayApi} from '@/api/myOrder/index.js'
+import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
 export default {
     props: {
 
     },
     data() {
         return {
+            moeny:0,
+            recordGroup: [],
+            pulldown: true,
+            pullup: true,
             tabList:[
                 {
                     title:'全部',
@@ -81,7 +90,6 @@ export default {
                 },
             ],
             active:3,
-            show2:false,
             noSearchStatus:true,
             formData:{
                 product_key_name:'',
@@ -95,51 +103,77 @@ export default {
             ywcList:[],
             dshList:[],
             dataList:[],
-            show:false
+            show:false,
+            guanmengou : true,
+            totalCount:0,//总条数
+            orderId:0,
+            payTypeDetail:201,//余额支付ID,暂时写死
+            orderData:{}
         };  
     },
     computed: {
 
     },
     created() {
-
+        
     },
     mounted() {
         this.active = this.$route.query.active
-        this.orderlist(this.formData)
+        this.refreshOrder()
     },
     watch: {
 
     },
     methods: {
+        //下拉刷新
+        _pulldown() {
+            setTimeout(()=>{
+                this.refreshOrder()
+            },500)
+        },
+        //上拉加载
+        _pullup(otherData) {
+            if(!this.pullup) return
+            //不知道为什么触发两次,使用关门狗拦截
+            if(this.guanmengou){
+                this.formData.page++
+                this.orderlist(this.formData,false)
+                this.guanmengou = false
+            }
+            setTimeout(()=>{
+                this.guanmengou = true
+            },500)
+        },
+
         jumpRouter(name){
             this.$router.push({name})
         },
-        orderlist(data){
-            this.clerStatuList()
+        //订单列表
+        orderlist(data,flag){
             orderlistApi(data).then(res => {
                 if(res.code == 0){
-                    this.dataList = res.Data.list
+                    if(flag){
+                        this.dataList = res.Data.list
+                    }else{
+                        this.dataList = this.dataList.concat(res.Data.list);
+                    }
+                    this.totalCount = res.Data.totalCount
+                    this.recordGroup = this.dataList
                     if(this.dataList.length > 0){
                         this.noSearchStatus = true
-                        this.dataList.forEach(item => {
-                            if(item.orderStatusApp == 1){
-                                this.dfhList.push(item)
-                            }else if(item.orderStatusApp == 0){
-                                this.dfkList.push(item)
-                            }else if(item.orderStatusApp == 2){
-                                this.dshList.push(item)
-                            }else if(item.orderStatusApp == 3){
-                                this.ywcList.push(item)
-                            }else if(item.orderStatusApp == 4){
-                                this.ddgbList.push(item)
-                            }
-                        });
+                        if(this.dataList.length >= this.totalCount){
+                            this.pullup = false
+                        }
                     }else{
                         this.noSearchStatus = false
                     }
-                    
                 }
+            })
+        },
+        //订单发起支付
+        orderlaunchpay(data){
+            orderlaunchpayApi(data).then(res => {
+                
             })
         },
         //更改tab
@@ -149,25 +183,42 @@ export default {
             }else{
                 this.formData.order_status_app = index-1
             }
-            this.orderlist(this.formData)
-        },
-        //清空每个状态数组
-        clerStatuList(){
-            this.dfhList = []
-            this.dfkList = []
-            this.dshList = []
-            this.ywcList = []
-            this.ddgbList = []
+            this.refreshOrder()
         },
         //控制取消订单弹窗
-        closeOverlay(falg){
+        closeOverlay(falg,orderId){
             this.show = falg
+            this.orderId = orderId
             this.$refs.cancelorder.anima = true
         },
-        //弹出付款弹窗
-        showPay(){
-            this.$refs.actionSheetPassword.showAction = true
+        //弹出付款方式弹窗
+        showPay(flag,alldata){
+            this.$refs.actionSheetPaymen.showAction = flag
+            this.moeny = alldata.orderProductAmountWebsite
+            this.orderData = alldata
         },
+        showPassWord(flag){
+            this.$refs.actionSheetPassword.showAction = flag
+        },
+        //刷新页面
+        refreshOrder(){
+            this.formData.page = 1
+            this.formData.limit = 10
+            this.orderlist(this.formData,true)
+            this.pullup = true
+        },
+        //获取到密码,请求接口
+        getPassWord(value){
+            let orderList = []
+            orderList.push(this.orderData.orderId)
+            let obj = {
+                payTypeDetail:this.payTypeDetail,
+                payPwd:value,
+                orderList:orderList
+            }
+            console.log(obj);
+            this.orderlaunchpay(obj)
+        }
     },
     components: {
         dfh,
@@ -178,12 +229,17 @@ export default {
         noSearch,
         actionSheetPassword,
         zhezhao,
-        cancelOrder
+        cancelOrder,
+        orderType,
+        actionSheetPaymen
     },
 };
 </script>
 
 <style scoped lang="less">
+.bscroll-wrapper{
+    height: calc(100vh - 190px);
+}
 .my-order{
     .footprint-header{
         width: 100%;
@@ -237,7 +293,9 @@ export default {
                 }
             }
             /deep/ .van-tabs__content{
+                position: relative;
                 padding: 20px 30px;
+                overflow: hidden;
             }
         }
     }

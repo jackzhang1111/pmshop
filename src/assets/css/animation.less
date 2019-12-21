@@ -34,3 +34,27 @@
     transform: translateY(100%);
   }
 }
+
+//上下弹出
+.rightinleft-enter-active {
+  animation: rightinleft-in .3s linear;
+}
+.rightinleft-leave-active {
+  animation: rightinleft-in2 .3s linear;
+}
+@keyframes rightinleft-in {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes rightinleft-in2 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

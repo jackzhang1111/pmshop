@@ -1,8 +1,12 @@
 <template>
-    <div class="balance-header">
-        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
-        <span class="header-t1">{{title}}</span>
+    <div>
+        <div class="balance-header">
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
+            <span class="header-t1">{{title}}</span>
+        </div>
+        <div class="place"></div>
     </div>
+    
 </template>
 
 <script>
@@ -47,8 +51,11 @@ export default {
     height: 88px;
     background-color: #f2f3f5;
     text-align: center;
-    position: relative;
+    position: fixed;
+    top:0;
+    left:0;
     line-height: 88px;
+    z-index: 3;
     .arrow-left{
         position: absolute;
         top:20px;
@@ -67,5 +74,8 @@ export default {
         right: 30px;
         font-size: 30px;
     }
+}
+.place{
+    height: 88px;
 }
 </style>

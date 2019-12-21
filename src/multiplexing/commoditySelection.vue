@@ -24,13 +24,14 @@
                         <div class="selection-right-p1">
                             <span class="ggms">{{rightData.attrTitle}}</span>
                             <div class="jsq">
-                                <div class="reduce-btn" @click="operationNumber(index,'jian',rightData)">
+                                <div class="reduce-btn" @click="operationNumber('jian',rightData)">
                                     <span>一</span>
                                 </div>
                                 <div class="num">
-                                    <span>{{rightData.shopNumber}}</span>
+                                    <!-- <span>{{rightData.shopNumber}}</span> -->
+                                    <input type="number" class="number-input" v-model="rightData.shopNumber" @blur="blur(rightData)">
                                 </div>
-                                <div class="add-btn" @click="operationNumber(index,'jia',rightData)">
+                                <div class="add-btn" @click="operationNumber('jia',rightData)">
                                     <van-icon name="plus" />
                                 </div>
                             </div>
@@ -38,7 +39,7 @@
                         </div>
                         <div class="selection-right-p2">
                             <span>￥{{rightData.skuPrice}}</span>
-                            <span class="fl-right">库存：{{rightData.skuNum}}</span>
+                            <span class="fl-right">库存：{{rightData.canSalesNum}}</span>
                         </div>
                     </div>
                 </div>
@@ -50,10 +51,11 @@
                 <span>共 </span>
             </div>
             <div>
-                <div class="success-btn"  v-if="btnStatus" @click="buyProduct">确定</div>
+                <div class="success-btn"  v-if="btnStatus" @click="buyProduct" :style="{backgroundColor:btnbgc}">{{btnName}}</div>
                 <div class="success-btn" v-else>
-                    <div class="btn-jrgwc" @click="buyshoppingCar">加入购物车</div>
-                    <div class="btn-qd" @click="buyProduct">确定</div>
+                    <!--; -->
+                    <div class="btn-jrgwc" @click="buyshoppingCar" :style="{backgroundColor:btncolor.bgc,color:btncolor.color}">加入购物车</div>
+                    <div class="btn-qd" @click="buyProduct" :style="{backgroundColor:btnbgc}">立即购买</div>
                 </div>
             </div>
             
@@ -66,6 +68,7 @@
 <script>
 import {addshopcartApi} from '@/api/shoppingCart/index'
 import { Toast } from 'vant';
+import {mapActions} from 'vuex'
 export default {
     props: {
         selectionData:{
@@ -77,6 +80,10 @@ export default {
         btnStatus:{
             type:Boolean,
             default:false
+        },
+        btnName:{
+            type:String,
+            default:''
         }
     },
     data() {
@@ -93,7 +100,18 @@ export default {
         };
     },
     computed: {
-        
+        btnbgc(){
+            let bgc = this.leijia>0 ? '#FA5300' : '#999'
+            return bgc
+        },
+        btncolor(){
+            let obj = {
+                color: this.leijia>0 ? '#FA5300' : '#fff',
+                bgc: this.leijia>0 ? '#FFC4A6' : '#999'
+            }
+            
+            return obj
+        }
     },
     created() {
 
@@ -109,6 +127,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions( // 语法糖
+            ['setstopcarlist'] // 相当于this.$store.dispatch('setstopcarlist'),提交这个方法
+        ),
         //关闭规格
         closeModal(){
             this.$emit('changeComStatus',false)
@@ -141,6 +162,7 @@ export default {
             this.titleImg = this.leftDataItem[0].imgUrl
             this.attrTitle = this.dataList[0].attrTitle
             this.sectionPrice = this.dataList[0].sectionPrice
+            this.buyTotle(this.leftDataItem)
         },
         //点击左侧导航
         cliLeft(index){
@@ -153,17 +175,19 @@ export default {
         getIndex(i){
             this.titleImg = this.leftDataItem[i].imgUrl
         },
-        operationNumber(i,type,data){
-            let num = 0
+        operationNumber(type,data){
             if(type=='jian'){
-                if(this.leftDataItem[i].shopNumber == 0) return
-                this.leftDataItem[i].shopNumber--
-
+                if(data.shopNumber == 0 || data.shopNumber<=data.numIntervalStart) return
+                data.shopNumber--
             }else{
-                this.leftDataItem[i].shopNumber++
+                if(data.shopNumber<data.numIntervalStart){
+                    data.shopNumber = data.numIntervalStart
+                }else if(data.shopNumber >= data.canSalesNum){
+                    return
+                }else{
+                    data.shopNumber++
+                }
             }
-            this.$forceUpdate()
-
             //遍历求出购买数量金额
             this.buyTotle(this.leftDataItem)
         },
@@ -191,6 +215,7 @@ export default {
                     data.push(item)
                 }
             })
+            if(data.length == 0) return
             addshopcartApi(data).then(res => {
                 if(res.code == 0){
                     Toast('成功添加购物车');
@@ -202,7 +227,35 @@ export default {
         },
         //确定按钮购买商品
         buyProduct(){
+            if(this.btnName == '确定'){
+                this.buyshoppingCar()
+                return
+            }
+            let data = []
+            this.leftDataItem.forEach(item => {
+                if(item.shopNumber > 0){
+                    let obj = {
+                        skuId:item.skuId,
+                        detailNum:item.shopNumber
+                    }
+                    data.push(obj)
+                }
+            })
+            if(data.length == 0) return
+            this.setstopcarlist(data)
             this.$router.push({name:'确认订单详情'})
+        },
+        //input失焦事件
+        blur(item){
+            if(item.shopNumber<item.numIntervalStart && item.shopNumber != 0 ){ 
+                item.shopNumber = item.numIntervalStart
+            }else if(item.shopNumber > item.canSalesNum){
+                item.shopNumber = item.canSalesNum
+            }
+            item.shopNumber = Math.ceil(item.shopNumber)
+            this.$forceUpdate()
+            //遍历求出购买数量金额
+            this.buyTotle(this.leftDataItem)
         }
     },
     components: {
@@ -313,7 +366,8 @@ export default {
                             height: 60px;
                             line-height: 60px;
                             text-align: center;
-                            background-color: #999;
+                            background-color: #EEEEEE;
+                            border: 1px solid #999999;
                         }
                         .reduce-btn{
                             float: left;
@@ -321,7 +375,8 @@ export default {
                             height: 60px;
                             line-height: 60px;
                             text-align: center;
-                            background-color: #999;
+                            background-color: #EEEEEE;
+                            border: 1px solid #999999;
                         }
                         .num{
                             float: left;
@@ -332,6 +387,14 @@ export default {
                             background-color: #fff;
                             font-size: 36px;
                             color: #333;
+                            .number-input{
+                                width: 100%;
+                                height: 94%;
+                                text-align: center;
+                                border:0;
+                                border-top:1px solid #999999;
+                                border-bottom:1px solid #999999;
+                            }
                         }
                     }
                 }
@@ -354,7 +417,6 @@ export default {
     }
     .success-btn{
         height: 110px;
-        background-color: #FA5300;
         line-height: 110px;
         color: #fff;
         text-align: center;
@@ -366,10 +428,8 @@ export default {
             text-align: center;
             line-height: 110px;
             color: #FA5300;
-            background-color: #FFC4A6;
         }
         .btn-qd{
-            background-color: #FA5300;
             color: #fff;
         }
     }

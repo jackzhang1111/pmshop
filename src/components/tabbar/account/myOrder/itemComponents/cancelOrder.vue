@@ -12,8 +12,8 @@
                 </div>
                 <div class="yuanyin-list" v-for="(reason,index) in reasonList" :key="index">
                     <span>{{reason.name}}</span>
-                    <div class="yuan" v-if="reason.istrue" @click="reason.istrue =!reason.istrue"></div>
-                    <div class="yuan-img" v-else @click="reason.istrue =!reason.istrue">
+                    <div class="yuan" v-if="reason.istrue" @click="checkyuan(reason)"></div>
+                    <div class="yuan-img" v-else>
                         <img src="@/assets/img/confirmOrder/icon-02@2x.png">
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="btn-zbqx" @click="closeCancel">
                         暂不取消
                     </div>
-                    <div class="btn-qdqx">
+                    <div class="btn-qdqx" @click="submitOrder">
                         确定取消
                     </div>
                 </div>
@@ -31,9 +31,13 @@
 </template>
 
 <script>
+import {revokeorderApi} from '@/api/myOrder/index'
 export default {
     props: {
-
+        orderId:{
+            type:Number,
+            default:0
+        }
     },
     data() {
         return {
@@ -55,7 +59,9 @@ export default {
                     istrue:true
                 },
             ],
-            anima:false
+            anima:false,
+            id:0,
+            remark:''
         };
     },
     computed: {
@@ -68,13 +74,42 @@ export default {
 
     },
     watch: {
-
+        orderId:{
+            handler:function(newVal){
+                this.id = newVal
+            }
+        }
     },
     methods: {
         //关闭弹窗
         closeCancel(){
             this.$emit('closeOverlay',false)
             this.anima = false
+        },
+        checkyuan(item){
+            this.reasonList.forEach(ele => {
+                ele.istrue = true
+            })
+            item.istrue = false
+            this.remark = item.name
+        },
+        revokeorder(data){
+            revokeorderApi(data).then(res => {
+                if(res.code == 0){
+                    this.closeCancel()
+                    this.$emit('refreshOrder')
+                }else{
+                    Toast('提交失败')
+                }
+            })
+        },
+        //确定提交
+        submitOrder(){
+            let data = {
+                orderId:this.id,
+                remark:this.remark
+            }
+            this.revokeorder(data)
         }
     },
     components: {

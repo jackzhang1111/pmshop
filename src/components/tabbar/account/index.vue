@@ -241,6 +241,7 @@ export default {
                 font-size: 16px;
                 margin: 8px 0 34px;
                 padding: 0 11px;
+                line-height:28px;
             }
         }
     }
@@ -327,6 +328,12 @@ export default {
                 /deep/ .van-field__body{
                     width: 95%;
                     line-height: 80px;
+                    .van-field__control{
+                        font-size: 30px;
+                    }
+                    .van-icon-arrow{
+                        font-size: 30px;
+                    }
                 }
             }
             .icon-left{

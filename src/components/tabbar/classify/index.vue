@@ -106,7 +106,9 @@ export default {
             height: 110px;
             line-height: 70px;
             // background-color: #F2F3F5;
+            text-align: center;
             margin-bottom: 2px;
+            font-size: 30px;
         }
         
     }

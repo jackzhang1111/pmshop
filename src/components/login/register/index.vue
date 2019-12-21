@@ -101,7 +101,7 @@
             </div>
             <div class="agreement">
                 <!-- <div class="checkbox"></div> -->
-                <input type="checkbox" class="checkbox">
+                <input type="checkbox" class="checkbox" v-model="xieyi">
                 <span>
                     <span class="c1">我已阅读并同意网站的</span>
                     <span class="c-orange">使用条件</span>
@@ -110,7 +110,7 @@
                 </span>
             </div>
             <div class="confirm-btn" @click="toRevise">
-                <div class="btn-zc" :style="{backgroundColor:(registDisabled?'#999':'#FA5300')}">
+                <div class="btn-zc" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
                     注册
                 </div>
             </div>
@@ -149,6 +149,7 @@ export default {
             count: '',
             timer: null,
             countTrue:true,
+            xieyi:false,
             username:'',
             show:false,
             show2:false,
@@ -178,6 +179,48 @@ export default {
                 legalPersonImg :'',//法人人像照
                 legalPersonBack:'',//法人证件反面照
                 legalPersonFront:'',//法人证件正面照
+            },
+            rules:{
+                nickName:{
+                    required: true,
+                    messages: "用户名称不正确"
+                },
+                mobile:{
+                    required: true,
+                    messages: "用户手机号码不正确"
+                },
+                mobileCode:{
+                    required: true,
+                    messages: "用户手机号码所在国家的编号不正确"
+                },
+                smsCode:{
+                    required: true,
+                    messages: "验证码不正确"
+                },
+                email:{
+                    required: true,
+                    messages: "用户手机号码不正确"
+                },
+                userPwd:{
+                    required: true,
+                    messages: "密码不正确"
+                },
+                userPwd2:{
+                    required: true,
+                    messages: "确认密码不正确"
+                },
+                companyName:{
+                    required: true,
+                    messages: "公司名称不正确"
+                },
+                mainBusiness:{
+                    required: true,
+                    messages: "主营业务不正确"
+                },
+                companyAreaId:{
+                    required: true,
+                    messages: "公司地址ID不正确"
+                }
             },
             form:{
                 lev1:null,
@@ -211,7 +254,9 @@ export default {
         };
     },
     computed: {
-
+        disabledSubmit() {
+            return !this.$fn.isDisabled(this.formData,this.rules) && this.xieyi 
+        }
     },
     created() {
 
@@ -230,18 +275,7 @@ export default {
     },
     methods: {
         toRevise(){
-            // if(this.registDisabled) return
-            // console.log(123);
-            let addressAreaId = ''
-            if(this.choiceForm.lev4.id != null){
-                addressAreaId = this.choiceForm.lev4.id
-            }else if(this.choiceForm.lev3.id != null){
-                addressAreaId = this.choiceForm.lev3.id
-            }else if(this.choiceForm.lev2.id != null){
-                addressAreaId = this.choiceForm.lev2.id
-            }
-            this.formData.companyAreaId = addressAreaId
-
+            if(!disabledSubmit) return
             this.userregister()
         },
         getCode(){
@@ -294,6 +328,17 @@ export default {
             this.form.lev2 = this.choiceForm.lev2.name
             this.form.lev3 = this.choiceForm.lev3.name
             this.form.lev4 = this.choiceForm.lev4.name
+
+            let addressAreaId = ''
+            if(this.choiceForm.lev4.id != null){
+                addressAreaId = this.choiceForm.lev4.id
+            }else if(this.choiceForm.lev3.id != null){
+                addressAreaId = this.choiceForm.lev3.id
+            }else if(this.choiceForm.lev2.id != null){
+                addressAreaId = this.choiceForm.lev2.id
+            }
+            this.formData.companyAreaId = addressAreaId
+
         },
         //是否显示选择地址组件
         choiceStatus(status){
@@ -365,7 +410,7 @@ export default {
         position: absolute;
         top:115px;
         left:15px;
-        z-index: 999999999999;
+        z-index: 2;
     }
     .create-user{
         padding: 0 30px;

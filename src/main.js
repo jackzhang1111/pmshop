@@ -12,7 +12,9 @@ import '@/assets/css/animation.less'
 import './assets/font/font_501137_8uegssallpv/iconfont.css'
 import {isDisabled,formValidate,strTrim,objTrim,priceReg,objDeepCopy,deepnull} from '@/common/utils.js'
 import store from './store'
-
+import * as mycomponents from '@/common/mycomponents.js'
+import VueScroller from "vue-scroller"
+Vue.use(VueScroller);
 Vue.use(Vant);
 
 Vue.prototype.$fn = {
@@ -29,6 +31,12 @@ Vue.prototype.$webUrl = "http://192.168.3.161:8091/tospino/test/"
 Vue.prototype.jn = '₵'
 
 Vue.config.productionTip = false
+
+//注册全局组件
+Object.keys(mycomponents).forEach(key => {
+  Vue.component(key, mycomponents[key])
+})
+
 
 /* eslint-disable no-new */
 new Vue({

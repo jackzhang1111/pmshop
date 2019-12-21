@@ -5,39 +5,42 @@
             <span class="header-t1">购物车({{shoplength}})</span>
             <span class="header-t2" @click="mange" v-if="conditions">{{showMange?'管理':'完成'}}</span>
         </div>
-        <div class="shopping-cart-container" v-if="conditions">
+        <div class="shopping-cart-container" v-if="conditions" ref="shoppingContainer">
             <!-- 有商品的页面 -->
-            <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
-                <div class="serial-number">
-                    <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(data,'all')">DJF161611616</van-checkbox>
-                </div>
-                <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
-                    <van-checkbox v-model="dataitem.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(dataitem,'',data)"></van-checkbox>
-                    <div class="good-img" @click="toDetail(dataitem.skuId)">
-                        <img :src="$webUrl+dataitem.imgUrl">
+            <div v-if="dataList.length>0">
+                <div class="shopping-cart-content" v-for="(data,index) in dataList" :key="index">
+                    <div class="serial-number">
+                        <van-checkbox v-model="data.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(data,'all')">DJF161611616</van-checkbox>
                     </div>
-                    <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
-                    <div class="good-seclet">
-                        <select name="" disabled> 
-                            <option value="0">{{dataitem.skuValuesTitle}}</option> 
-                        </select> 
-                    </div>
-                    <!-- <div class="good-logistics">
-                        <span>物流：TOSPINO物流</span>
-                    </div> -->
-                    <div class="good-price">
-                        <span class="price-p1">¥{{dataitem.discountPrice}}</span>
-                        <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
-                        <van-stepper class="price-quantity" v-model="dataitem.shopNumber" @change="changeStepper"/>
-                        <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
+                    <div class="goods-content" v-for="(dataitem,index) in data.list" :key="index">
+                        <van-checkbox v-model="dataitem.checkStatus" icon-size="24px" checked-color="#F83600" @click="changeCheckbox(dataitem,'',data)"></van-checkbox>
+                        <div class="good-img" @click="toDetail(dataitem.skuId)">
+                            <img :src="$webUrl+dataitem.imgUrl">
+                        </div>
+                        <span class="good-describe" @click="toDetail(dataitem.skuId)">{{dataitem.skuName}}</span>
+                        <div class="good-seclet">
+                            <select name="" disabled> 
+                                <option value="0">{{dataitem.skuValuesTitle}}</option> 
+                            </select> 
+                        </div>
+                        <!-- <div class="good-logistics">
+                            <span>物流：TOSPINO物流</span>
+                        </div> -->
+                        <div class="good-price">
+                            <span class="price-p1">¥{{dataitem.discountPrice}}</span>
+                            <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
+                            <van-stepper class="price-quantity" v-model="dataitem.shopNumber" @change="changeStepper"/>
+                            <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <!-- 失效商品 -->
-            <div class="shopping-cart-content">
+            <div class="shopping-cart-content" v-if="wuxiaoList.length>0">
                 <div class="serial-number">
-                    <span class="invalid-num">失效宝贝2件</span>
-                    <span class="empty">清空</span>
+                    <span class="invalid-num">失效宝贝{{wuxiaoList.length}}件</span>
+                    <span class="empty" @click="emptyPro">清空</span>
                 </div>
                 <div class="goods-content" v-for="(wuxiao,index) in wuxiaoList" :key="index">
                     <span class="invalid">
@@ -52,7 +55,7 @@
                     </div>
                     <div class="good-price">
                         <span class="price-batch-left">已下架</span>
-                        <span class="price-batch-right" @click="toXiangsi">找相似</span>
+                        <span class="price-batch-right" @click="toXiangsi(wuxiao)">找相似</span>
                     </div>
                 </div>
             </div>
@@ -101,7 +104,7 @@
                 </div>
                 <div class="overlay-wrapper-btns">
                     <span @click="show = false">取消</span>
-                    <span @click="show = false">确定</span>
+                    <span @click="delgood">确定</span>
                 </div>
             </div>
         </van-overlay>
@@ -110,9 +113,9 @@
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
-import {shopcartlistApi} from '@/api/shoppingCart/index'
+import {shopcartlistApi,deleteshopcartApi,emptycartApi} from '@/api/shoppingCart/index'
 import {guessyoulikeApi} from '@/api/search/index'
-import { Toast } from 'vant';
+import { Toast,Dialog } from 'vant';
 import {mapState,mapActions} from 'vuex'
 export default {
     props: {
@@ -134,7 +137,8 @@ export default {
             wuxiaoList:[],
             youlikeData:{
                 page:1,
-                limit:6
+                limit:6,
+                seraname:''
             },
             footerData:{},
             shopList:[],
@@ -175,14 +179,15 @@ export default {
         mange(){
             this.showMange = !this.showMange
         },
-        toXiangsi(){
-            this.$router.push({name:'找相似商品'})
+        toXiangsi(item){
+            this.$router.push({name:'找相似商品',query:{skuName:item.skuName}})
         },
         //获取滚动条距离底部距离
         menu() {
             // this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
             // console.log(this.scroll,'scroll')
-            console.log(document.documentElement.scrollHeight-document.documentElement.scrollTop-document.documentElement.clientHeight);
+            // console.log(this.$refs.shoppingContainer.clientHeight);
+            // console.log(document.documentElement.scrollHeight-document.documentElement.scrollTop-document.documentElement.clientHeight);
         },
         jumpRouter(name){
             this.$router.push({name})
@@ -190,15 +195,18 @@ export default {
         //购物车列表
         shopcartlist(){
             shopcartlistApi(this.formData).then(res => {
+                let youxiaoList = [], wuxiaoList = []
                 if(res.code == 0){
                     this.shopList = res.Data.list
                     this.shopList.forEach(item => {
                         if(item.isValid == 1){
-                            this.youxiaoList.push(item)
+                            youxiaoList.push(item)
                         }else{
-                            this.wuxiaoList.push(item)
+                            wuxiaoList.push(item)
                         }
                     })
+                    this.youxiaoList = youxiaoList
+                    this.wuxiaoList = wuxiaoList
                     //根据businessId分类
                     this.dataList = this.groupArr(this.youxiaoList,'businessId')
                     this.dataList.forEach(item => {
@@ -211,7 +219,6 @@ export default {
                             }
                         })
                     })
-                    console.log(this.dataList,'this.dataList');
                 }
             })
         },
@@ -286,17 +293,15 @@ export default {
             })
             this.zongji()
             this.$forceUpdate()
-            console.log(this.dataList,'this.dataList');
         },
         //结算
         settlementBtn(){
-            
             if(this.totlaNum == 0) {
                 Toast('没有选择商品')
                 return
             }
             this.setstopcarlist(this.selectionList.map(o => Object.assign({}, o)))
-            this.$router.push({name:'确认订单详情'})
+            this.$router.push({name:'确认订单详情',query:{type:'shopcar'}})
         },
         //总计计算
         zongji(){
@@ -310,7 +315,8 @@ export default {
                         num += item.shopNumber
                         let obj = {
                             skuId:item.skuId,
-                            detailNum:item.shopNumber
+                            detailNum:item.shopNumber,
+                            shopcrtId:item.shopcrtId
                         }
                         arr.push(obj)
                     }
@@ -331,7 +337,38 @@ export default {
                 return
             }
             this.show = true
-        }
+        },
+        //删除商品
+        delgood(){
+            let arr = []
+            this.selectionList.forEach(item => {
+                arr.push(item.shopcrtId)
+            })
+            this.deleteshopcart(arr)
+        },
+        //删除购物车商品
+        deleteshopcart(dataList){
+            deleteshopcartApi(dataList).then(res => {
+                if(res.code == 0){
+                    this.shopcartlist()
+                    this.guessyoulike()
+                    this.show = false
+                }
+            })
+        },
+        //清空失效商品
+        emptycart(){
+            emptycartApi().then(res => {
+                if(res.code == 0){
+                    this.shopcartlist()
+                    this.guessyoulike()
+                }
+            })
+        },
+        //清空按钮
+        emptyPro(){
+            this.emptycart()
+        },
     },
     components: {
         footerExhibition
@@ -404,6 +441,7 @@ export default {
                height: 200px;
                display: inline-block;
                margin-right:20px;
+               vertical-align: middle;
            }
            .van-checkbox{
                 display: inline-block;
@@ -509,10 +547,8 @@ export default {
                 border:2px solid rgba(220,220,220,1);
                 border-radius:5px;
                 line-height: 34px;
-                position: relative;
-                top: -84px;
-                left: 20px;
                 text-align: center;
+                margin-left:30px;
             }
        }
     }

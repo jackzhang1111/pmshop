@@ -34,7 +34,8 @@ const state = {
         phone:''
     },
     posseObj:{},//编辑收货地址
-    selectionShopCar:[]
+    selectionShopCar:[],
+    searchOrderFormData:{}//搜索订单需要的条件
     
 }
 const getters = {
@@ -47,13 +48,18 @@ const mutations = {
 	SETSTOPCARLIST(state, arr=[]) {
         return (state.selectionShopCar = arr)
     },
+    SETORDERFORMDATA(state,obj={}){
+        return (state.searchOrderFormData = obj)
+    }
 }
 
 const actions = {
 	setstopcarlist(context, arr=[]) {
-        console.log(context)
         return context.commit('SETSTOPCARLIST', arr)
     },
+    setorderformdata(context,obj={}){
+        return context.commit('SETORDERFORMDATA', obj)
+    }
 }
 
 export default new Vuex.Store({

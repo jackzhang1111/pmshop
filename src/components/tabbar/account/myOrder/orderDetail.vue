@@ -116,7 +116,7 @@
             <!-- 待付款按钮栏 -->
             <div class="lan" v-if="detailObj.orderStatusApp == 0">
                 <div class="btn-qzf fl-right c-orange" @click="showPay">付款</div>
-                <div class="btn-qxdd fl-right" @click="closeOverlay(true)">取消订单</div>
+                <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)">取消订单</div>
                 <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 1">
@@ -146,7 +146,7 @@
 
         <transition name="canorder">
             <zhezhao v-show="show">
-                <cancel-order @closeOverlay="closeOverlay" ref="cancelorder"></cancel-order>
+                <cancel-order @closeOverlay="closeOverlay" :orderId="orderId" ref="cancelorder" @refreshOrder="refreshOrder"></cancel-order>
             </zhezhao>
         </transition>
 
@@ -191,6 +191,7 @@ export default {
                 {type:2,name:'在线支付'},
                 {type:3,name:'余额支付'},
             ],
+            orderId:0
         };
     },
     computed: {
@@ -234,7 +235,8 @@ export default {
             return name
         },
         //控制取消订单弹窗
-        closeOverlay(falg){
+        closeOverlay(falg,id){
+            this.orderId = id
             this.show = falg
             this.$refs.cancelorder.anima = true
         },
@@ -249,6 +251,9 @@ export default {
         //退款
         toRefund(){
             this.$router.push({name:'退货退款页面'})
+        },
+        refreshOrder(){
+            this.$router.go(-1)
         }
     },
     components: {

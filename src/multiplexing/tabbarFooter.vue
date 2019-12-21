@@ -83,6 +83,11 @@ export default {
         /deep/ i{
             font-size: 43px;
         }
+        /deep/ .van-tabbar-item__text{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
     }
     .icon-style{
         width: 43px;

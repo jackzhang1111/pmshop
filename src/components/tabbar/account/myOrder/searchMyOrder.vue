@@ -1,6 +1,7 @@
 <script>
 //搜索我的订单
 import searchRecord from '@/components/search/searchRecord.vue'
+import {mapActions} from 'vuex'
 export default {
     props: {
 
@@ -18,16 +19,40 @@ export default {
 
     },
     mounted() {
-
+        
     },
     watch: {
 
     },
     methods: {
+        ...mapActions(
+            ['setorderformdata'] 
+        ),
          //点击搜索按钮
         onSearch(){
-           this.$router.push({name:'我的订单搜索商品'})
+            let formData = {
+                product_key_name:this.goodName,
+                order_status_app:null,
+                page:1,
+                limit:10
+            }
+            this.setorderformdata(formData)
+            this.$router.push({name:'我的订单搜索商品'})
+        },
+        
+        //订单历史记录
+        searchHistory(){
+            //后台还没做接口
+        },
+        getInputVal(value){
+            this.goodName = value
+            // console.log(123);
+        },
+        //搜索发现
+        searchFind(){
+            // console.log(123);
         }
+        
     },
     components: {
 

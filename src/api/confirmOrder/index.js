@@ -7,3 +7,12 @@ export function getconfirmorderApi(params) {
         data:params
     })
 }
+
+//确认订单提交订单
+export function batchmakeorderApi(params) {
+    return park({
+        url:`/appsaleorder/batchmakeorder`,
+        method: 'POST',
+        data:params
+    })
+}

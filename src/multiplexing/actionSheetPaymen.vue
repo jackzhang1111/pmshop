@@ -1,16 +1,16 @@
 <template>
-<!-- 确认付款弹窗 -->
+<!--付款方式弹窗 -->
     <div>
         <van-action-sheet v-model="showAction" title="确认付款" class="action-sheet-paymen" :close-on-click-overlay="false">
             <div class="paymen-content">
                 <div class="paymen-content-top">
                     <span>付款方式</span>
-                    <span class="c-999">></span>
-                    <span>中国银行</span>
+                    <!-- <van-icon name="arrow" /> -->
+                    <span>{{oneTypeName}}</span>
                 </div>
                 <div class="paymen-content-top">
                     <span>付款金额</span>
-                    <span class="c-orange">￥1137</span>
+                    <span class="c-orange">{{jn}}{{paymoeny}}</span>
                 </div>
                 
             </div>
@@ -18,38 +18,81 @@
                 <van-button type="info" size="large" class="load-btn" @click="confirm">立即付款</van-button>
             </div>
         </van-action-sheet>
+        <!-- <action-sheet-yinhang ref="actionSheetYinhang"></action-sheet-yinhang> -->
     </div>
 </template>
 
 <script>
+import {getonlinepaytypelistApi} from '@/api/myOrder/index'
+import actionSheetYinhang from '@/multiplexing/actionSheetYinhang'
 export default {
-    props: {
-        
+    props: {    
+        moeny:{
+            type:Number,
+            default:0
+        }
     },
     data() {
         return {
-            showAction:false
+            showAction:false,
+            payTypeList:[
+                {
+                    type: 201,
+                    name: "余额支付"
+                }
+            ],
+            list:[],
+            
         };
     },
     computed: {
-
+        oneTypeName(){
+            let name = ''
+            if(this.list.length == 0) return
+            name = this.orderStatus(this.list[0].payTypeDetail,'payTypeList')
+            return name
+        },
+        paymoeny(){
+            return this.moeny
+        }
     },
     created() {
 
     },
     mounted() {
-        
+        this.getonlinepaytypelist()
     },
     watch: {
 
     },
     methods: {
         confirm(){
-            
+            this.$emit('showPassWord',true)
+        },
+        getonlinepaytypelist(){
+            getonlinepaytypelistApi({}).then(res => {
+                if(res.code == 0){
+                    this.list = res.Data
+                }
+            })
+        },
+        //编译状态
+        orderStatus(type,list){
+            let name = ''
+            this[list].forEach(statu => {
+                if(statu.type == type){
+                    name = statu.name
+                }
+            })
+            return name
+        },
+        //展示支付方式列表
+        showyinhang(){
+            this.$refs.actionSheetYinhang.showAction = true
         }
     },
     components: {
-
+        actionSheetYinhang
     },
 };
 </script>
@@ -79,7 +122,9 @@ export default {
             position: relative;
             width: 100%;
             height: 80px;
-            
+            .van-icon-arrow{
+                float: right;
+            }
             span{
                 &:nth-child(2){
                     float: right;
