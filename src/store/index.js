@@ -7,8 +7,7 @@ Vue.use(Vuex);
 
 
 const state = {
-    count: 0,
-    serchName:'',
+    serchName:'',//搜索框输入的内容
     addreData:{
         lev1:{
             id:null,//国家城市1级ID
@@ -31,17 +30,18 @@ const state = {
             areaCode:null
         },
         name:'',
-        phone:''
+        phone:'',
     },
     posseObj:{},//编辑收货地址
-    selectionShopCar:[],
-    searchOrderFormData:{}//搜索订单需要的条件
+    selectionShopCar:[],//购物车商品
+    searchOrderFormData:{},//搜索订单需要的条件
+    adressItem:{},//更换选择收货地址时存储
+
+    orderTitleName:'我的订单',//orderTitle组件头部的标题
     
 }
 const getters = {
-    // getterCount(state) {
-    //     // return (state.count += n)
-    // }
+    
 }
 
 const mutations = {
@@ -50,6 +50,12 @@ const mutations = {
     },
     SETORDERFORMDATA(state,obj={}){
         return (state.searchOrderFormData = obj)
+    },
+    SETADRESSITEM(state,obj={}){
+        return (state.adressItem = obj)
+    },
+    ORDERTITLENAME(state,string){
+        return state.orderTitleName = string
     }
 }
 
@@ -59,6 +65,15 @@ const actions = {
     },
     setorderformdata(context,obj={}){
         return context.commit('SETORDERFORMDATA', obj)
+    },
+    setadressitem(context,obj={}){
+        return context.commit('SETADRESSITEM', obj)
+    },
+    deladressitem(context,obj={}){
+        return context.commit('SETADRESSITEM', obj)
+    },
+    ordertitlename(context,string){
+        return context.commit('ORDERTITLENAME', string)
     }
 }
 

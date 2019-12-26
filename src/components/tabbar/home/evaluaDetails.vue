@@ -4,45 +4,30 @@
         <div class="commodity-tab">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
                 <van-tab :title="i.title+`(${i.num})`" v-for="(i,index) in tabs" :key="index">
-                    <div class="pingjia" v-for="data in dataList" :key="data.evaluaId">
-                        <div class="diyi">
-                            <div class="touxiang">
-                                <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
+                    <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup">
+                        <div class="bscroll-con">
+                            <div class="pingjia" v-for="data in dataList" :key="data.evaluaId">
+                                <div class="diyi">
+                                    <div class="touxiang">
+                                        <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
+                                    </div>
+                                    <span class="name">{{data.nickName}}</span>
+                                    <van-rate v-model="data.starNumber" disabled disabled-color="#FA5300"/>
+                                </div>
+                                <div class="dier">
+                                    <span>
+                                        {{data.evaContent}}
+                                    </span>
+                                </div>
+                                <div class="disan">
+                                    <span class="p1">数量:{{data.buyCount}}</span>
+                                    <span class="p2">规格：{{data.proUnit}}</span>
+                                    <span class="p3">{{data.evaTiem}}</span>
+                                </div>
                             </div>
-                            <span class="name">{{data.nickName}}</span>
-                            <van-rate v-model="data.starNumber" disabled disabled-color="#FA5300"/>
                         </div>
-                        <div class="dier">
-                            <span>
-                                {{data.evaContent}}
-                            </span>
-                        </div>
-                        <div class="disan">
-                            <span class="p1">数量:{{data.buyCount}}</span>
-                            <span class="p2">规格：{{data.proUnit}}</span>
-                            <span class="p3">{{data.evaTiem}}</span>
-                        </div>
-                    </div>
+                    </scroll>
                 </van-tab>
-               <!-- <van-tab title="全部评价(10)">
-                    <div class="pingjia" v-for="i in 3" :key="i">
-                        <div class="diyi">
-                            <div class="touxiang">
-                                <img src="@/assets/img/confirmOrder/Twitter@2x.png" >
-                            </div>
-                            <span class="name">m**4</span>
-                            <van-rate v-model="value" disabled disabled-color="#FA5300"/>
-                        </div>
-                        <div class="dier">
-                            
-                        </div>
-                        <div class="disan">
-                            <span class="p1">数量:259</span>
-                            <span class="p2">规格：黑色/XL、粉色/2XL</span>
-                            <span class="p3">2019-09-06</span>
-                        </div>
-                    </div>
-                </van-tab> -->
             </van-tabs>
         </div>
     </div>
@@ -57,6 +42,13 @@ export default {
     },
     data() {
         return {
+            recordGroup:[],
+            pulldown:true,
+            pullup:true,
+            guanmengou:true,//看门狗
+            totalCount:0,
+
+
             active:0,
             value:2,
             formData:{
@@ -86,30 +78,68 @@ export default {
     },
     mounted() {
         this.formData.skuid = this.$route.query.skuid
-        this.productevaluationlist()
+        this.refreshOrder()
     },
     watch: {
 
     },
     methods: {
         //商品评论列表
-        productevaluationlist(){
-            productevaluationlistApi(this.formData).then(res => {
+        productevaluationlist(data,flag){
+            productevaluationlistApi(data).then(res => {
                 if(res.code == 0){
-                    this.dataList = res.Data.list
                     this.tabs[0].num = res.totalleft
                     this.tabs[1].num = res.totalright
+                    if(flag){
+                        this.dataList = res.Data.list
+                    }else{
+                        this.dataList = this.dataList.concat(res.Data.list);
+                    }
+                    this.totalCount = res.Data.totalCount
+                    this.recordGroup = this.dataList
+                    if(this.dataList.length > 0){
+                        if(this.dataList.length >= this.totalCount){
+                            this.pullup = false
+                        }
+                    }else{
+                        this.pulldown = false
+                        this.pullup = false
+                    }
+
                 }
             })
         },
         //切换tab
         changeTab(index,title){
             this.formData.type = index+1
+            this.refreshOrder()
+        },
+        //下拉刷新
+        _pulldown(){
+            setTimeout(()=>{
+                this.refreshOrder()
+            },500)
+        },
+        //上拉加载
+        _pullup() {
+            if(!this.pullup) return
+            //不知道为什么触发两次,使用看门狗拦截
+            if(this.guanmengou){
+                this.formData.page++
+                this.productevaluationlist(this.formData,false)
+                this.guanmengou = false
+            }
+            setTimeout(()=>{
+                this.guanmengou = true
+            },500)
+        },
+        //刷新页面
+        refreshOrder(){
             this.formData.page = 1
             this.formData.limit = 10
-
-            this.productevaluationlist()
-        }
+            this.productevaluationlist(this.formData,true)
+            this.pullup = true
+        },
     },
     components: {
         detailsHeader
@@ -118,27 +148,29 @@ export default {
 </script>
 
 <style scoped lang="less">
+.bscroll-wrapper{
+    height: calc(100vh - 88px - 96px);
+}
 .commodity-tab{
     height: 80px;
     background-color: #fff;
     .tab-list{
-        height: 80px;
+        height: 96px;
         /deep/ .van-tabs__wrap{
-            height: 80px;
+            height: 96px;
             .van-tabs__nav{
                 background-color: #fff;
-
             }
             .van-tab{
-                line-height: 80px;
+                line-height:96px;
                 flex-basis: 20% !important;
+                font-size: 28px;
             }
             .van-tabs__line{
                 bottom: 30px;
                 background-color: #FA5300;
             }
         }
-        
     }
     .pingjia{
         padding:30px 30px;

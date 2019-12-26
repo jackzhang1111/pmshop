@@ -33,7 +33,7 @@
                             红色/L
                         </div>
                         <div class="p1">
-                            ￥298
+                            {{jn}}298
                         </div>
                     </div>
                     <div class="btn-qpj">

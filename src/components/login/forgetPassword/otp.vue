@@ -39,7 +39,6 @@ export default {
     },
     methods: {
        toRevise(){
-            console.log(123);
             this.$router.push({name:'修改密码'})
         }
     },

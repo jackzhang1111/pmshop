@@ -39,7 +39,6 @@ export default {
     methods: {
         toSearch(){
             this.$router.push({name:'历史记录'})
-            console.log(123);
         }
     },
     components: {

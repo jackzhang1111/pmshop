@@ -10,7 +10,7 @@
                     <span>{{attrTitle}}</span>
                 </div>
                 <div class="p2">
-                    <span>￥{{sectionPrice}}</span>
+                    <span>{{jn}}{{sectionPrice}}</span>
                 </div>
                 <van-icon name="cross" class="cross" @click="closeModal"/>
             </div>
@@ -38,14 +38,14 @@
                             
                         </div>
                         <div class="selection-right-p2">
-                            <span>￥{{rightData.skuPrice}}</span>
+                            <span>{{jn}}{{rightData.skuPrice}}</span>
                             <span class="fl-right">库存：{{rightData.canSalesNum}}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="total">
-                <span class="c-orange" style="margin-left:10px;">￥{{money}}</span>
+                <span class="c-orange" style="margin-left:10px;">{{jn}}{{money}}</span>
                 <span>件</span>
                 <span class="c-orange">&nbsp;{{leijia}} &nbsp;</span>  
                 <span>共 </span>
@@ -300,6 +300,7 @@ export default {
             top:29px;
             color: #010101;
             font-size: 26px;
+            line-height: 30px;
             span{
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
@@ -336,12 +337,16 @@ export default {
                 width: 220px;
                 height: 160px;
                 display: inline-block;
+                line-height: 120px;
+                text-align: center;
+                font-size: 22px;
                 /deep/ .van-sidebar-item__text{
                     line-height: 40px;
                 }
             }
             /deep/ .van-sidebar-item--select{
                 background-color: #F2F3F5;
+                
             }
         }
         .selection-right{

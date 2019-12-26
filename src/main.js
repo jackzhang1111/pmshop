@@ -38,6 +38,10 @@ Object.keys(mycomponents).forEach(key => {
 })
 
 
+router.afterEach((to,from,next) => {
+  window.scroll(0, 0);
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

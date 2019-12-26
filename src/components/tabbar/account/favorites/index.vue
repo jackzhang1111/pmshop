@@ -14,20 +14,20 @@
             <van-dropdown-item v-model="value2" :options="option2" disabled />
             <van-icon name="apps-o" class="apps-o " @click="iconView"/>
         </van-dropdown-menu>
-        <div v-if="viewOne">
+        <div v-show="viewOne">
             <!-- 收藏夹收藏商品(失效和未失效) -->
-            <good-list ref="goodList"></good-list>
+            <good-list ref="goodList" :goodsObj="goodsObj"></good-list>
         </div>
         
-        <div class="img-list" v-else>
-            <div v-for="i in 7" :key="i">
+        <div class="img-list" v-show="!viewOne">
+            <div v-for="i in 20" :key="i">
                 <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox" checked-color="#FA5300" v-if="showFooter"></van-checkbox>
                 <img src="@/assets/img/confirmOrder/product@2x.png">
             </div>
         </div>
         <!-- 你可能还喜欢,推荐商品页 -->
-        <footer-exhibition></footer-exhibition>
-        <div style="height:60px;"></div>
+        <footer-exhibition :footerData="footerData"></footer-exhibition>
+        
         <div class="settlement" v-if="showFooter">
             <span class="settlement-text" v-if="true">
                 <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#FA5300"></van-checkbox>
@@ -35,12 +35,16 @@
                 <span class="p1">全选</span>
             </span>
         </div>
+        <!-- 占位 -->
+        <div class="settlement-place" v-if="showFooter"></div>
     </div>
 </template>
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
 import goodList from './itemComponents/goodList'
+import {selectuserfavoritesApi} from '@/api/favorites/index'
+import {guessyoulikeApi} from '@/api/search/index'
 export default {
     props: {
 
@@ -62,7 +66,20 @@ export default {
             checked:true,
             showFooter:false,
             editBjName:'编辑',
-            viewOne:true
+            viewOne:true,
+            formData:{
+                page:1,
+                limit:10,
+                seraname:'',
+                sort:2
+            },
+            goodsObj:{},
+            footerData:{},
+            footerFromData:{
+                page:1,
+                limit:6,
+                seraname:''
+            }
         };
     },
     computed: {
@@ -74,6 +91,8 @@ export default {
     mounted() {
         // 收藏夹搜索商品组件搜索头隐藏
         this.$refs.goodList.searchHidden = false
+        this.selectuserfavorites(this.formData)
+        this.guessyoulike(this.footerFromData)
     },
     watch: {
         showFooter:{
@@ -99,7 +118,28 @@ export default {
         //点击视图图标
         iconView(){
             this.viewOne = !this.viewOne
-        }
+        },
+        //收藏夹列表
+        selectuserfavorites(data){
+            selectuserfavoritesApi(data).then(res => {
+                if(res.code == 0){
+                    this.goodsObj = res.Data
+                }
+            })
+        },
+        //找相似商品
+        guessyoulike(data){
+            guessyoulikeApi(data).then(res => {
+                if(res.code == 0){
+                    this.footerData = res.Data
+                    this.footerData.list.forEach(item => {
+                        if(item.discountPrice == null){
+                            item.discountPrice = item.salePrice
+                        }
+                    });
+                }
+            })
+        },
     },
     components: {
         footerExhibition,
@@ -174,6 +214,9 @@ export default {
             height: 69px;
             line-height: 50px;
         }
+    }
+    .settlement-place{
+        height: 120px;
     }
     .settlement{
         width: 100%;

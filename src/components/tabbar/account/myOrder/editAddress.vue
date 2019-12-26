@@ -1,6 +1,7 @@
 <template>
 <!-- 修改地址 -->
     <div class="edit-address">
+        <balance-header title="修改地址"></balance-header>
         <div class="tips">
             <div class="tips-con">
                 <div class="lingdang-icon">
@@ -38,17 +39,14 @@
         </div>
 
         <van-overlay :show="show2" @click="show2 = false" class="overlay">
-            <!-- 客服电话 -->
-            <div class="kefu">
-                <div class="top">联系电话</div>
-                <div class="bottom">233-5616 1166</div>
-            </div>
+            <kefu></kefu>
         </van-overlay>
     </div>
 </template>
 
 <script>
-// import { Toast } from 'vant';
+import kefu from '@/multiplexing/kefu.vue'
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -80,7 +78,8 @@ export default {
         }
     },
     components: {
-
+        kefu,
+        balanceHeader
     },
 };
 </script>
@@ -175,30 +174,6 @@ export default {
             float: left;
             color: #fff;
         }
-    }
-    .kefu{
-        position: absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%,-50%);
-        width: 400px;
-        height: 220px;
-        background-color: #fff;
-        .top,.bottom{
-            height: 110px;
-            text-align: center;
-            line-height: 110px;
-        }
-        .top{
-            font-size:36px;
-            color: #333;
-        }
-        .bottom{
-            font-size:40px;
-            color: #1375D8;
-            border-top:1px solid #DCDCDC;
-        }
-        
     }
 }
 </style>

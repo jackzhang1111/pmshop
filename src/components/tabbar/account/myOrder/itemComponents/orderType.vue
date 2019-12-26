@@ -52,7 +52,7 @@
                         <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
                     </div>
                     <!-- 待收货按钮栏 -->
-                    <div class="lan" v-if="dfkData.orderStatusApp == 2" @click="payMoney">
+                    <div class="lan" v-if="dfkData.orderStatusApp == 2" @click="receiGood(dfkData)">
                         <div class="btn-qxdd fl-right c-orange">确认收货</div>
                     </div>
                     <!-- 已完成按钮栏 -->
@@ -186,6 +186,9 @@ export default {
         //点击去支付
         payMoney(alldata){
             this.$emit('showPay',true,alldata)
+        },
+        receiGood(alldata){
+            this.$emit('showPassWord',true,alldata)
         }
     },
     components: {

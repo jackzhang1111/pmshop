@@ -3,79 +3,44 @@
     <div class="evaluate-list">
         <div class="commodity-tab">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300">
-                <van-tab title="待评价(2)" >
-                    <div class="good-detail" v-for="i in 2" :key="i">
-                        <div class="good-detail-header">
-                            <span>订单编号：1234567890</span>
-                        </div>
-                        <div class="good-detail-content">
-                            <div class="good-detail-img">
-                                <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                <van-tab :title="i.title+`(${i.num})`"  v-for="(i,index) in tabs" :key="index">
+                    <div>
+                        <div class="good-detail" v-for="i in 3" :key="i">
+                            <div class="good-detail-header">
+                                <span>订单编号：1234567890</span>
                             </div>
-                            <div class="good-detail-title">
-                                <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
-                                <div class="guige">
-                                    红色/L码
+                            <div class="good-detail-content clearfix">
+                                <div class="good-detail-img">
+                                    <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                                 </div>
-                            </div>
-                            <div class="price">
-                                <div class="p3">
-                                    ￥596.00
+                                <div class="good-detail-title">
+                                    <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
+                                    <div class="guige">
+                                        红色/L码
+                                    </div>
                                 </div>
-                                <div class="p4 fl-right">
-                                    x1
+                                <div class="price">
+                                    <div class="p3">
+                                        {{jn}}596.00
+                                    </div>
+                                    <div class="p4 fl-right">
+                                        x1
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="height:35px;"></div>
-                            <div class="btns">
-                                <div class="pj" @click="jumpRouter('发表评价')">
-                                    评价
-                                </div>
-                                <div class="ckdd" @click="jumpRouter('订单详情')">
-                                    查看订单
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <footer-exhibition v-if="false"></footer-exhibition>
-                </van-tab>
-                <van-tab title="追评(4)">
-                   <div class="good-detail" v-for="i in 4" :key="i">
-                        <div class="good-detail-header">
-                            <span>订单编号：1234567890</span>
-                        </div>
-                        <div class="good-detail-content">
-                            <div class="good-detail-img">
-                                <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
-                            </div>
-                            <div class="good-detail-title">
-                                <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
-                                <div class="guige">
-                                    红色/L码
-                                </div>
-                            </div>
-                            <div class="price">
-                                <div class="p3">
-                                    ￥596.00
-                                </div>
-                                <div class="p4 fl-right">
-                                    x1
-                                </div>
-                            </div>
-                            <div style="height:35px;"></div>
-                            <div class="btns">
-                                <div class="pj" @click="jumpRouter('追加评价')">
-                                    追评
-                                </div>
-                                <div class="ckdd" @click="jumpRouter('订单详情')">
-                                    查看订单
+                                <!-- <div style="height:35px;"></div> -->
+                                <div class="btns">
+                                    <div class="pj" @click="rightBtn">
+                                        评价
+                                    </div>
+                                    <div class="ckdd" @click="jumpRouter('订单详情')">
+                                        查看订单
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <footer-exhibition v-if="false"></footer-exhibition>
+                    <footer-exhibition></footer-exhibition>
                 </van-tab>
-               
             </van-tabs>
         </div>
         
@@ -91,6 +56,16 @@ export default {
     data() {
         return {
             active:0,
+            tabs:[
+                {
+                    title:'待评价',
+                    num:0
+                },
+                {
+                    title:'追评',
+                    num:0
+                }
+            ]
         };
     },
     computed: {
@@ -109,6 +84,14 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        //右边按钮（评价或者追评）
+        rightBtn(btnName){
+            if(btnName == '评价'){
+                this.jumpRouter('发表评价')
+            }else if(btnName == '追评'){
+                this.jumpRouter('追加评价')
+            }
+        }
     },
     components: {
         footerExhibition
@@ -123,27 +106,26 @@ export default {
 .commodity-tab{
     height: 80px;
     .tab-list{
-        height: 80px;
+        height: 96px;
         /deep/ .van-tabs__wrap{
-            height: 80px;
+            height: 96px;
             .van-tabs__nav{
-                background-color: #F2F3F5;
+                background-color: #F8F8FA;
             }
             .van-tab{
-                line-height: 80px;
+                line-height:96px;
                 flex-basis: 20% !important;
+                font-size: 28px;
             }
             .van-tabs__line{
                 bottom: 30px;
                 background-color: #FA5300;
             }
         }
-        
     }
 }
 .good-detail{
     padding: 0 30px;
-    box-sizing: border-box;
     margin-bottom: 20px;
     .good-detail-header{
         width: 100%;
@@ -161,32 +143,25 @@ export default {
         }
     }
     .good-detail-content{
-        width: 100%;
         background-color: #fff;
-        box-sizing: border-box;
-        padding: 0 30px;
+        padding: 20px 20px 30px;
         position: relative;
         border-bottom: 1px solid #F2F3F5;
         .good-detail-img{
             width: 150px;
             height: 150px;
-            position: relative;
-            top:30px;
-            left:0px;
-            display: inline-block;
+            float: left;
+            margin-right:20px;
         }
         .good-detail-title{
-            display: inline-block;
-            position: absolute;
             width: 336px;
-            top:30px;
-            left:200px;
-            
+            float: left;
             .name{
                 display: inline-block;
-                margin-bottom: 24px;
                 color: #333;
-                font-size: 22px;
+                font-size: 26px;
+                line-height:39px;
+                margin-bottom: 35px;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
@@ -196,33 +171,29 @@ export default {
                 color: #999;
                 font-size: 18px;
                 display: inline-block;
-                margin-bottom: 28px;
             }
         }
         .price{
-            position: absolute;
-            top:30px;
-            right:30px;
-            text-align: right;
+            float: right;
             font-size: 26px;
             .p3{
                 font-size:26px;
                 color: #333;
-                margin-bottom: 5px;
+                margin-bottom: 30px;
             }
             .p4{
                 color: #999;
-                font-size: 20px;
-                margin-bottom: 90px;
+                font-size: 22px;
             }
         }
         .btns{
+            float: right;
             overflow: hidden;
-            padding-bottom: 30px;
+            margin-top:20px;
             .ckdd{
                 width:150px;
                 height:48px;
-                border:2px solid rgba(153,153,153,1);
+                border:1px solid rgba(153,153,153,1);
                 border-radius:24px;
                 line-height: 48px;
                 text-align: center;
@@ -233,7 +204,7 @@ export default {
             .pj{
                 width:98px;
                 height:48px;
-                border:2px solid rgba(250,83,0,1);
+                border:1px solid rgba(250,83,0,1);
                 border-radius:24px;
                 font-size:26px;
                 text-align: center;

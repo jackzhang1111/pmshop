@@ -1,6 +1,6 @@
 <template>
     <div class="posse-address">
-        <div class="address-content" v-for="data in dataList" :key="data.addressId">
+        <div class="address-content" v-for="data in dataList" :key="data.addressId" @click="cliCard(data)">
             <div class="content-p1">
                 <span class="name">{{data.name}}</span>
                 <span class="phone">{{data.areaCode}} {{data.phoneNumber}}</span>
@@ -13,8 +13,8 @@
                 <span>地区编码：{{data.areaCode}}</span>
             </div>
             <div class="content-btns">
-                <div class="btn-bj" @click="editRedord(data)">编辑</div>
-                <div class="btn-sc" @click="deleteRedord(data.addressId)">删除</div>
+                <div class="btn-bj" @click.stop="editRedord(data)">编辑</div>
+                <div class="btn-sc" @click.stop="deleteRedord(data.addressId)">删除</div>
             </div>
         </div>
 
@@ -90,6 +90,9 @@ export default {
         getData(){
             this.posseObj = Object.assign({},this.posseObj,this.posseData)
             this.dataList = this.posseObj.list
+        },
+        cliCard(data){
+            this.$emit('cliCard',data)
         }
     },
     components: {

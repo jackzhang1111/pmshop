@@ -18,7 +18,7 @@
                 @blur="showKeyboard = false"
                 :hide-on-click-outside="false"
                 >
-                <span slot="delete" class="delete"><img src="../assets/img/search/detail.svg" alt=""></span>
+                <span slot="delete" class="delete"><img src="@/assets/img/search/detail.svg" alt=""></span>
                 </van-number-keyboard>
                 
             </div>

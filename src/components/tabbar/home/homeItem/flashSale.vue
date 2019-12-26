@@ -17,7 +17,7 @@
                     瑞士SWICKY瑞驰双肩包男士背包新款大容量休闲商务旅行笔记本电脑...学生书包出差包USb充电包 深蓝色 大号带usb送多功能刀+锁
                 </div>
                 <div class="right-p3">
-                    <span>￥</span>
+                    <span>{{jn}}</span>
                     <span class="price">187.00</span>
                 </div>
                 <div class="right-p4">

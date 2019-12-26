@@ -178,7 +178,7 @@ export default {
 .search-record{
     position: relative;
     background-color: #fff;
-    height: calc(100vh - 90px);
+    height: 100vh;
     box-sizing: border-box;
     .record{
         padding: 39px 30px 0;

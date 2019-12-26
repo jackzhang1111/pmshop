@@ -2,7 +2,7 @@
     <div class="account-address">
         <settings-header :title="title" :title2="title2" @rightBtn="rightBtn"></settings-header>
         <div v-if="addressStatus">
-            <posse-address :posseData="posseData" @deladdress='deladdress' ref="posseaddress"></posse-address>
+            <posse-address :posseData="posseData" @deladdress='deladdress' ref="posseaddress" @cliCard="cliCard"></posse-address>
         </div>
         <!-- 无地址的时候 -->
         <div v-else>
@@ -76,7 +76,8 @@ export default {
                     this.$refs.posseaddress.redordshow = false
                 }
             })
-        }
+        },
+        cliCard(){}
     },
     components: {
         noAddress,

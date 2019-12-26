@@ -1,9 +1,9 @@
 <template>
     <div class="after-sales-steps">
-        <van-steps direction="vertical" :active="active" active-color="#FA5300" class="aaa">
-            <van-step class="bbb" v-for="i in 9" :key="i">
+        <van-steps direction="vertical" :active="active" active-color="#FA5300" class="steps-con">
+            <van-step class="steps-item" v-for="i in 9" :key="i">
                 <h3>退款成功</h3>
-                <p class="p1">已成功退还到你的账户，总金额：￥74.48</p>
+                <p class="p1">已成功退还到你的账户，总金额：{{jn}}74.48</p>
                 <p class="p2">2016-07-12 12:40</p>
             </van-step>
         </van-steps>
@@ -46,10 +46,10 @@ export default {
 .after-sales-steps{
     padding:59px 30px 0;
     box-sizing: border-box;
-    .aaa{
+    .steps-con{
         background-color:#F8F8FA;
     }
-    .bbb{
+    .steps-item{
         padding-bottom: 70px;
         padding-left: 29px;
         &:nth-last-child(1){

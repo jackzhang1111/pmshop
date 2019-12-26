@@ -77,6 +77,10 @@ export default {
         orderId:{
             handler:function(newVal){
                 this.id = newVal
+                this.reasonList.forEach(item => {
+                    item.istrue = true
+                })
+                this.remark = ''
             }
         }
     },

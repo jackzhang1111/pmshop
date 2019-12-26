@@ -29,7 +29,7 @@
                         <div class="good-price">
                             <span class="price-p1">¥{{dataitem.discountPrice}}</span>
                             <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
-                            <van-stepper class="price-quantity" v-model="dataitem.shopNumber" @change="changeStepper"/>
+                            <van-stepper class="price-quantity" v-model="dataitem.shopNumber" :min="dataitem.numIntervalStart" @change="changeStepper" />
                             <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
                         </div>
                     </div>

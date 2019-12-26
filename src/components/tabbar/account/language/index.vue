@@ -26,7 +26,7 @@
       <a class="clearfix">
         <div class="fl">货币</div>
         <div class="fr">
-          <span class="nation">￥-CNY-人民币</span>
+          <span class="nation">{{jn}}-CNY-人民币</span>
           <span>&gt;</span>
         </div>
       </a>

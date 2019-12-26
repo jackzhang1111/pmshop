@@ -16,7 +16,7 @@
             </div>
             <div class="d2-right">
                 <div>VH女包高级感刺绣撞色方包小蜜蜂时尚单肩包2019新款潮流斜挎包</div>
-                <div>￥596.00</div>
+                <div>{{jn}}596.00</div>
             </div>
         </div>
         <div class="detail-d3">

@@ -17,9 +17,8 @@
             <div class="icons">
                 <!-- 最好能用icon做出显示消息数 -->
                 <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-                <!-- <img src="@/assets/img/tabbar/home/cart@3x.png" class="img1" @click="$router.push({name:'购物车'})"> -->
-                <van-icon name="shopping-cart-o" class="ellipsis" @click="$router.push({name:'购物车'})"/>
-                <img src="@/assets/img/tabbar/home/commodityDetails/msg@2x.png" class="img2" @click="$router.push({name:'消息'})">
+                <van-icon name="shopping-cart-o" class="ellipsis" :info="shopCarInfo" @click="$router.push({name:'购物车'})" />
+                <van-icon name="chat-o" class="xiaoxi" info="99+"  @click="$router.push({name:'消息'})"/>
             </div>
         </div>
         <div style="height:40px"></div>
@@ -28,13 +27,19 @@
 </template>
 
 <script>
+import {shopcartlistApi} from '@/api/shoppingCart/index'
 export default {
     props: {
-
+        
     },
     data() {
         return {
-            value:''
+            value:'',
+            shopCarInfo:'',
+            formData:{
+                page:1,
+                limit:100
+            }
         };
     },
     computed: {
@@ -44,15 +49,20 @@ export default {
 
     },
     mounted() {
-
+        this.shopcartlist()
     },
     watch: {
 
     },
     methods: {
-        onSearch(){
-            console.log(123456);
-        }
+         //购物车列表
+        shopcartlist(){
+            shopcartlistApi(this.formData).then(res => {
+                if(res.code == 0){
+                    this.shopCarInfo = res.Data.list.length > 99 ? '99+' : res.Data.list.length
+                }
+            })
+        },
     },
     components: {
 
@@ -80,18 +90,31 @@ export default {
     .search{
         position: absolute;
         left:100px;
-        top:50%;
+        top:40%;
         width: 420px;
         height: 58px;
         overflow: hidden;
         transform: translateY(-50%);
         /deep/ .van-search{
             background: #F2F3F5 !important;
+            .van-field{
+                width: 480px;
+                height: 60px;
+                line-height: 50px;
+            }
+            .van-field__clear{
+                font-size: 30px;
+            }
+            .van-field__body{
+                .van-field__control{
+                    font-size: 26px;
+                }
+            }
         }
     }
     .icons{
         position: absolute;
-        left:572px;
+        left:542px;
         top:50%;
         transform: translateY(-50%);
         .img1{
@@ -103,9 +126,8 @@ export default {
             font-size: 34px;
             margin-right: 25px;
         }
-        .img2{
-            width: 7px;
-            height: 34px;
+        .xiaoxi{
+            font-size: 34px;
         }
     }
     

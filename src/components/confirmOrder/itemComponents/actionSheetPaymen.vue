@@ -10,7 +10,7 @@
                 </div>
                 <div class="paymen-content-top">
                     <span>付款金额</span>
-                    <span class="c-orange">￥1137</span>
+                    <span class="c-orange">{{jn}}1137</span>
                 </div>
                 
             </div>

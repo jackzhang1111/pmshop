@@ -24,7 +24,7 @@
                 </van-col>
                  <van-col span="8" @click="jumpRouter('账户余额')">
                     <span class="t1">余额</span>
-                    <span class="num">￥588.00</span>
+                    <span class="num">{{jn}}588.00</span>
                 </van-col>
             </van-row>
         </div>
@@ -61,28 +61,28 @@
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="jumpRouter('评价列表')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/pingjia@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/pingjia@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="售后" left-icon="arrow" disabled @click="jumpRouter('售后内容')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/shouhou@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/shouhou@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="我的优惠券" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="账户余额" left-icon="arrow" disabled @click="jumpRouter('账户余额')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/zhanghuyue@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/zhanghuyue@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
@@ -118,21 +118,28 @@
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="意见反馈" left-icon="arrow" disabled>
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/yijianfankui@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/yijianfankui@2x.png">
+                </div>
+            </van-field>
+        </van-cell-group>
+        <van-cell-group class="border-0">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="联系客服" left-icon="arrow" disabled>
+                <div slot="left-icon" size="small" type="primary" class="icon-left">
+                    <img src="@/assets/img/tabbar/my/account/kefu.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="账户设置" left-icon="arrow" disabled @click="jumpRouter('账户设置')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/zhanghushezhi@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/zhanghushezhi@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
             <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled @click="jumpRouter('语言')">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
-                    <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png" alt="">
+                    <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
@@ -303,12 +310,6 @@ export default {
                 width: 43px;
                 height: 43px;
                 margin-bottom: 3px;
-            }
-            /deep/ .van-tabbar-item__icon{
-                .van-info{
-                    line-height: 20px;
-                    text-align: center;
-                }
             }
            /deep/ .van-hairline--top-bottom{
                &::after{

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <search-head @onfocus="onfocus" @onSearch="onSearch" @getInputVal="getInputVal" v-if="searchHidden"></search-head>
         <div class="goods-list" v-for="product in dataList" :key="product.skuId">
             <!-- 未失效商品 -->
             <div class="footprint-goods-content">
@@ -24,24 +25,28 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
+import searchHead from '@/multiplexing/searchHead.vue'
+import {selectuserfavoritesApi} from '@/api/favorites/index'
 export default {
     props: {
-        goodsObj:{
-            type:Object,
-            default: ()=>{
-                return {}
-            }
-        },
+        
     },
     data() {
         return {
             checked:false,
             showCheck:false,
-            dataObj:{},
+            searchHidden:true,
+            formData:{
+                page:1,
+                limit:10,
+                seraname:'',
+                sort:2
+            },
             dataList:[]
         };
     },
@@ -52,21 +57,16 @@ export default {
 
     },
     mounted() {
-        
+        this.selectuserfavorites(this.formData)
     },
     watch: {
-        goodsObj:{
-            handler:function(newVal, oldVal){
-                this.getData()
-            },
-        },
+
     },
     methods: {
-         //找相似按钮
         toResembleGood(){
+            //找相似
             this.$router.push({name:'找相似商品'})
         },
-        //checkbox状态
         onShowCheck(){
             this.showCheck = !this.showCheck
         },
@@ -82,20 +82,25 @@ export default {
         getInputVal(value){
             // console.log(value);
         },
-        getData(){
-            this.dataObj = Object.assign({},this.dataObj,this.goodsObj)
-            if(!this.dataObj.list) return
-            this.dataList = this.dataObj.list
+        //收藏夹列表
+        selectuserfavorites(data){
+            selectuserfavoritesApi(data).then(res => {
+                if(res.code == 0){
+                    this.goodsObj = res.Data
+                    this.dataList = this.goodsObj.list
+                }
+            })
         },
     },
     components: {
-        
+        searchHead
     },  
 };
 </script>
 
 <style scoped lang="less">
 .goods-list{
+    position: relative;
     .footprint-goods-content{
         background-color: #fff;
         position: relative;
@@ -128,18 +133,22 @@ export default {
             }
         }
         .good-desc{
+            // position: absolute;
+            // top:39px;
+            // left:211px;
             width: 486px;
             font-size:26px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
             .p1{
-                width: 486px;
                 line-height:39px;
-                height: 76px;
+                display: inline-block;
             }
             .p2{
                 font-size:20px;
                 color:rgba(102,102,102,1);
+                margin-top:20px;
+                display: inline-block;
             }
         }
         .good-price{

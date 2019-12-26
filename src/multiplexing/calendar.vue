@@ -60,8 +60,10 @@ export default {
 
     },
     methods: {
+        //选中某天
         clickDay(data) {
-            // console.log(data); //选中某天
+            data = data.replace(/-/g,'/')
+            this.$emit('cliDay',data)
         },
         changeDate(data) {
             // console.log(data); //左右点击切换月份
@@ -99,13 +101,14 @@ export default {
         .wh_content{
             .wh_content_item{
                 color: #333;
-                .wh_isToday{
+                .wh_item_date.wh_isMark.wh_isToday{
                     background-color: #ffbc9b;
                     color: #fff;
                 }
                 .wh_isMark{
                     position: relative;
                     background-color: #fff;
+                    color: #000;
                     &::after{
                         width:6px;
                         height:6px;

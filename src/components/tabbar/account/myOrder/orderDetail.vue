@@ -1,6 +1,7 @@
 <template>
 <!-- 订单详情 -->
     <div class="order-detail">
+        <balance-header title="订单详情"></balance-header>
         <div class="address-p1">
             <div class="p1-top">
                 {{orderStatus(detailObj.orderStatusApp,'status')}}
@@ -15,6 +16,10 @@
                     <img src="@/assets/img/confirmOrder/logistics@2x.png">
                 </div>
                 <span>{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
+                <div class="fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics">
+                    <van-icon name="arrow" size="21" class="arrow-icon"/>
+                </div>
+                
             </div>
             <div class="p2-bottom">
                 <div class="bottom-left">
@@ -59,9 +64,12 @@
                             x{{data.detailNum}}
                         </div>
                     </div>
-                    <div style="height:15px;">
-
+                    <!-- 售后成功:按钮审核中或者退款成功 -->
+                    <div v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3">
+                        <div class="sqsh" @click="toReturnRefund" v-if="true">退货退款</div>
+                        <div class="fl-right c-jinse" v-else>退款成功</div>
                     </div>
+                    <div class="fl-right c-jinse">申请中</div>
                 </div>
                 <div class="mingxi m-t-29">
                     <span >商品总价：</span>
@@ -116,31 +124,32 @@
             <!-- 待付款按钮栏 -->
             <div class="lan" v-if="detailObj.orderStatusApp == 0">
                 <div class="btn-qzf fl-right c-orange" @click="showPay">付款</div>
-                <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)">取消订单</div>
+                <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)" v-if="detailObj.canRevoke == 1">取消订单</div>
                 <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 1">
-                <div class="btn-qzf fl-right c-orange" @click="toRefund">退款</div>
+                <div class="btn-qzf fl-right c-orange" @click="toRefund" v-if="detailObj.canRefund == 1">退款</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 2">
                 <div class="btn-qzf fl-right c-orange" @click="showPay">确认收货</div>
-                <div class="btn-xgdz fl-right" @click="toRefund">退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1">退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toBatchRefund" v-else>退货退款</div>
+                <div class="btn-xgdz fl-right" >查看物流</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 3">
                 <div class="btn-qzf fl-right c-orange">评价</div>
-                <div class="btn-xgdz fl-right" @click="toRefund">退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1">退货退款</div>
+               <div class="btn-xgdz fl-right" @click="toBatchRefund" v-else>退货退款</div>
+                <div class="btn-xgdz fl-right" >查看物流</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 4">
-                <div class="btn-qzf fl-right c-orange">退款成功</div>
+                <div class="btn-qzf fl-right c-orange">删除订单</div>
             </div>
         </div>
 
         <van-overlay :show="show3" @click="show3 = false" class="overlay">
             <!-- 客服电话 -->
-            <div class="kefu">
-                <div class="top">联系电话</div>
-                <div class="bottom">233-5616 1166</div>
-            </div>
+            <kefu></kefu>
         </van-overlay>
 
 
@@ -160,6 +169,8 @@ import {orderinfoApi} from '@/api/myOrder/index.js'
 import cancelOrder from './itemComponents/cancelOrder'
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import zhezhao from '@/multiplexing/zhezhao'
+import kefu from '@/multiplexing/kefu.vue'
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
@@ -248,18 +259,31 @@ export default {
         toEditAddress(){
             this.$router.push({name:'我的订单修改地址'})
         },
-        //退款
+        //退款页面
         toRefund(){
-            this.$router.push({name:'退货退款页面'})
+            this.$router.push({name:'退款页面',query:{orderId:this.detailObj.orderId}})
+        },
+        //退货退款页面
+        toReturnRefund(){
+             this.$router.push({name:'退货退款页面'})
+        },
+        //批量退货退款页面
+        toBatchRefund(){
+            this.$router.push({name:'批量退货退款'})
         },
         refreshOrder(){
             this.$router.go(-1)
+        },
+        toLogistics(){
+            this.$router.push({name:'物流信息'})
         }
     },
     components: {
         cancelOrder,
         actionSheetPassword,
-        zhezhao
+        zhezhao,
+        kefu,
+        balanceHeader
     },
 };
 </script>
@@ -293,6 +317,9 @@ export default {
                 height: 60px;
                 vertical-align: text-bottom;
                 margin-right:23px;
+            }
+            .arrow-icon{
+                
             }
         }
         .p2-bottom{
@@ -374,34 +401,29 @@ export default {
 .good-detail{
     margin-bottom: 20px;
     .good-detail-content{
-        width: 100%;
         background-color: #fff;
-        box-sizing: border-box;
-        padding: 0 30px;
+        padding: 30px 30px;
         position: relative;
+        overflow: hidden;
         .good-detail-img{
             width: 150px;
             height: 150px;
-            position: relative;
-            top:30px;
-            left:0px;
             display: inline-block;
+            vertical-align: top;
         }
         .good-detail-title{
+            width: 397px;
             display: inline-block;
-            position: absolute;
-            width: 336px;
-            top:30px;
-            left:200px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+            margin-left:20px;
             .name{
-                display: inline-block;
                 margin-bottom: 24px;
                 color: #333;
-                font-size: 22px
+                font-size: 22px;
+                height: 48px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
             }
             .guige{
                 color: #999;
@@ -411,9 +433,7 @@ export default {
             
         }
         .price{
-            position: absolute;
-            top:30px;
-            right:30px;
+            float: right;
             text-align: right;
             .p3{
                 font-size:28px;
@@ -424,6 +444,19 @@ export default {
                 color: #999;
                 font-size: 20px;
             }
+        }
+        .sqsh{
+            width:128px;
+            height:48px;
+            border:1px solid rgba(153,153,153,1);
+            border-radius:24px;
+            line-height: 48px;
+            text-align: center;
+            margin-top:30px;
+            float: right;
+        }
+        .c-jinse{
+            color: #DB9000;
         }
     }
 }
@@ -459,29 +492,6 @@ export default {
         top:50%;
         transform: translateY(-50%);
         margin-right:20px;
-    }
-}
-.kefu{
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    width: 400px;
-    height: 220px;
-    background-color: #fff;
-    .top,.bottom{
-        height: 110px;
-        text-align: center;
-        line-height: 110px;
-    }
-    .top{
-        font-size:36px;
-        color: #333;
-    }
-    .bottom{
-        font-size:40px;
-        color: #0E6CCC;
-        border-top:1px solid #DCDCDC;
     }
 }
 .font-24{

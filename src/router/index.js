@@ -46,7 +46,6 @@ import search from '@/components/search/index.vue'
 import searchRecord from '@/components/search/searchRecord.vue'
 import noSearch from '@/components/search/noSearch.vue'
 import searchGoodsOne from '@/components/search/searchGoodsOne.vue'
-import favoritesGood from '@/components/tabbar/account/favorites/itemComponents/goodList'
 import favoriteRecord from '@/components/tabbar/account/favorites/favoriteRecord'
 import searchMyOrder from '@/components/tabbar/account/myOrder/searchMyOrder'
 import myOrderGood from '@/components/tabbar/account/myOrder/myOrderGood'
@@ -56,19 +55,20 @@ import myOrderGood from '@/components/tabbar/account/myOrder/myOrderGood'
 //收藏夹
 import favorites from '@/components/tabbar/account/favorites/index.vue'
 import resembleGood from '@/components/tabbar/account/favorites/resembleGood'
-
+import searGoodList from '@/components/tabbar/account/favorites/itemComponents/searGoodList'
 
 
 
 //我的订单
+import myOrderParent from '@/components/tabbar/account/myOrder/myOrderParent'
 import myOrder from '@/components/tabbar/account/myOrder/index'
 import editAddress from '@/components/tabbar/account/myOrder/editAddress'
-import orderTitle from '@/multiplexing/orderTitle'
 import orderDetail from '@/components/tabbar/account/myOrder/orderDetail'
 import addressList from '@/components/tabbar/account/myOrder/addressList'
-import addAdderss from '@/components/tabbar/account/myOrder/addAdderss'
 import refund from '@/components/tabbar/account/myOrder/refund'
-
+import returnRefund from '@/components/tabbar/account/myOrder/returnRefund'
+import batchRefund from '@/components/tabbar/account/myOrder/batchRefund'
+import logistics from '@/components/tabbar/account/myOrder/logistics'
 
 //售后
 import afterSales from '@/components/tabbar/account/afterSales/index'
@@ -182,12 +182,55 @@ export default new Router({
     },
 
 
-    
+    // myOrderParent
     {
       path: '/myOrder',
-      name: '我的订单',
-      component: myOrder,
+      name: '我的订单母页',
+      component: myOrderParent,
+      children:[
+        {
+          path: 'myOrderList',
+          name: '我的订单',
+          component: myOrder,
+        },
+        {
+          path: 'editAddress',
+          name: '我的订单修改地址',   
+          component: editAddress,
+        },
+        {
+          path: 'editAddress/addressList',
+          name: '地址列表',   
+          component: addressList,
+        },
+        {
+          path: 'orderDetail',
+          name: '订单详情',   //我的订单,订单详情
+          component: orderDetail,
+        },
+        {
+          path: 'orderDetail/returnRefund',
+          name: '退货退款页面',   
+          component: returnRefund,
+        },
+        {
+          path: 'orderDetail/refund',
+          name: '退款页面',   
+          component: refund,
+        },
+        {
+          path: 'orderDetail/batchRefund',
+          name: '批量退货退款',   
+          component: batchRefund,
+        },
+        {
+          path: 'orderDetail/logistics',
+          name: '物流信息',   
+          component: logistics,
+        },
+      ]
     },
+    
     {
       path: '/evaluate',
       name: '评价',
@@ -370,38 +413,7 @@ export default new Router({
         }
       ]
     },
-    {
-      path: '/myOrder/orderTitle',
-      name: '我的订单详情头部',   
-      component: orderTitle,
-      children:[
-        {
-          path: 'editAddress',
-          name: '我的订单修改地址',   
-          component: editAddress,
-        },
-        {
-          path: 'editAddress/addressList',
-          name: '地址列表',   
-          component: addressList,
-        },
-        {
-          path: 'editAddress/addressList/addAdderss',
-          name: '新增地址',   
-          component: addAdderss,
-        },
-        {
-          path: 'orderDetail',
-          name: '订单详情',   //我的订单,订单详情
-          component: orderDetail,
-        },
-        {
-          path: 'orderDetail/refund',
-          name: '退货退款页面',   
-          component: refund,
-        },
-      ]
-    },
+    
     {
       path: '/resembleGood',
       name: '找相似商品',
@@ -426,7 +438,7 @@ export default new Router({
         {
           path: 'favorites/goodsList',
           name: '收藏夹搜索商品',
-          component: favoritesGood
+          component: searGoodList
         },
         {
           path: 'searchGoodsOne',

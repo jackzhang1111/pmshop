@@ -126,29 +126,25 @@
             <div class="settlement-btn" @click="submit">提交订单</div>
         </div>
 
-        <!-- 确认付款弹窗 -->
-        <action-sheet-paymen ref="paymen" @showpaymen="showpaymen" @showyinhang="showyinhang" @showpassword="showpassword"></action-sheet-paymen>
-        
-        <!-- 选择付款方式弹窗 -->
-        <action-sheet-yinhang ref="yinhang" @showyinhang="showyinhang" @showpassword="showpassword" @showsucess="showsucess"></action-sheet-yinhang>
-
         <!-- 支付成功弹窗 -->
         <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
-
-        <!-- 支付密码 -->
-        <action-sheet-password ref="password" @showpassword="showpassword"></action-sheet-password>
+        <!-- 密码弹窗 -->
+        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+        <!-- 付款方式弹窗 -->
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="orderData.allOrderAmountWebsite" @showPassWord="showPassWord" @showpaymen="showpaymen"></action-sheet-paymen>
     </div>
 </template>
 
 <script>
-import actionSheetPaymen from "./itemComponents/actionSheetPaymen"
-import actionSheetYinhang from './itemComponents/actionSheetYinhang'
-import actionSheetSucess from './itemComponents/actionSheetSucess'
-import actionSheetPassword from './itemComponents/actionSheetPassword'
+
+import actionSheetSucess from '@/multiplexing/actionSheetSucess'
+import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
+import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import balanceHeader from './itemComponents/balanceHeader'
 import {querydefaultObjectApi} from '@/api/accountSettings/index'
 import {getconfirmorderApi,batchmakeorderApi} from '@/api/confirmOrder/index'
-import {mapState} from 'vuex'
+import {orderlaunchpayApi} from '@/api/myOrder/index.js'
+import {mapState,mapActions} from 'vuex'
 import { Toast } from 'vant';
 export default {
     props: {
@@ -188,8 +184,10 @@ export default {
             defaultAdderss:{},
             zffs:'',
             payTypeList:[],//支付方式列表
-            shopcrtList:[]
-
+            shopcrtList:[],
+            moeny:0,
+            payTypeDetail:201,//余额支付ID,暂时写死
+            orderIdList:[]
         };
     },
     computed: {
@@ -197,11 +195,19 @@ export default {
             selectionShopCar:state=>state.selectionShopCar
         }),
     },
-    created() {
-
-    },
     mounted() {
-        this.querydefaultObject()
+        //如果在收件地址里面选了地址就从vuex里面找,如果是刚进来的就请求默认地址
+        if(!this.$store.state.adressItem.addressId){
+            this.querydefaultObject()
+        }else{
+            this.defaultAdderss = this.$store.state.adressItem
+            let obj = {
+                addressId:this.defaultAdderss.addressId,
+                detailList:this.selectionShopCar
+            } 
+            this.getconfirmorder(obj)
+        }
+        //通过购物车进来
         if(this.$route.query.type == 'shopcar'){
             let arr = this.$store.state.selectionShopCar
             arr.forEach(shopCar => {
@@ -215,8 +221,12 @@ export default {
     watch: {
         
     },
+    beforeDestroy(){
+        this.deladressitem()
+    },
     methods: {
-        //提交订单
+        ...mapActions(['deladressitem']),
+        //提交订单按钮
         submit(){
             let flag = true
             this.orderData.orderList.forEach(ele => {
@@ -249,13 +259,9 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
-        //弹出银行
-        showyinhang(){
-            this.$refs.yinhang.showAction = true
-        },
         //弹出支付
         showpaymen(){
-            this.$refs.paymen.showAction = true
+            this.$refs.actionSheetPaymen.showAction = true
         },
         //弹出支付成功
         showsucess(){
@@ -263,7 +269,7 @@ export default {
         },
         //弹出密码框
         showpassword(){
-            this.$refs.password.showAction = true
+            this.$refs.actionSheetPassword.showAction = true
         },
         //获取用户默认收货地址信息
         querydefaultObject(){
@@ -326,7 +332,7 @@ export default {
                 ele.detailList.splice(goodindex,1)
             })
             this.changeNumber()
-            // console.log(123,good);
+            
         },
         //订单详情
         getconfirmorder(data){
@@ -340,7 +346,6 @@ export default {
         },
         //提交订单
         batchmakeorder(orderObj){
-            
             let obj = { 
                 addressId:this.defaultAdderss.addressId,
                 payType:this.zffs,
@@ -352,7 +357,10 @@ export default {
 
             batchmakeorderApi(obj).then(res => {
                 if(res.code == 0){
-
+                    this.showpaymen()
+                    res.Data.forEach(item => {
+                        this.orderIdList.push({orderId:Number(item.orderId)})
+                    })
                 }else if(res.code > 20){
                     let obj = {
                         addressId:this.defaultAdderss.addressId,
@@ -364,10 +372,30 @@ export default {
                 }
             })
         },
+        //订单发起支付
+        orderlaunchpay(data){
+            orderlaunchpayApi(data).then(res => {
+                if(res.code == 0){
+                    this.showsucess()
+                }
+            })
+        },
+        //获取到密码,请求接口
+        getPassWord(value){
+            let obj = {
+                payTypeDetail:this.payTypeDetail,
+                payPwd:value,
+                orderList:this.orderIdList
+            }
+
+            this.orderlaunchpay(obj)
+        },
+        showPassWord(flag){
+            this.$refs.actionSheetPassword.showAction = flag
+        },
     },
     components: {
         actionSheetPaymen,
-        actionSheetYinhang,
         actionSheetSucess,
         actionSheetPassword,
         balanceHeader

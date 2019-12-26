@@ -22,7 +22,7 @@
                             @pullup="_pullup"
                             >
                             <div v-show="noSearchStatus">
-                                <order-type :dfkList="recordGroup" @closeOverlay="closeOverlay" @showPay="showPay"></order-type>
+                                <order-type :dfkList="recordGroup" @closeOverlay="closeOverlay" @showPay="showPay" @showPassWord="showPassWord"></order-type>
                             </div>
                             <no-search v-show="!noSearchStatus"></no-search>
                         </scroll>
@@ -44,11 +44,6 @@
 </template>
 
 <script>
-import dfh from './itemComponents/dfh'
-import dfk from './itemComponents/dfk'
-import ddgb from './itemComponents/ddgb'
-import ywc from './itemComponents/ywc'
-import dsh from './itemComponents/dsh'
 import zhezhao from '@/multiplexing/zhezhao'
 import orderType from './itemComponents/orderType'
 import cancelOrder from './itemComponents/cancelOrder'
@@ -97,11 +92,7 @@ export default {
                 page:1,
                 limit:10
             },
-            dfhList:[],
             dfkList:[],
-            ddgbList:[],
-            ywcList:[],
-            dshList:[],
             dataList:[],
             show:false,
             guanmengou : true,
@@ -118,7 +109,8 @@ export default {
         
     },
     mounted() {
-        this.active = this.$route.query.active
+        this.active = Number(this.$route.query.active) 
+        this.formData.order_status_app = this.$route.query.active-1
         this.refreshOrder()
     },
     watch: {
@@ -132,7 +124,7 @@ export default {
             },500)
         },
         //上拉加载
-        _pullup(otherData) {
+        _pullup() {
             if(!this.pullup) return
             //不知道为什么触发两次,使用关门狗拦截
             if(this.guanmengou){
@@ -166,6 +158,8 @@ export default {
                         }
                     }else{
                         this.noSearchStatus = false
+                        this.pulldown = false
+                        this.pullup = false
                     }
                 }
             })
@@ -177,7 +171,7 @@ export default {
             })
         },
         //更改tab
-        changeTab(index,title){
+        changeTab(index){
             if(index==0){
                 this.formData.order_status_app = null
             }else{
@@ -188,17 +182,21 @@ export default {
         //控制取消订单弹窗
         closeOverlay(falg,orderId){
             this.show = falg
-            this.orderId = orderId
             this.$refs.cancelorder.anima = true
+            if(!orderId) return
+            this.orderId = orderId
         },
         //弹出付款方式弹窗
         showPay(flag,alldata){
             this.$refs.actionSheetPaymen.showAction = flag
             this.moeny = alldata.orderProductAmountWebsite
+            if(!alldata) return
             this.orderData = alldata
         },
-        showPassWord(flag){
+        showPassWord(flag,alldata){
             this.$refs.actionSheetPassword.showAction = flag
+            if(!alldata) return
+            this.orderData = alldata
         },
         //刷新页面
         refreshOrder(){
@@ -210,7 +208,7 @@ export default {
         //获取到密码,请求接口
         getPassWord(value){
             let orderList = []
-            orderList.push(this.orderData.orderId)
+            orderList.push({orderId:this.orderData.orderId})
             let obj = {
                 payTypeDetail:this.payTypeDetail,
                 payPwd:value,
@@ -221,11 +219,6 @@ export default {
         }
     },
     components: {
-        dfh,
-        dfk,
-        ddgb,
-        ywc,
-        dsh,
         noSearch,
         actionSheetPassword,
         zhezhao,
@@ -238,7 +231,7 @@ export default {
 
 <style scoped lang="less">
 .bscroll-wrapper{
-    height: calc(100vh - 190px);
+    height: calc(100vh - 210px);
 }
 .my-order{
     .footprint-header{
@@ -286,6 +279,8 @@ export default {
                 .van-tab{
                     line-height: 80px;
                     flex-basis: 20% !important;
+                    font-size: 28px;
+                    color: #000;
                 }
                 .van-tabs__line{
                     bottom: 30px;

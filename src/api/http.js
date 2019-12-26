@@ -43,7 +43,6 @@ parkAxios.interceptors.request.use(function (config) {
         config.headers.token = localStorage.token; 
     }
     
-    // console.log(config.data,'123');
     // 在发送请求之前做些什么
     Toast.loading({
         message: 'loading',

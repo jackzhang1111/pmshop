@@ -17,7 +17,7 @@ export default {
 
     },
     mounted() {
-        console.log(123);
+        
     },
     watch: {
 
@@ -26,7 +26,13 @@ export default {
          //点击搜索按钮
         onSearch(){
            this.$router.push({name:'收藏夹搜索商品'})
-        }
+        },
+        //历史记录
+        searchHistory(){
+
+        },
+        //搜索发现
+        searchFind(){}
     },
     components: {
 
@@ -38,7 +44,7 @@ export default {
 .search-record{
     position: relative;
     background-color: #fff;
-    height: calc(100vh - 90px);
+    height: 100vh;
     box-sizing: border-box;
     .record{
         padding: 39px 30px 0;

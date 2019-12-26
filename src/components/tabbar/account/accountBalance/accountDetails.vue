@@ -11,7 +11,7 @@
                         </div>
                         <div class="con-p2">
                             <span>信用卡</span>
-                            <span>￥100.02</span>
+                            <span>{{jn}}100.02</span>
                         </div>
                         <div class="con-p3">
                             <span>交易流水号：</span>

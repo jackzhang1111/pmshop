@@ -1,13 +1,11 @@
 <template>
-<!-- 订单头部 -->
-    <div class="orderTitle">
-        <div class="footprint-header">
+    <div>
+        <div class="balance-header">
             <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis" @click="$router.push({name:'消息'})"/>
+            <span class="header-t2 c-orange" @click="title2Click">{{title2}}</span>
         </div>
         <div class="place"></div>
-        <router-view></router-view>
     </div>
 </template>
 
@@ -16,12 +14,20 @@ export default {
     props: {
         title:{
             type: String,
-            default: '我的订单'
+            default: ''
         },
+        title2:{
+            type: String,
+            default: ''
+        },
+        jumpName:{
+            type: String,
+            default: ''
+        }
     },
     data() {
         return {
-           
+            
         };
     },
     computed: {
@@ -37,7 +43,10 @@ export default {
 
     },
     methods: {
-
+        title2Click(){
+            if(this.jumpName =='') return
+            this.$emit('jumpRouter',this.jumpName)
+        }
     },
     components: {
 
@@ -46,7 +55,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.footprint-header{
+.balance-header{
     width: 100%;
     height: 88px;
     background-color: #f2f3f5;
@@ -54,7 +63,8 @@ export default {
     position: fixed;
     top:0;
     left:0;
-    z-index: 2;
+    line-height: 88px;
+    z-index: 1;
     .arrow-left{
         position: absolute;
         top:20px;
@@ -70,16 +80,8 @@ export default {
     }
     .header-t2{
         position: absolute;
-        top:20px;
-        right: 100px;
-        font-size: 40px;
-    }
-    .ellipsis{
-        position: absolute;
-        top:20px;
         right: 30px;
-        font-size: 40px;
-        transform: rotate(-90deg)
+        font-size: 30px;
     }
 }
 </style>

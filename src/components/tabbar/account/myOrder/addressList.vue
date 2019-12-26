@@ -1,14 +1,15 @@
 <template>
 <!-- 地址列表 -->
     <div class="address-list">
-        <div class="address" @click="toEditAddress">
+        <balance-header title="修改地址"></balance-header>
+        <div class="address" @click="toEditAddress" v-for="(address,index) in addressList" :key="index">
             <div class="address-text">
                 <div class="address-text-top">
-                    <span>收货人：陆丰</span>
-                    <span class="fl-right">15246616466</span>
+                    <span>收货人：{{address.name}}</span>
+                    <span class="fl-right">{{address.phoneNumber}}</span>
                 </div>
                 <div class="address-text-bottom">
-                    <span>收货地址：中国-广东省-深圳市马田街道南环大道禾仓路格雅大厦格雅表1栋3楼307</span>
+                    <span>收货地址：{{address.addreCitys}}{{address.userAddress}}</span>
                 </div>
             </div>
             <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
@@ -23,13 +24,20 @@
 </template>
 
 <script>
+import {useraddresslistApi} from '@/api/accountSettings/index.js'
+import balanceHeader from './itemComponents/balanceHeader'
 export default {
     props: {
 
     },
     data() {
         return {
-            istrue:false
+            istrue:true,
+            formData:{
+                limit: 10,
+                page: 1,
+            },
+            addressList:[]
         };
     },
     computed: {
@@ -39,7 +47,7 @@ export default {
 
     },
     mounted() {
-
+        this.useraddresslist(this.formData)
     },
     watch: {
 
@@ -50,10 +58,18 @@ export default {
         },
         toAddAddress(){
             this.$router.push({name:'新增地址'})
-        }
+        },
+        //用户收货地址列表
+        useraddresslist(data){
+            useraddresslistApi(data).then(res => {
+                if(res.code == 0){
+                    this.addressList = res.Data.list
+                }
+            })
+        },
     },
     components: {
-
+        balanceHeader
     },
 };
 </script>
@@ -66,6 +82,7 @@ export default {
         position: relative;
         padding:50px 30px 0;
         box-sizing: border-box;
+        margin-bottom: 20px;
         .address-text{
             width:597px;
             color: #333;

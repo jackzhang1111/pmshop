@@ -5,7 +5,8 @@
             <span class="header-t1">{{title}}</span>
             <span class="header-t2 c-orange">发表追评</span>
         </div>
-        <div class="evaluate-top">
+        <div class="place"></div>
+        <div class="evaluate-top" v-for="(i,index) in 2" :key="index">
             <div class="top-title">
                 <div class="good-img">
                     <img src="@/assets/img/confirmOrder/chanpin-07@2x.png" alt="">
@@ -78,19 +79,18 @@ export default {
 <style scoped lang="less">
 .append-evaluate{
     height: 100%;
-    background-color: #fff;
     .evaluate-header{
         width: 100%;
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: relative;
+        position: fixed;
+        z-index: 1;
         .arrow-left{
             position: absolute;
             top:20px;
             left:30px;
             font-size: 40px;
-            
         }
         .header-t1{ 
             display: inline-block;
@@ -105,7 +105,6 @@ export default {
             font-size: 36px;
             transform: translateY(-50%)
         }
-        
     }
     .evaluate-top{
         background-color: #fff;
@@ -127,18 +126,18 @@ export default {
                 overflow:hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: 30px;
+                font-size: 28px;
                 color: #333;
             }
         }
-       
         .top-textarea{
             padding: 0 30px;
             textarea{
                 width: 100%;
                 border:0;
                 font-size: 26px;
-                margin-bottom: 70px;
+                line-height: 39px;
+                margin-bottom: 20px;
             }
         }
         .uploader{
@@ -199,7 +198,6 @@ export default {
             height:2px;
             background:rgba(220,220,220,1);
         }
-        
     }
     .van-overlay{
         .overlay-wrapper{

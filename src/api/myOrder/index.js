@@ -43,3 +43,21 @@ export function getonlinepaytypelistApi(params) {
         data:params
     })
 }
+
+//订单申请仅退款页面获取订单和订单商品明细
+export function getconfirmrefundorderApi(params) {
+    return park({
+        url:`/appsaleorder/getconfirmrefundorder`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//订单申请仅退款
+export function refundorderApi(params) {
+    return park({
+        url:`/appsaleorder/refundorder`,
+        method: 'POST',
+        data:params
+    })
+}

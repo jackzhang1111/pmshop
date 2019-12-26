@@ -27,13 +27,13 @@
                 </div>
                 <div class="price">
                     <div class="p3">
-                        ￥596.00
+                        {{jn}}596.00
                     </div>
                     <div class="p4 fl-right">
                         x1
                     </div>
                     <div>
-                        ￥596.00
+                        {{jn}}596.00
                     </div>
                 </div>
                 <div style="height:40px;"></div>
@@ -79,16 +79,14 @@
 
         <van-overlay :show="show2" @click="show2 = false" class="overlay">
             <!-- 客服电话 -->
-            <div class="kefu">
-                <div class="top">联系电话</div>
-                <div class="bottom">233-5616 1166</div>
-            </div>
+            <kefu></kefu>
         </van-overlay>
 
     </div>
 </template>
 
 <script>
+import kefu from '@/multiplexing/kefu.vue'
 export default {
     props: {
 
@@ -117,7 +115,7 @@ export default {
         },
     },
     components: {
-
+        kefu
     },
 };
 </script>
@@ -323,29 +321,6 @@ export default {
                 }
             }
         }
-    }
-}
-.kefu{
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    width: 400px;
-    height: 220px;
-    background-color: #fff;
-    .top,.bottom{
-        height: 110px;
-        text-align: center;
-        line-height: 110px;
-    }
-    .top{
-        font-size:36px;
-        color: #333;
-    }
-    .bottom{
-        font-size:40px;
-        color: #0E6CCC;
-        border-top:1px solid #DCDCDC;
     }
 }
 .margin-l-40{

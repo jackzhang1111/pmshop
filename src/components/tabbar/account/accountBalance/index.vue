@@ -11,7 +11,7 @@
                 <span @click="jumpRouter('评论详情')">2,206条评论</span>
             </div>
             <div class="top-p3">
-                <span>当前余额: ￥10825.00</span>
+                <span>当前余额: {{jn}}10825.00</span>
             </div>
         </div>
         <div class="balance-bottom">

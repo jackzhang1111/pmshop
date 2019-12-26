@@ -20,6 +20,7 @@
                 </van-search>
             </div>
         </div>
+        <div class="place"></div>
     </div>
 </template>
 
@@ -109,6 +110,14 @@ export default {
                     line-height: 50px;
                 }
                 .van-field__clear{
+                    font-size: 30px;
+                }
+                .van-field__body{
+                    .van-field__control{
+                        font-size: 26px;
+                    }
+                }
+                .van-icon-search{
                     font-size: 30px;
                 }
             }

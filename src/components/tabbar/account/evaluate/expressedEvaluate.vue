@@ -6,7 +6,8 @@
             <span class="header-t1">{{title}}</span>
             <span class="header-t2 c-orange">发布</span>
         </div>
-        <div class="evaluate-top">
+        <div class="place"></div>
+        <div class="evaluate-top" v-for="(i,index) in 2" :key="index">
             <div class="top-title">
                 <div class="good-img">
                     <img src="@/assets/img/confirmOrder/chanpin-07@2x.png" alt="">
@@ -25,14 +26,15 @@
             <div class="uploader">
                 <van-uploader v-model="fileList" multiple :max-count="3"></van-uploader>
             </div>
-            <div class="niming">
+           
+        </div>
+         <div class="niming">
                 <div class="yuan" v-if="istrue" @click="istrue =!istrue"></div>
                 <div class="yuan-img" v-else @click="istrue =!istrue">
                     <img src="@/assets/img/confirmOrder/icon@2x.png">
                 </div>
                 <span class="niming-p1">匿名</span>
             </div>
-        </div>
         <div class="footer">
             <div class="top-rate">
                 <span class="rate-p3">物流</span>
@@ -51,7 +53,7 @@ export default {
     data() {
         return {
             title:'发表评价',
-            value:1,
+            value:5,
             username:'',
             fileList:[],
             fileList2:[],
@@ -86,7 +88,8 @@ export default {
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: relative;
+        position: fixed;
+        z-index: 1;
         .arrow-left{
             position: absolute;
             top:20px;
@@ -111,7 +114,7 @@ export default {
     }
     .evaluate-top{
         background-color: #fff;
-        padding-top: 40px;
+        padding: 40px 0;
         box-sizing: border-box;
         margin-bottom: 20px;
         .top-title{
@@ -145,7 +148,8 @@ export default {
                 width: 100%;
                 border:0;
                 font-size: 26px;
-                margin-bottom: 70px;
+                line-height: 39px;
+                margin-bottom: 20px;
             }
         }
         .uploader{
@@ -202,44 +206,44 @@ export default {
                 }
             }
         }
-        .niming{
-            height: 86px;
-            line-height: 86px;
-            box-sizing: border-box;
-            padding: 0 30px;
+    }
+    .niming{
+        height: 100px;
+        line-height: 100px;
+        box-sizing: border-box;
+        padding: 0 30px;
+        font-size:28px;
+        color: #333;
+        position: relative;
+        border-top:2px solid #DCDCDC;
+        border-bottom:2px solid #DCDCDC;
+        .yuan{
+            width:40px;
+            height:40px;
+            border-radius: 50%;
+            border:1px solid rgba(153,153,153,1);
+            position: absolute;
+            top:50%;
+            left:30px;
+            transform: translateY(-50%);
+        }
+        .yuan-img{
+            width:40px;
+            height:40px;
+            position: absolute;
+            top:50%;
+            left:30px;
+            transform: translateY(-50%);
+            img{
+                position: absolute;
+                top:0;
+                left:0
+            }
+        }
+        .niming-p1{
+            margin-left:60px;
             font-size:28px;
             color: #333;
-            position: relative;
-            border-top:2px solid #DCDCDC;
-            border-bottom:2px solid #DCDCDC;
-            .yuan{
-                width:40px;
-                height:40px;
-                border-radius: 50%;
-                border:1px solid rgba(153,153,153,1);
-                position: absolute;
-                top:50%;
-                left:30px;
-                transform: translateY(-50%);
-            }
-            .yuan-img{
-                width:40px;
-                height:40px;
-                position: absolute;
-                top:50%;
-                left:30px;
-                transform: translateY(-50%);
-                img{
-                    position: absolute;
-                    top:0;
-                    left:0
-                }
-            }
-            .niming-p1{
-                margin-left:60px;
-                font-size:28px;
-                color: #333;
-            }
         }
     }
     .footer{
@@ -247,6 +251,7 @@ export default {
         background-color: #fff;
         font-size:26px;
         line-height: 100px;
+        margin:20px 0 140px;
         .top-rate{
             height: 100px;
             line-height: 100px;

@@ -23,7 +23,7 @@
                     </span>
                     <span class="c-999">
                     </span>
-                    <span class="zhye c-999">账户余额(剩余￥10.00)</span>
+                    <span class="zhye c-999">账户余额(剩余{{jn}}10.00)</span>
                     <span class="buchong c-999">余额不足</span>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <template>
-<!-- 退款页面 -->
+<!-- 退货退款页面 -->
     <div class="refund">
         <balance-header :title="headerTitle"></balance-header>
         <div class="good-information">
@@ -7,46 +7,49 @@
                 <div class="good-detail-header">
                     <span>商品信息</span>
                 </div>
-                <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
+                <div class="good-detail-content" v-for="i in 2" :key="i">
                     <div class="good-detail-img">
                         <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                     </div>
                     <div class="good-detail-title">
-                        <span class="name">{{data.skuName}}</span>
+                        <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
                         <div class="guige">
-                            {{data.skuValuesTitle}}
+                            红色/L码
+                        </div>
+                        <div class="tkje">
+                            退款金额:
                         </div>
                     </div>
                     <div class="price">
                         <div class="p3">
-                            {{data.currencySignWebsite}}{{data.priceWebsite}}
+                            {{jn}}596.00
                         </div>
                         <div class="p4 fl-right">
-                            x{{data.shouldRefundNum}}
+                            x1
+                        </div>
+                        <div>
+                            {{jn}}596.00
                         </div>
                     </div>
-                    <div class="tkje">
-                        <span class="t1">退款金额:</span>
-                        <span class="fl-right t2">{{data.currencySignWebsite}}{{data.totalPriceWebsite}}</span>
-                    </div>
+                    <div style="height:35px;"></div>
                 </div>
             </div>
             <div class="cell" @click="showReason">
                 <span>退款原因</span>
-                <span class="text " :class="{'c-999': formData.reason == '请选择'}">{{formData.reason}}</span>
+                <span class="text " :class="{'c-999':reasonText=='请选择'}">{{reasonText}}</span>
                 <van-icon name="arrow" class="arrow c-999"/>
             </div>
             <div class="cell">
                 <span>退款金额</span>
                 <span class="text-tk c-orange f-30">
-                    {{detailObj.currencySignWebsite}}{{detailObj.orderAmountWebsite}}
+                    ￥596.00
                     <span class="c-999 f-22">(含运费）</span>
                 </span>
             </div>
         </div>
         <div class="cell">
             <span>退款说明</span>
-            <input type="text" class="input-xt" placeholder="选填" v-model="formData.remark">
+            <input type="text" class="input-xt" placeholder="选填">
         </div>
         <div class="up-load">
             <div class="title">
@@ -56,7 +59,7 @@
                 <upload-all @getfilePathList="getfilePathList" :maxCount="6"></upload-all>
             </div>
         </div>
-        <div class="btn-submit" @click="submit">
+        <div class="btn-submit">
             提交
         </div>
         <!-- 退款原因 -->
@@ -68,8 +71,6 @@
 import refundReason from './itemComponents/refundReason.vue'
 import uploadAll from '@/multiplexing/uploadAll.vue'
 import balanceHeader from './itemComponents/balanceHeader'
-import {getconfirmrefundorderApi,refundorderApi} from '@/api/myOrder/index.js'
-import {Toast} from 'vant'
 export default {
     props: {
 
@@ -78,21 +79,9 @@ export default {
         return {
             fileList:[],
             show1:false,
+            reasonText:'请选择',
             uploadList:[],
-            headerTitle:'申请退款',
-            formData:{
-                orderId:'',
-                orderSource:1,
-                reason:'请选择',
-                remark:'',
-                detailList:[],
-                imgList:[
-
-                ]
-            },
-            detailObj:{},
-            dataList:[],
-
+            headerTitle:'申请退货退款'
         };
     },
     computed: {
@@ -102,8 +91,7 @@ export default {
 
     },
     mounted() {
-        this.formData.orderId = this.$route.query.orderId
-        this.getconfirmrefundorder({orderId:this.$route.query.orderId})
+
     },
     watch: {
 
@@ -119,50 +107,12 @@ export default {
         },
         //获取退款原因
         getReasonText(text){
-            this.formData.reason = text
+            this.reasonText = text
         },
         //获取上传图片列表
         getfilePathList(list){
             this.uploadList = list
-            
-        },
-        getconfirmrefundorder(data){
-            getconfirmrefundorderApi(data).then(res => {
-                if(res.code == 0){
-                    this.detailObj = res.Data.order
-                    this.dataList = this.detailObj.detailList
-                    
-                }
-            })
-        },
-        refundorder(data){
-            refundorderApi(data).then(res => {
-                if(res.code == 0){
-                    Toast('提交成功')
-                    setTimeout(()=>{
-                        this.$router.go(-1)
-                    },1000)
-                }
-            })
-        },
-        //提交订单
-        submit(){
-            // this.formData.imgList = this.uploadList
-            this.uploadList.forEach(ele => {
-                let obj = {
-                    imgUrl:ele
-                }
-                this.formData.imgList.push(obj)
-            })
-            this.dataList.forEach(item => {
-                let obj = {
-                    detailId:item.detailId,
-                    detailNum:item.shouldRefundNum
-                }
-                this.formData.detailList.push(obj)
-                console.log(123);
-            })
-            this.refundorder(this.formData)
+            console.log(this.uploadList,'this.uploadList');
         }
     },
     components: {
@@ -200,7 +150,6 @@ export default {
             right:30px;
         }
         .input-xt{
-            width: 500px;
             margin-left:40px;
             height: 40px;
             border: 0;
@@ -237,53 +186,98 @@ export default {
         width: 100%;
         background-color: #fff;
         box-sizing: border-box;
-        padding: 30px 30px;
+        padding: 0 30px;
         position: relative;
         border-bottom: 1px solid #F2F3F5;
         .good-detail-img{
             width: 150px;
             height: 150px;
+            position: relative;
+            top:30px;
+            left:0px;
             display: inline-block;
         }
         .good-detail-title{
             display: inline-block;
+            position: absolute;
             width: 336px;
-            vertical-align: top;
-            margin-left:20px;
+            top:30px;
+            left:200px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
             .name{
+                display: inline-block;
                 margin-bottom: 24px;
                 color: #333;
-                font-size: 22px;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
-                overflow: hidden;
+                font-size: 22px
             }
             .guige{
                 color: #999;
                 font-size: 18px;
-                display: inline-block;
                 margin-bottom: 28px;
             }
-        }
-        .price{
-            float: right;
-            text-align: right;
-            font-size: 26px;
-            .p4{
-                color: #999;
-                font-size: 20px;
-            }
-        }
-        .tkje{
-            margin-left:170px;
-            .t1{
+            .tkje{
                 color: #999;
                 font-size: 22px;
             }
-            .t2{
+        }
+        .price{
+            position: absolute;
+            top:30px;
+            right:30px;
+            text-align: right;
+            font-size: 26px;
+            .p3{
                 font-size:26px;
                 color: #333;
+                margin-bottom: 5px;
+            }
+            .p4{
+                color: #999;
+                font-size: 20px;
+                margin-bottom: 90px;
+            }
+            .selection-right-stepper{
+                position: relative;
+                width: 100%;
+                height: 156px;
+                .add-btn{
+                    position: absolute;
+                    top:20px;
+                    right:0;
+                    width: 40px;
+                    height: 40px;
+                    border: 1px solid #999999;
+                    text-align: center;
+                    line-height: 40px;
+                    background-color: #EEEEEE;
+                    color: #666;
+                }
+                .reduce-btn{
+                    position: absolute;
+                    top:20px;
+                    right:128px;
+                    width: 40px;
+                    height: 40px;
+                    border: 1px solid #999999;
+                    text-align: center;
+                    line-height: 40px;
+                    background-color: #EEEEEE;
+                    color: #666;
+                }
+                .num{
+                    position: absolute;
+                    top:20px;
+                    right:40px;
+                    width: 88px;
+                    height: 40px;
+                    border-top: 1px solid #999999;
+                    border-bottom: 1px solid #999999;
+                    text-align: center;
+                    line-height: 40px;
+                }
             }
         }
     }
@@ -293,6 +287,33 @@ export default {
         font-size: 30px;
         color: #666;
         background-color: #fff;
+        .lan{
+            height: 100%;
+        }
+        .btn-qzf{
+            width:150px;
+            height:60px;
+            border:1px solid rgba(250,83,0,1);
+            border-radius:30px;
+            line-height: 60px;
+            text-align: center;
+            position: relative;
+            top:50%;
+            transform: translateY(-50%)
+
+        }
+        .btn-qxdd,.btn-xgdz{
+            width:180px;
+            height:60px;
+            border:1px solid rgba(153,153,153,1);
+            border-radius:30px;
+            line-height: 60px;
+            text-align: center;
+            position: relative;
+            top:50%;
+            transform: translateY(-50%);
+            margin-right:20px;
+        }
     }
 }
 .up-load{
@@ -327,6 +348,9 @@ export default {
 }
 .f-22{
     font-size: 22px;
+}
+.f-26{
+    font-size: 26px;
 }
 
 </style>

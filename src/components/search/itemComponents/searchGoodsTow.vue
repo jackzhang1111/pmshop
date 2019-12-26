@@ -1,14 +1,6 @@
 <template>
 <!-- 你可能还喜欢,推荐商品页 -->
     <div class="footer-exhibition">
-        <div class="nknxh" v-if="showIlike">
-            <span class="line-left"></span>
-            <span class="icon">
-                <img src="@/assets/img/tabbar/home/commodityDetails/disabled@2x.png">
-            </span>
-            <span class="nknxh-p1">你可能还喜欢</span>
-            <span class="line-right"></span>
-        </div>
         <div class="exhibition-con clearfix">
             <div class="exhibition-left" @click="toProduDetail(good.skuId)" v-for="good in dataList" :key="good.skuId">
                 <img :src="$webUrl+good.imgUrl">
@@ -38,14 +30,10 @@
 <script>
 export default {
     props: {
-        showIlike:{
-            type:Boolean,
-            default:true
-        },
-        footerData:{
-            type:Object,
+        twoDataList:{
+            type:Array,
             default: ()=>{
-                return {}
+                return []
             }
         },
     },
@@ -66,7 +54,7 @@ export default {
         this.getData()
     },
     watch: {
-        footerData:{
+        twoDataList:{
             handler:function(newVal, oldVal){
                 this.getData()
             },
@@ -82,9 +70,7 @@ export default {
             // this.$router.push({name:'商品详情',query:{skuId}})
         },
         getData(){
-            this.footerObj = Object.assign({},this.footerObj,this.footerData)
-            if(!this.footerObj.list) return
-            this.dataList = this.footerObj.list
+            this.dataList = this.twoDataList.map(o => Object.assign({}, o));
         }
     },
     components: {
@@ -103,32 +89,36 @@ export default {
     .nknxh{
         width: 100%;
         height: 85px;
+        // background-color: #F2F3F5;
         text-align: center;
         line-height: 85px;
         position: relative;
-        .line-left,.line-right{
+        .line-left{
             display: inline-block;
+            position: absolute;
             width: 40px;
             height: 2px;
             background-color: #666666;
-            vertical-align: super;
+            top:35px;
+            left:190px;
         }
         .nknxh-p1{
             font-size:28px;
             color: #666666;
-            vertical-align: top;
+        }
+        .line-right{
+            display: inline-block;
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background-color: #666666;
+            top:35px;
+            right:190px;
         }
         .icon{
             display: inline-block;
             width: 30px;
             height: 30px;
-            position: relative;
-            vertical-align: middle;
-            img{
-                position: absolute;
-                top:0;
-                left:0
-            }
         }
     }
     .exhibition-con{
