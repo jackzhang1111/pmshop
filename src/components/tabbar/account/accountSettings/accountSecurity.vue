@@ -3,7 +3,7 @@
         <div class="security-header">
             <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
+            <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')"/>
         </div>
         <div class="cell" @click="$router.push({name:'修改昵称'})">
             <span class="c-333">昵称</span>
@@ -96,12 +96,10 @@ export default {
             right: 100px;
             font-size: 40px;
         }
-        .ellipsis{
+        .chat{
             position: absolute;
             top:20px;
             right: 30px;
-            font-size: 40px;
-            transform: rotate(-90deg)
         }
     }
     .cell{

@@ -1,33 +1,47 @@
 <template >
   <!-- 消息订阅 -->
-  <div class="details c-b-gray">
-	<balance-header :iconShow="true"></balance-header>
-    <div class="plr30">
-      <h3 class="title">为什么是上海出了拼多多？</h3>
-      <div class="timeWrap">
-        <span>TOSPINO</span>
-        <span class="time">2019-10-23 15:30</span>
-      </div>
-      <!-- 内容区 -->
-      <div class="main">
-        <img src='@/assets/img/confirmOrder/picture@2x.png' alt />
-        <p>上周看到了拼多多2019年第二季度的财报，只能用四个字来形容：惊心动魄。</p>
-        <p>上周看到了拼多多2019年第二季度的财报，只能用四个字来形容：惊心动魄。</p>
-      </div>
-    </div>
-  </div>
+	<div class="details c-b-gray">
+		<balance-header :iconShow="true"></balance-header>
+		<div class="plr30">
+			<h3 class="title">{{detail.announceTitle}}</h3>
+			<div class="timeWrap">
+				<span>TOSPINO</span>
+				<span class="time">{{detail.publishTime}}</span>
+			</div>
+		<!-- 内容区 -->
+			<div class="main">
+				<img :src='$webUrl+detail.announceImg'/>
+				<div v-html="detail.announceContent"></div>
+			</div>
+		</div>
+  	</div>
 </template> 
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
+import {getsystemmesgmodelApi} from '@/api/information/index.js'
 export default {
 	data() {
-		return {};
+		return {
+			detail:{}
+		};
 	},
-  	methods: {},
+	mounted(){
+		this.getsystemmesgmodel(this.$route.query.announceId)
+	},
+  	methods: {
+		getsystemmesgmodel(id){
+			getsystemmesgmodelApi({announceId:id}).then(res => {
+				if(res.code == 0){
+					this.detail = res.tpAnnounce
+				}
+			})
+		}
+	},
   	components:{
 		balanceHeader
 	}
+
 };
 </script> 
 
@@ -86,7 +100,7 @@ export default {
 }
 .plr30 {
   box-sizing: border-box;
-  padding: 0 30px;
+  padding: 0 30px 78px;
 }
 .fl {
   float: left;

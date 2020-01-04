@@ -5,7 +5,7 @@
             <img src="@/assets/img/tabbar/home/logo@3x.png">
         </div>
         <div class="search">
-            <van-search v-model="value" shape="round" @click="toSearch" class="aaa"/>
+            <van-search v-model="value" shape="round" @click="toSearch"/>
         </div>
         <div class="icons">
             <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">

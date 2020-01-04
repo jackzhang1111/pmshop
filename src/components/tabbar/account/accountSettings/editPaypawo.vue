@@ -5,39 +5,57 @@
         <div class="edit-paypawo-content">
             <div class="m-b-19">
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="原支付密码">
+                    <input :type="inputType3" class="input-xt" placeholder="请输入当前支付密码" v-model="formData.oldPwd">
+                    <van-icon name="eye-o" class="pas-icon" v-if="eyeStuats3" @click="eyeStuats3 = !eyeStuats3"/>
+                    <van-icon name="closed-eye"  class="pas-icon" v-else @click="eyeStuats3 = !eyeStuats3"/>
                 </div>
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="输入新支付密码">
+                    <input :type="inputType" class="input-xt" placeholder="输入新密码" v-model="formData.userPwd">
                     <van-icon name="eye-o" class="pas-icon" v-if="eyeStuats" @click="eyeStuats = !eyeStuats"/>
                     <van-icon name="closed-eye"  class="pas-icon" v-else @click="eyeStuats = !eyeStuats"/>
                 </div>
                 <div class="cell">
-                    <input type="search"  class="input-xt" placeholder="确认支付密码">
+                    <input :type="inputType2" class="input-xt" placeholder="确认密码" v-model="formData.userPwd2">
+                    <van-icon name="eye-o" class="pas-icon" v-if="eyeStuats2" @click="eyeStuats2 = !eyeStuats2"/>
+                    <van-icon name="closed-eye"  class="pas-icon" v-else @click="eyeStuats2 = !eyeStuats2"/>
                 </div>
             </div>
-            <div class="btn">
-                <div class="btn-save">
-                    确定
-                </div>
-            </div>
+            <div class="btn" @click="submit">确定</div>
         </div>
     </div>
 </template>
 
 <script>
 import settingsHeader from './itemComponents/settingsHeader'
+import {updateuserpaypasswordApi} from '@/api/login/index.js'
+import {Toast} from 'vant'
 export default {
     props: {
 
     },
     data() {
         return {
-            eyeStuats:false
+            eyeStuats:false,
+            eyeStuats2:false,
+            eyeStuats3:false,
+            formData:{
+                oldPwd:'',
+                userPwd:'',
+                userPwd2:'',
+                msg_types:3
+            }
         };
     },
     computed: {
-
+        inputType(){
+            return this.eyeStuats ? 'text':'password'
+        },
+        inputType2(){
+            return this.eyeStuats2 ? 'text':'password'
+        },
+        inputType3(){
+            return this.eyeStuats3 ? 'text':'password'
+        }
     },
     created() {
 
@@ -49,7 +67,25 @@ export default {
 
     },
     methods: {
-
+        //用户修改登录或支付密码
+        updateuserpaypassword(data){
+            updateuserpaypasswordApi(data).then(res => {
+                if(res.code == 0){
+                    Toast('设置成功')
+                    this.$router.go(-1)
+                }else if(res.code == -121){
+                    Toast('原登录密码不正确')
+                }else if(res.code == -122){
+                    Toast('原支付密码不正确')
+                }else if(res.code == -12){
+                    Toast('密码不一致')
+                }
+            })  
+        },
+        //保存
+        submit(){
+            this.updateuserpaypassword(this.formData)
+        }
     },
     components: {
         settingsHeader
@@ -103,10 +139,7 @@ export default {
         color: #fff;
         font-size:34px;
         margin-top:40px;
-        .btn-save{
-            height:88px;
-            background:rgba(250,83,0,1);
-        }
+        background:rgba(250,83,0,1);
     }
 }
 .m-b-19{

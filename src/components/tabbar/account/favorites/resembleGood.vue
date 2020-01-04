@@ -4,8 +4,9 @@
         <div class="footprint-header">
             <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">相似产品</span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')"/>
         </div>
+        <div class="place"></div>
         <!-- 未失效商品 -->
         <div class="footprint-goods-content" v-for="product in footerData.list" :key="product.skuId">
             <div class="good-img">
@@ -109,7 +110,8 @@ export default {
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: relative;
+        position: fixed;
+        z-index: 2;
         .arrow-left{
             position: absolute;
             top:20px;
@@ -129,12 +131,10 @@ export default {
             right: 100px;
             top:30px;
         }
-        .ellipsis{
+        .chat{
             position: absolute;
             top:20px;
             right: 30px;
-            font-size: 40px;
-            transform: rotate(-90deg)
         }
     }
     .footprint-goods-content{

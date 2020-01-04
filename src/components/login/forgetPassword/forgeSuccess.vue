@@ -1,15 +1,13 @@
 <template>
 <!-- 输入验证码点击确定 => 修改成功页 -->
     <div class="forge-success">
-        <navar title="Forgot Password"></navar>
+        <navar title="忘记密码"></navar>
         <div class="content">
             <div class="logo">
                 <img src="@/assets/img/login/icon-02@3x.png">
             </div>
-            <p>Congratulations!You have successfully set the password.</p>
-            <div class="confirm-btn" @click='toLogin'>
-                Log In Now
-            </div>
+            <p>恭喜您，密码设置成功!</p>
+            <div class="confirm-btn" @click='toLogin'>立即登录</div>
         </div>
     </div>
 </template>
@@ -74,9 +72,9 @@ export default {
         height:88px;
         line-height: 88px;
         text-align: center;
-        background-color: #999;
         color: #fff;
         font-size: 40px;
+        background-color: #FA5300;
     }
 }
 </style>

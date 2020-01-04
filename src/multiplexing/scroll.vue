@@ -1,12 +1,12 @@
 <template>
   <div ref="wrapper">
     <div class="bscroll-container">
-      <div class="top-tip" v-show="pulldown && showTips">
+      <div class="top-tip" v-show="pulldown">
           <van-loading color="#1989fa"/>
       </div>
       <slot></slot>
        <!-- 底部提示信息 -->
-      <div class="bottom-tip" v-show="!pullup && data.length>0 && showTips">
+      <div class="bottom-tip" v-show="!pullup && data.length>0">
           已经到底了
       </div>
     </div>
@@ -86,18 +86,10 @@
         default: 20
       },
     },
-    data() {
-      return{
-        showTips:true,//是否可加载
-      }
-    },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
-        if(this.scroll.wrapperHeight >= this.scroll.scrollerHeight){
-          this.showTips = false
-        }
       }, 20)
       
     },

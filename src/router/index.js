@@ -12,6 +12,10 @@ import forgeSuccess from '@/components/login/forgetPassword/forgeSuccess.vue'
 import revisePassword from '@/components/login/forgetPassword/revisePassword.vue'
 //注册
 import register from '@/components/login/register/index.vue'
+import parenPay from '@/components/login/register/parenPay'
+import payPassword from '@/components/login/register/payPassword.vue'
+import payPasswordTwo from '@/components/login/register/payPasswordTwo.vue'
+
 //分类
 import classify from '@/components/tabbar/classify/index.vue'
 //购物车
@@ -68,6 +72,7 @@ import addressList from '@/components/tabbar/account/myOrder/addressList'
 import refund from '@/components/tabbar/account/myOrder/refund'
 import returnRefund from '@/components/tabbar/account/myOrder/returnRefund'
 import batchRefund from '@/components/tabbar/account/myOrder/batchRefund'
+import logistrefund from '@/components/tabbar/account/myOrder/logistrefund'
 import logistics from '@/components/tabbar/account/myOrder/logistics'
 
 //售后
@@ -163,6 +168,27 @@ export default new Router({
       name: '注册',
       component: register
     },
+
+    {
+      path: '/parenPay',
+      name: '设置支付密码母页',
+      component: parenPay,
+      children:[
+        {
+          path: 'payPassword',
+          name: '设置支付密码',
+          component: payPassword
+        },
+        {
+          path: 'payPasswordTwo',
+          name: '确定支付密码',
+          component: payPasswordTwo
+        },
+      ]
+    },
+    
+
+
     {
       path: '/commodityDetails',
       name: '商品详情',
@@ -222,6 +248,11 @@ export default new Router({
           path: 'orderDetail/batchRefund',
           name: '批量退货退款',   
           component: batchRefund,
+        },
+        {
+          path: 'orderDetail/logistrefund',
+          name: '包裹仅退款',   
+          component: logistrefund,
         },
         {
           path: 'orderDetail/logistics',

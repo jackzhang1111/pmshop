@@ -16,7 +16,7 @@
                     <img src="@/assets/img/confirmOrder/logistics@2x.png">
                 </div>
                 <span>{{orderStatus(detailObj.deliverType,'deliverTypes')}}</span>
-                <div class="fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics">
+                <div class="fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics(detailObj.orderId)">
                     <van-icon name="arrow" size="21" class="arrow-icon"/>
                 </div>
                 
@@ -66,10 +66,10 @@
                     </div>
                     <!-- 售后成功:按钮审核中或者退款成功 -->
                     <div v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3">
-                        <div class="sqsh" @click="toReturnRefund" v-if="true">退货退款</div>
-                        <div class="fl-right c-jinse" v-else>退款成功</div>
+                        <div class="sqsh" @click="toReturnRefund(data)" v-if="data.canReturn == 1">退货退款</div>
                     </div>
-                    <div class="fl-right c-jinse">申请中</div>
+                    <!-- <div class="fl-right c-jinse">申请中</div> -->
+                    <!-- <div class="fl-right c-jinse">退款成功</div> -->
                 </div>
                 <div class="mingxi m-t-29">
                     <span >商品总价：</span>
@@ -132,14 +132,14 @@
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 2">
                 <div class="btn-qzf fl-right c-orange" @click="showPay">确认收货</div>
-                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1">退货退款</div>
-                <div class="btn-xgdz fl-right" @click="toBatchRefund" v-else>退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1 && detailObj.canReturn == 1">退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toBatchRefund" v-if="dataList.length > 1 && detailObj.canReturn == 1">退货退款</div>
                 <div class="btn-xgdz fl-right" >查看物流</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 3">
                 <div class="btn-qzf fl-right c-orange">评价</div>
-                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1">退货退款</div>
-               <div class="btn-xgdz fl-right" @click="toBatchRefund" v-else>退货退款</div>
+                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1 && detailObj.canReturn == 1">退货退款</div>
+               <div class="btn-xgdz fl-right" @click="toBatchRefund" v-if="dataList.length > 1 && detailObj.canReturn == 1">退货退款</div>
                 <div class="btn-xgdz fl-right" >查看物流</div>
             </div>
             <div class="lan" v-if="detailObj.orderStatusApp == 4">
@@ -171,6 +171,7 @@ import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import zhezhao from '@/multiplexing/zhezhao'
 import kefu from '@/multiplexing/kefu.vue'
 import balanceHeader from './itemComponents/balanceHeader'
+import {mapActions} from 'vuex'
 export default {
     props: {
 
@@ -218,6 +219,7 @@ export default {
 
     },
     methods: {
+        ...mapActions(['setorderdetaillist']),
         jumpRouter(name){
             this.$router.push({name})
         },
@@ -264,18 +266,42 @@ export default {
             this.$router.push({name:'退款页面',query:{orderId:this.detailObj.orderId}})
         },
         //退货退款页面
-        toReturnRefund(){
-             this.$router.push({name:'退货退款页面'})
+        toReturnRefund(item){
+            let arr = []
+            if(!item.detailId){
+                this.dataList.forEach(ele => {
+                    if(ele.canReturn == 1){
+                        console.log(123);
+                        let obj = {detailId:ele.detailId}
+                        arr.push(obj)
+                        this.setorderdetaillist(arr)
+                    }
+                    
+                })
+            }else{
+                arr.push({detailId:item.detailId})
+                this.setorderdetaillist(arr)
+            }
+            this.$router.push({name:'退货退款页面',query:{orderId:this.detailObj.orderId}})
         },
         //批量退货退款页面
         toBatchRefund(){
-            this.$router.push({name:'批量退货退款'})
+            let arr = []
+            let arr1 = this.dataList.map(o => Object.assign({}, o))
+            arr1.forEach(item => {
+                let obj = {
+                    detailId:item.detailId
+                }
+                arr.push(obj)
+            })
+            this.setorderdetaillist(arr)
+            this.$router.push({name:'批量退货退款',query:{orderId:this.detailObj.orderId}})
         },
         refreshOrder(){
             this.$router.go(-1)
         },
-        toLogistics(){
-            this.$router.push({name:'物流信息'})
+        toLogistics(id){
+            this.$router.push({name:'物流信息',query:{orderid:id}})
         }
     },
     components: {

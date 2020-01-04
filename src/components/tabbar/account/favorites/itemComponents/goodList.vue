@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="goods-list" v-for="product in dataList" :key="product.skuId">
+        <div class="goods-list" v-for="(product,index) in dataList" :key="index">
             <!-- 未失效商品 -->
             <div class="footprint-goods-content">
                 <div class="fl-left">
@@ -30,12 +30,18 @@
 <script>
 export default {
     props: {
-        goodsObj:{
-            type:Object,
+        // goodsObj:{
+        //     type:Object,
+        //     default: ()=>{
+        //         return {}
+        //     }
+        // },
+        list:{
+            type:Array,
             default: ()=>{
-                return {}
+                return []
             }
-        },
+        }
     },
     data() {
         return {
@@ -55,11 +61,16 @@ export default {
         
     },
     watch: {
-        goodsObj:{
+        // goodsObj:{
+        //     handler:function(newVal, oldVal){
+        //         this.getData()
+        //     },
+        // },
+        list:{
             handler:function(newVal, oldVal){
-                this.getData()
+                this.getList()
             },
-        },
+        }
     },
     methods: {
          //找相似按钮
@@ -82,11 +93,16 @@ export default {
         getInputVal(value){
             // console.log(value);
         },
-        getData(){
-            this.dataObj = Object.assign({},this.dataObj,this.goodsObj)
-            if(!this.dataObj.list) return
-            this.dataList = this.dataObj.list
-        },
+        // getData(){
+        //     console.log(123);
+        //     this.dataObj = Object.assign({},this.dataObj,this.goodsObj)
+        //     if(!this.dataObj.list) return
+        //     this.dataList = this.dataObj.list
+        // },
+        //列表数据
+        getList(){
+            this.dataList = this.list.map(o => Object.assign({}, o));
+        }
     },
     components: {
         

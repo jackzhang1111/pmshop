@@ -1,34 +1,33 @@
 <template>
 <!-- 输入验证码点击确定 => 修改密码页 -->
     <div class="revise-password">
-        <navar title="Forgot Password"></navar>
+        <navar title="忘记密码"></navar>
         <div class="content">
-            <p class="padding-l-30">Reset A New Password</p>
+            <p class="padding-l-30">请设定新密码</p>
             <div class="line"></div>
             <div class="pass-word"> 
-                <span class="margin-l-30">New password:</span>
+                <span class="margin-l-30">密码</span>
                 <div class="input-con">
-                    <input type="text" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码">
+                    <input :type="inputType" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码" v-model="reviseData.userPwd">
                     <van-icon :name="eyeName" class="eye" @click="eyeStatus = !eyeStatus" size="18px"/>
                 </div>
                 <div class="line"></div>
             </div>
             <div class="re-enter"> 
-                <span class="margin-l-30">Re-enter:</span>
+                <span class="margin-l-30">确认密码</span>
                 <div class="input-con">
-                    <input type="text" class="name-input bgc-moren" placeholder="请再次输入新密码">
+                    <input type="password" class="name-input bgc-moren" placeholder="请再次输入新密码" v-model="reviseData.userPwd2">
                 </div>
                  <div class="line"></div>
             </div>
-            <div class="upload">
-                <div class="load-btn" @click="confirm">Confirm</div>
+            <div class="upload" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
+                <div class="load-btn" @click="confirm" >确定</div>
             </div>
             <div class="tips">
-                <span>Secure Password Tips:</span>
-                <p class="spot">&nbsp;&nbsp;Use at least 6 characters, a combination of numbers and letters is best.</p>
-                <p class="spot">&nbsp;&nbsp;Do not use the same password you have used with us previously.</p>
-                <p class="spot">&nbsp;&nbsp;Do not use dictionary words, your name, e-mail address, mobile phone number or other personal information that can be easily obtained.</p>
-                <p class="spot">&nbsp;&nbsp;Use at least 6 characters, a combination of numbers and letters is best.</p>
+                <span>安全密码提示:</span>
+                <div class="spot">&nbsp;&nbsp;至少包含6个字符，最好是数字和字母的组合；</div>
+                <div class="spot">&nbsp;&nbsp;不要使用您之前已经在本网站上使用过的密码；</div>
+                <div class="spot">&nbsp;&nbsp;不要使用字典词汇、您的姓名、邮箱地址、手机号码或其他可以轻易获取的个人信息。</div>
             </div>
         </div>
     </div>
@@ -36,6 +35,8 @@
 
 <script>
 import navar from '@/multiplexing/navar'
+import {setretrievepasswordApi} from '@/api/login/index.js'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -44,28 +45,51 @@ export default {
         return {
             eyeStatus:false,
             eyeName:'closed-eye',
+            reviseData:{
+                msg_phone:'',
+                msg_types:'2',
+                msg_num:'',
+                userPwd:'',
+                userPwd2:''
+            },
+            inputType:'password'
         };
     },
     computed: {
-
+        disabledSubmit() {
+            return this.reviseData.userPwd2.length >= 6 
+        }
     },
     created() {
-
+        
     },
     mounted() {
-
+        this.reviseData.msg_phone = this.$route.query.phone
+        this.reviseData.msg_num = this.$route.query.verCode
     },
     watch: {
         eyeStatus:{
             handler:function(newVal, oldVal){
                 this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
-                console.log(newVal,'newVal')
+                this.eyeStatus ? this.inputType = 'text' : this.inputType = 'password'
             },
         },
     },
     methods: {
         confirm(){
-            this.$router.push({name:'修改密码成功'})
+            if(this.reviseData.userPwd != this.reviseData.userPwd2){
+                Toast('两次密码输入不一样')
+            }else{
+                this.setretrievepassword(this.reviseData)
+            }
+        },
+        //找回登录密码支付密码
+        setretrievepassword(data){
+            setretrievepasswordApi(data).then(res => {
+                if(res.code == 0){
+                    this.$router.push({name:'修改密码成功'})
+                }
+            })
         }
     },
     components: {
@@ -92,7 +116,6 @@ export default {
         }
         .upload{
             width: 100%;
-            padding:0 40px;
             height:88px;
             position: absolute;
             top:358px;
@@ -121,13 +144,15 @@ export default {
                 font-weight:600;
             }
             .spot{
-                 position: relative;
-                 font-size: 18px;
-                 &:after {
+                margin-top:10px;
+                position: relative;
+                font-size: 18px;
+                line-height:36px;
+                &:after {
                     content: ' ';
                     position: absolute;
                     left: 0px;
-                    top: 5px;
+                    top: 12px;
                     width: 6px;
                     height: 6px;
                     background-color: #666666;
@@ -197,6 +222,7 @@ export default {
             width: 350px;
             border: 0;
             left:110px;
+            font-size: 30px;
         }
         .password-icon{
             position: absolute;

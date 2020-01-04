@@ -266,6 +266,9 @@ export default {
         //弹出支付成功
         showsucess(){
             this.$refs.sucess.showAction = true
+            setTimeout(()=>{
+                this.$router.push({name:'我的订单',query:{active:2}})
+            },1000)
         },
         //弹出密码框
         showpassword(){
@@ -377,6 +380,9 @@ export default {
             orderlaunchpayApi(data).then(res => {
                 if(res.code == 0){
                     this.showsucess()
+
+                }else if(res.code == 21){
+                    this.$router.push({name:'设置支付密码'})
                 }
             })
         },

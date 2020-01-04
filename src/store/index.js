@@ -38,6 +38,10 @@ const state = {
     adressItem:{},//更换选择收货地址时存储
 
     orderTitleName:'我的订单',//orderTitle组件头部的标题
+
+    payPassword:'',//设置支付密码
+
+    orderdetailList:[]//订单多个商品退货退款
     
 }
 const getters = {
@@ -56,6 +60,12 @@ const mutations = {
     },
     ORDERTITLENAME(state,string){
         return state.orderTitleName = string
+    },
+    SETPAYPASSWORD(state,string){
+        return state.payPassword = string
+    },
+    SETORDERDETAILLIST(state, arr=[]){
+        return (state.orderdetailList = arr)
     }
 }
 
@@ -74,7 +84,19 @@ const actions = {
     },
     ordertitlename(context,string){
         return context.commit('ORDERTITLENAME', string)
-    }
+    },
+    //存支付密码
+    setpaypassword(context,string){
+        return context.commit('SETPAYPASSWORD', string)
+    },
+    //清除支付密码
+    clearpaypassword(context){
+        return context.commit('SETPAYPASSWORD', '')
+    },
+    //订单多个商品退货退款数据存储
+    setorderdetaillist(context, arr=[]){
+        return context.commit('SETORDERDETAILLIST', arr)
+    },
 }
 
 export default new Vuex.Store({

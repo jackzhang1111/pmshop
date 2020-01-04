@@ -2,55 +2,69 @@
     <div class="logistics">
         <balance-header></balance-header>
         <div class="logistics-con">
-            <div class="baoguo">
-                <div class="baoguo-header">包裹一</div>
+            <div class="baoguo" v-for="(parcel,index) in dataList" :key="parcel.orderId" @click="baoguoInformation(parcel)">
+                <div class="baoguo-header">包裹{{index+1}}</div>
                 <div class="baoguo-con">
-                    <div class="aaa">
-                        <div class="good-img" v-for="i in 1" :key="i">
-                            <img src="../../../../assets/img/goodsDetails/02@2x.png" alt="">
+                    <div class="good-con">
+                        <div class="good-img" v-for="product in parcel.detailList" :key="product.detailId">
+                            <img :src="$webUrl+product.skuImg">
                         </div>
-                        <div class="right-con"  v-if="true">
-                            <div class="p1">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大包</div>
+                        <div class="right-con"  v-if="parcel.detailList.length == 1">
+                            <div class="p1">{{parcel.detailList[0].supplyName}}</div>
                         </div>
                     </div>
-                    <div class="btns">
-                        <div class="tk-btn">退款</div>
+                    <div class="btns" v-if="parcel.canRefund == 1">
+                        <div class="tk-btn" @click="tuikuan(parcel)">退款</div>
                     </div>
                 </div>
             </div>
             <div class="wuliu">
                 <div class="wuliu-title">
-                    <span class="t1">TOSPINO物流</span>
+                    <span class="t1">{{expressName}}</span>
                     <span class="t2">客服：61465656</span>
                 </div>
-                <div class="wuliu-num">物流单号：1416161625622611</div>
+                <div class="wuliu-num">
+                    物流单号：{{expressNo}}
+                    <span class="c-orange">复制</span>
+                </div>
             </div>
 
             <div class="liucheng">
-                <van-steps direction="vertical" :active="active" active-color="#FA5300" class="steps-con">
-                    <van-step class="steps-item" v-for="i in 5" :key="i">
-                        <h3>退款成功</h3>
-                        <p class="p1">已成功退还到你的账户，总金额：{{jn}}74.48</p>
-                        <p class="p2">2016-07-12 12:40</p>
+                <van-steps direction="vertical" :active="logisticsList.length" active-color="#FA5300" class="steps-con">
+                    <van-step class="steps-item" v-for="(logistics,index) in logisticsList" :key="index">
+                        <h3>{{logistics.orderStatusNote}}</h3>
+                        <p class="p1">{{logistics.remark}}</p>
+                        <p class="p2">{{logistics.addTime}}</p>
                     </van-step>
                 </van-steps>
             </div>
-            <footer-exhibition></footer-exhibition>
-            
         </div>
+        <footer-exhibition :footerData="footerData"></footer-exhibition>
     </div>
 </template>
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
 import footerExhibition from '@/multiplexing/footerExhibition'
+import {getlogisticsorderApi} from '@/api/myOrder/index.js'
+import {guessyoulikeApi} from '@/api/search/index'
 export default {
     props: {
 
     },
     data() {
         return {
-            active: 2
+            active: 0,
+            dataList:[],
+            logisticsList:[],
+            expressName:'',
+            expressNo:'',
+            footerFromData:{
+                page:1,
+                limit:6,
+                seraname:''
+            },
+            footerData:{}
         };
     },
     computed: {
@@ -60,13 +74,49 @@ export default {
 
     },
     mounted() {
-
+        this.getlogisticsorder(this.$route.query.orderid)
+        this.guessyoulike(this.footerFromData)
     },
     watch: {
 
     },
     methods: {
-
+        getlogisticsorder(id){
+            getlogisticsorderApi({orderId:id}).then(res => {
+                if(res.code == 0){
+                    this.dataList = res.Data.logisticsOrderList
+                    this.logisticsList = this.dataList[0].actionList
+                    this.expressName = this.dataList[0].expressName
+                    this.expressNo = this.dataList[0].expressNo
+                }
+            })
+        },
+        //点击的包裹信息
+        baoguoInformation(parcel){
+            this.logisticsList = parcel.actionList
+            this.expressName = parcel.expressName
+            this.expressNo = parcel.expressNo
+        },
+        //猜你喜欢
+        guessyoulike(data){
+            guessyoulikeApi(data).then(res => {
+                if(res.code == 0){
+                    this.footerData = res.Data
+                    this.footerData.list.forEach(item => {
+                        if(item.discountPrice == null){
+                            item.discountPrice = item.salePrice
+                        }
+                    });
+                }
+            })
+        },
+        //退款
+        tuikuan(parcel){
+            if(parcel.detailList.length > 1){
+                this.$router.push({name:'包裹仅退款',query:{orderId:parcel.orderId}})
+            }
+            console.log(parcel,'length');
+        }
     },
     components: {
         balanceHeader,
@@ -80,18 +130,19 @@ export default {
     .logistics-con{
         padding: 0 30px 41px;
         .baoguo{
-            padding: 0 40px;
             background-color: #fff;
             font-size:24px;
             color: #999;
             margin-bottom: 14px;
             .baoguo-header{
                 height: 60px;
-                line-height: 60px
+                line-height: 60px;
+                padding: 0 40px;
+                border-bottom: 1px solid #E6E6E6;
             }
             .baoguo-con{
-                padding: 20px 0 40px;
-                .aaa{
+                padding: 20px 40px 40px;
+                .good-con{
                     display: flex;
                     flex-wrap: wrap;
                     flex-direction:row;
@@ -108,8 +159,9 @@ export default {
                 .right-con{
                     display: inline-block;
                     width: 458px;
-                    line-height:36px;
                     margin-left:20px;
+                    font-size: 28px;
+                    line-height:36px;
                 }
                 .btns{
                     overflow: hidden;

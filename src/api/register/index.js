@@ -9,7 +9,7 @@ export function uploadImgApi(params,type) {
 }
 
 //主营业务列表
-export function membertypelitApi(params,type) {
+export function membertypelitApi(params) {
     return park({
         url:`/h5login/getmembertypelevellit`,
         method: 'POST',
@@ -18,7 +18,7 @@ export function membertypelitApi(params,type) {
 }
 
 //注册用户
-export function userregisterApi(params,type) {
+export function userregisterApi(params) {
     return park({
         url:`/h5login/h5/userregister`,
         method: 'POST',

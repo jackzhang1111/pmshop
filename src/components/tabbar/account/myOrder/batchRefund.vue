@@ -1,22 +1,22 @@
 <template>
-<!-- 批量退款 -->
+<!-- 批量退货退款 -->
     <div class="batch-refund">
-        <balance-header title="批量退款"></balance-header>
+        <balance-header title="批量退货退款"></balance-header>
         <div class="good-information">
             <scroll :data='recordGroup' class="bscroll-wrapper" ref="wrapper">
                 <div class="good-detail">
-                    <div class="good-detail-content" v-for="(i,index) in 8" :key="i">
-                        <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox" checked-color="#FA5300" @change="productCheckBox"></van-checkbox>
+                    <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
+                        <van-checkbox v-model="data.checked" icon-size="24px" class="img-checkbox" checked-color="#FA5300" @click="productCheckBox(data)"></van-checkbox>
                         <div class="good-detail-img">
-                            <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                            <img :src="$webUrl+data.skuImg">
                         </div>
                         <div class="good-detail-title">
-                            <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
-                            <div class="guige">红色/L码</div>
+                            <span class="name">{{data.skuName}}</span>
+                            <div class="guige">{{data.skuValuesTitle}}</div>
                         </div>
                         <div class="price fl-right">
-                            <div class="p3">{{jn}}596.00</div>
-                            <div class="p4 fl-right">x{{index}}</div>
+                            <div class="p3">{{data.currencySignWebsite}}{{data.priceWebsite}}</div>
+                            <div class="p4 fl-right">x{{data.shouldReturnNum}}</div>
                         </div>
                     </div>
                 </div>
@@ -24,8 +24,8 @@
             </scroll>
             <div class="settlement">
                 <span class="settlement-text">
-                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="allCheckBox(allchecked)"></van-checkbox>
-                    <span class="btn1" @click="assign">确认</span>
+                    <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="allCheckBox"></van-checkbox>
+                    <span class="btn1" @click="assign" :style="{backgroundColor:(btnFlag?'#FA5300':'#999')}">确认</span>
                     <span class="p1">全选</span>
                 </span>
             </div>
@@ -35,6 +35,8 @@
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
+import {getconfirmreturnorderApi} from '@/api/myOrder/index.js'
+import {mapState,mapActions} from 'vuex'
 export default {
     props: {
 
@@ -42,34 +44,91 @@ export default {
     data() {
         return {
             checked:false,
-            recordGroup:[]
+            recordGroup:[],
+            dataList:[],
+            assignFlag:false,
+            btnFlag:false
         };
     },
     computed: {
-
+        ...mapState({
+            orderdetailList:state=>state.orderdetailList
+        }),
     },
     created() {
 
     },
     mounted() {
-
+        this.getconfirmreturnorder({orderId:this.$route.query.orderId,detailList:[]})
+    },
+    beforeDestroy(){
+        if(this.assignFlag) {
+            let arr = []
+            this.dataList.forEach(item => {
+                if(item.checked){
+                    let obj = {
+                        detailId:item.detailId,
+                    }
+                    arr.push(obj)
+                }
+            })
+            this.setorderdetaillist(arr)
+        }else{
+            this.setorderdetaillist([])
+        }
     },
     watch: {
 
     },
     methods: {
+        ...mapActions(['setorderdetaillist']),
         //全选复选框
-        allCheckBox(checkFlag){
-            
+        allCheckBox(){
+            this.dataList.forEach(ele => {
+                ele.checked = this.checked
+            })
             this.$forceUpdate()
+            this.disabledSubmit()
+            
         },
         //单件商品复选框
-        productCheckBox(){
-
+        productCheckBox(item){
+            item.checked = !item.checked
+            this.$forceUpdate()
+            this.disabledSubmit()
         },
         //确定按钮
         assign(){
-            this.$router.push({name:'退货退款页面'})
+            if(!this.btnFlag) return
+            this.assignFlag = true
+            this.$router.push({name:'退货退款页面',query:{orderId:this.$route.query.orderId}})
+        },
+
+        //批量退货退款明细
+        getconfirmreturnorder(data){
+            getconfirmreturnorderApi(data).then(res => {
+                if(res.code == 0){
+                    res.Data.order.detailList.forEach(ele => {
+                        if(ele.shouldReturnNum > 0){
+                            this.dataList.push(ele)
+                        }
+                    })
+                    this.dataList.forEach(item => {
+                        item.checked = false
+                    })
+                }
+            })
+        },
+
+        //判断是否有选
+        disabledSubmit(){
+            let flag = false
+            this.dataList.forEach(ele => {
+                if(ele.checked == true){
+                    flag = true
+                }
+            })
+           this.btnFlag = flag
         }
     },
     components: {
@@ -187,7 +246,6 @@ export default {
             width: 340px;
             height: 100%;
             right:0px;
-            border:2px solid rgba(250,83,0,1);
             color: #fff;
             font-size:42px;
             line-height: 120px;

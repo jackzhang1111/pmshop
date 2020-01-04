@@ -1,4 +1,5 @@
 <template>
+<!-- 更换手机号码 -->
     <div class="accept-otp">
         <settings-header title="验证信息"></settings-header>
         <div class="content">
@@ -11,8 +12,13 @@
                 </div>
             </div>
             <div class="accept-otp-middle">
-                <input type="search" class="input-xt" placeholder="请输入验证码">
-                <span class="count-down">Resend after 59s</span>
+                <input type="search" class="input-xt" placeholder="请输入验证码" v-model="verCode">
+                <!-- <span class="count-down">Resend after 59s</span> -->
+                <div class="count-down">
+                    <!-- <div class="count-down-btn">59s后重发</div> -->
+                    <div @click="getCode" v-show="countTrue">{{countdown}}</div>
+                    <div v-show="!countTrue">{{count}}S</div>
+                </div>
             </div>
             <div class="accept-otp-btn">
                 确定
@@ -24,13 +30,23 @@
 
 <script>
 import settingsHeader from './itemComponents/settingsHeader'
+import {msglistApi} from '@/api/login/index.js'
 export default {
     props: {
 
     },
     data() {
         return {
-
+            timer: null,
+            countdown:'发送验证码',
+            count: '',
+            countTrue:true,
+            verCode:'',
+            yzmData:{
+                msgphone:'',
+                types:'',
+                areaCode:'86'
+            }
         };
     },
     computed: {
@@ -46,7 +62,36 @@ export default {
 
     },
     methods: {
-
+        //倒计时
+        getCode(){
+            const TIME_COUNT = 60;
+            if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.countTrue = false;
+                this.timer = setInterval(() => {
+                    if (this.count > 0 && this.count <= TIME_COUNT) {
+                        this.count--;
+                    } else {
+                        this.countTrue = true;
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }, 1000)
+            }
+            this.msglist(this.yzmData)
+        },
+        //验证码
+        msglist(data){
+            msglistApi(data).then(res => {
+                if(res.code == 0){
+                    
+                }else if(res.code == 1){
+                    Toast('手机号一天不能超于20条短信发送请求')
+                }else{
+                    Toast('error')
+                }
+            })
+        }
     },
     components: {
         settingsHeader

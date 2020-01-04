@@ -1,66 +1,55 @@
 <template>
 <!-- 售后详情 -->
     <div class="after-sales-detail">
-        <div class="after-sales-status">
-            待审核
-        </div>
+        <div class="after-sales-status">{{orderStatus(detailData.orderStatusApp,'statusList')}}</div>
         <div class="cell" @click="jumpRouter('售后流程')">
-            <span>退款原因</span>
+            <span>协商历史</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
         <div class="good-detail" >
             <div class="good-detail-header">
-                <span>商品信息</span>
+                <span>退货商品</span>
             </div>
-            <div class="good-detail-content" v-for="i in 2" :key="i">
+            <div class="good-detail-content" v-for="(detail,index) in detailData.detailList" :key="index">
                 <div class="good-detail-img">
                     <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
                 </div>
                 <div class="good-detail-title">
-                    <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
-                    <div class="guige">
-                        红色/L码
-                    </div>
-                    <div class="tkje">
-                        退款金额:
-                    </div>
+                    <span class="name">{{detail.skuName}}</span>
+                    <div class="guige">{{detail.skuValuesTitle}}</div>
                 </div>
                 <div class="price">
-                    <div class="p3">
-                        {{jn}}596.00
-                    </div>
-                    <div class="p4 fl-right">
-                        x1
-                    </div>
-                    <div>
-                        {{jn}}596.00
-                    </div>
+                    <div class="p3">{{detail.currencySignWebsite}}{{detail.priceWebsite}}</div>
+                    <div class="p4 fl-right">x{{detail.detailNum}}</div>
                 </div>
-                <div style="height:40px;"></div>
+                <div class="tkje">
+                    <span>退款金额</span>
+                    <span class="fl-right">{{detail.currencySignWebsite}}{{detail.totalPriceWebsite}}</span>
+                </div>
             </div>
         </div>
         <div class="address-p4">
             <div class="p4-middle">
                 <div class="middle-p1">
                     <span class="c-999">退货原因:</span>
-                    <span class="margin-l-40 c-333">少件</span>
+                    <span class="margin-l-40 c-333">{{detailData.reason}}</span>
                 </div>
                 <div class="middle-p2">
                     <span class="c-999">退货编号:</span>
-                    <span class="margin-l-40 c-333">XSD16562532362562546</span>
+                    <span class="margin-l-40 c-333">{{detailData.orderSn}}</span>
                 </div>
                 <div class="middle-p1">
                     <span class="c-999">订单编号:</span>
-                    <span class="margin-l-40 c-333">XDS54616461156131642</span>
+                    <span class="margin-l-40 c-333">{{detailData.saleOrderSn}}</span>
                     <span class="fl-right c-orange">复制</span>
                 </div>
                 <div class="middle-p1">
                     <span class="c-999">申请时间:</span>
-                    <span class="margin-l-40 c-333">2019-10-21 19:20:30</span>
+                    <span class="margin-l-40 c-333">{{detailData.orderAddtime}}</span>
                 </div>
                 <div class="middle-p1">
                     <span class="c-999">退款总额:</span>
-                    <span class="margin-l-40 c-orange">￥596.00</span>
+                    <span class="margin-l-40 c-orange">{{detailData.currencySignWebsite}}{{detailData.orderAmountWebsite}}</span>
                 </div>
             </div>
         </div>
@@ -70,11 +59,9 @@
             </div>
             <span @click="show2 = true">拨打电话</span>
         </div>
-        <div style="height:100px"></div>
-        <div class="footer">
-            <div class="btn-cxsq">
-                撤销申请
-            </div>
+        <div class="kongbai"></div>
+        <div class="footer" v-if="detailData.orderStatusApp == 0">
+            <div class="btn-cxsq" @click="cxsq">撤销申请</div>
         </div>
 
         <van-overlay :show="show2" @click="show2 = false" class="overlay">
@@ -87,6 +74,7 @@
 
 <script>
 import kefu from '@/multiplexing/kefu.vue'
+import {backorderinfoApi,revokebackorderApi} from '@/api/afterSales/index'
 export default {
     props: {
 
@@ -94,7 +82,20 @@ export default {
     data() {
         return {
             arrowDown:true,
-            show2:false
+            show2:false,
+            detailData:{},
+            statusList:[
+                {type:0,name:'待审核'},
+                {type:1,name:'待寄回'},
+                {type:2,name:'待退款'},
+                {type:3,name:'退款成功'},
+                {type:4,name:'已拒绝'},
+                {type:5,name:'已取消'},
+            ],
+            backTypeList:[
+                {type:1,name:'仅退款'},
+                {type:2,name:'退货退款'},
+            ]
         };
     },
     computed: {
@@ -104,7 +105,7 @@ export default {
 
     },
     mounted() {
-
+        this.backorderinfo(this.$route.query.id)
     },
     watch: {
 
@@ -113,6 +114,35 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        //售后详情
+        backorderinfo(id){
+            backorderinfoApi({order_id:id}).then(res => {
+                if(res.code == 0){
+                    this.detailData = res.Data
+                }
+            })
+        },
+        //编译状态
+        orderStatus(type,list){
+            let name = ''
+            this[list].forEach(statu => {
+                if(statu.type == type){
+                    name = statu.name
+                }
+            })
+            return name
+        },
+        //撤销申请
+        cxsq(){
+            this.revokebackorder(this.detailData.orderId)
+        },
+        revokebackorder(id){
+            revokebackorderApi({orderId:id}).then(res => {
+                if(res.code == 0){
+                    this.backorderinfo(id)
+                }
+            })
+        }
     },
     components: {
         kefu
@@ -183,6 +213,9 @@ export default {
             vertical-align: sub;
         }
     }
+    .kongbai{
+        height: 200px;
+    }
     .footer{
         height: 100px;
         width: 100vw;
@@ -190,14 +223,13 @@ export default {
         padding: 0 30px;
         line-height: 100px;
         text-align: right;
-        // position: fixed;
-        // bottom: 0;
+        position: fixed;
+        bottom: 0;
         box-sizing: border-box;
         .btn-cxsq{
             width:148px;
             height:48px;
             border:1px solid #FA5300;
-            border-radius:5px;
             display: inline-block;
             text-align: center;
             line-height: 48px;
@@ -223,53 +255,43 @@ export default {
         }
     }
     .good-detail-content{
-        width: 100%;
         background-color: #fff;
-        box-sizing: border-box;
-        padding: 0 30px;
+        padding: 30px 30px;
         position: relative;
         border-bottom: 1px solid #F2F3F5;
         .good-detail-img{
             width: 150px;
             height: 150px;
-            position: relative;
-            top:30px;
-            left:0px;
             display: inline-block;
+            margin-right:20px;
+            vertical-align: top;
         }
         .good-detail-title{
             display: inline-block;
-            position: absolute;
             width: 336px;
-            top:30px;
-            left:200px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+            line-height: 39px;
             .name{
                 display: inline-block;
                 margin-bottom: 24px;
                 color: #333;
-                font-size: 22px
+                font-size: 22px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
             }
             .guige{
                 color: #999;
                 font-size: 18px;
-                display: inline-block;
                 margin-bottom: 28px;
-            }
-            .tkje{
-                color: #999;
-                font-size: 22px;
             }
         }
         .price{
-            position: absolute;
-            top:30px;
-            right:30px;
+            width: 99px;
+            float: right;
             text-align: right;
             font-size: 26px;
+            line-height: 39px;
             .p3{
                 font-size:26px;
                 color: #333;
@@ -278,7 +300,6 @@ export default {
             .p4{
                 color: #999;
                 font-size: 20px;
-                margin-bottom: 90px;
             }
             .selection-right-stepper{
                 position: relative;
@@ -320,6 +341,12 @@ export default {
                     line-height: 40px;
                 }
             }
+        }
+        .tkje{
+            font-size:26px;
+            height:40px;
+            margin-left:170px;
+            line-height: 40px;
         }
     }
 }

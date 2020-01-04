@@ -139,6 +139,8 @@ import navar from '@/multiplexing/navar'
 import {membertypelitApi,userregisterApi} from '@/api/register/index'
 import uploadOne from '@/multiplexing/uploadOne'
 import choiceList from '@/multiplexing/choiceList.vue'
+import {msglistApi} from '@/api/login/index.js'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -197,10 +199,6 @@ export default {
                     required: true,
                     messages: "验证码不正确"
                 },
-                email:{
-                    required: true,
-                    messages: "用户手机号码不正确"
-                },
                 userPwd:{
                     required: true,
                     messages: "密码不正确"
@@ -250,7 +248,12 @@ export default {
                     areaCode:''
                 }
             },
-            memberList: []//主营业务列表
+            memberList: [],//主营业务列表
+            yzmData:{
+                msgphone:'',
+                types:'1',
+                areaCode:'86'
+            }
         };
     },
     computed: {
@@ -275,10 +278,15 @@ export default {
     },
     methods: {
         toRevise(){
-            if(!disabledSubmit) return
+            if(!this.disabledSubmit) return
             this.userregister()
         },
         getCode(){
+            console.log(this.formData,'this.formData');
+            if(this.formData.mobile == ''){
+                Toast('请输入手机号码')
+                return
+            }
             const TIME_COUNT = 60;
             if (!this.timer) {
                 this.count = TIME_COUNT;
@@ -293,6 +301,9 @@ export default {
                     }
                 }, 1000)
             }
+            
+            this.yzmData.msgphone = this.formData.mobile
+            this.msglist(this.yzmData)
         } ,
         getfilePath(path,imgName){
             if(imgName == '公司正面照'){
@@ -376,6 +387,18 @@ export default {
                     setTimeout(()=>{
                         this.$router.push({name:'登录'})
                     },2000)
+                }
+            })
+        },
+        //验证码
+        msglist(data){
+            msglistApi(data).then(res => {
+                if(res.code == 0){
+                    
+                }else if(res.code == 1){
+                    Toast('手机号一天不能超于20条短信发送请求')
+                }else{
+                    Toast('error')
                 }
             })
         }

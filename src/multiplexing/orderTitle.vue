@@ -4,10 +4,10 @@
         <div class="footprint-header">
             <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis" @click="$router.push({name:'消息'})"/>
+            <van-icon name="chat-o" size="17px" @click="jumpRouter('消息')" class="chat"/>
         </div>
         <div class="place"></div>
-        <router-view></router-view>
+        
     </div>
 </template>
 
@@ -37,7 +37,9 @@ export default {
 
     },
     methods: {
-
+        jumpRouter(name){
+            this.$router.push({name})
+        },
     },
     components: {
 
@@ -74,12 +76,10 @@ export default {
         right: 100px;
         font-size: 40px;
     }
-    .ellipsis{
+    .chat{
         position: absolute;
         top:20px;
         right: 30px;
-        font-size: 40px;
-        transform: rotate(-90deg)
     }
 }
 </style>

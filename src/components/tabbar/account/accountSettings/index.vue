@@ -4,7 +4,7 @@
         <div class="settings-header">
             <van-icon name="arrow-left" class="arrow-left"  @click="$router.go(-1)"/>
             <span class="header-t1">{{title}}</span>
-            <van-icon name="ellipsis" class="ellipsis" @click="jumpRouter('消息')"/>
+            <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')"/>
         </div>
         <div class="cell"  @click="jumpRouter('收货地址')">
             <span>我的收货地址</span>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="dialog-body">
                         <p>您确定要清除缓存吗？</p>
-                        <div class="qd-btn">确定</div>
+                        <div class="qd-btn" @click="zhezhaoStatus = false">确定</div>
                     </div>
                 </div>
                 <div v-else>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="dialog-body">
                         <p>{{gxStatus?bbh:'没有检测到最新版本！'}}</p>
-                        <div class="ljgx-btn">{{gxStatus?'立即更新':'确定'}}</div>
+                        <div class="ljgx-btn" @click="zhezhaoStatus = false">{{gxStatus?'立即更新':'确定'}}</div>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@ export default {
 
     },
     mounted() {
-
+        
     },
     watch: {
 
@@ -153,12 +153,10 @@ export default {
         right: 100px;
         font-size: 40px;
     }
-    .ellipsis{
+    .chat{
         position: absolute;
         top:20px;
         right: 30px;
-        font-size: 40px;
-        transform: rotate(-90deg)
     }
 }
 .cell{

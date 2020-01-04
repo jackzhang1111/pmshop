@@ -1,28 +1,94 @@
 <template >
-  <!-- 消息订阅 -->
-  <div class="news c-b-gray">
-	<balance-header title="消息"></balance-header>
-    <div class="plr30 ">
-      <div class="time">2019-10-23 17:30</div>
-      <div class="list" @click="$router.push({name:'消息详情'})">
-        <img src="@/assets/img/confirmOrder/picture@2x.png"/>
-        <div class="text plr30">
-          <p>公告通知!!!</p>
-          <span>三月份出海关，不用交税？！</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  	<!-- 消息订阅 -->
+	<div class="news c-b-gray">
+		<balance-header title="消息"></balance-header>
+		<scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup" >
+			<div class="bscroll-con">
+				<div class="plr30 aaa" v-for="(data,index) in dataList" :key="index">
+					<div class="time">{{data.publishTime}}</div>
+					<div class="list" @click="$router.push({name:'消息详情',query:{announceId:data.announceId}})">
+						<img :src="$webUrl+data.announceImg"/>
+						<div class="text plr30">
+							<p>{{data.typeName}}</p>
+							<span>{{data.announceTitle}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroll>
+	</div>
 </template> 
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
+import {getsystemmesgApi} from '@/api/information/index.js'
 export default {
-	name: "HelloWorld",
 	data() {
-		return {};
+		return {
+			formData:{
+				page:1,
+				limit:10
+			},
+			dataList:[],
+			recordGroup:[],
+			pulldown:true,
+			pullup:true,
+			guanmengou:true,//看门狗
+		};
 	},
-	methods: {},
+	mounted(){
+		this.getsystemmesg(this.formData)
+	},
+	methods: {
+		getsystemmesg(data,flag){
+			getsystemmesgApi(data).then(res => {
+				if(res.code == 0){
+					if(flag){
+                        this.dataList = res.Data.list
+                    }else{
+                        this.dataList = this.dataList.concat(res.Data.list);
+					}
+					this.totalCount = res.Data.totalCount
+					this.recordGroup = this.dataList
+					if(this.dataList.length > 0){
+                        if(this.dataList.length >= this.totalCount){
+                            this.pullup = false
+                        }
+                        
+                    }else{
+                        this.pulldown = false
+                        this.pullup = false
+                    }
+				}
+			})
+		},
+		//下拉刷新
+		_pulldown(){
+			setTimeout(()=>{
+                this.refreshOrder()
+            },500)
+		},
+		//上拉加载
+		_pullup(){
+			if(!this.pullup) return
+            //不知道为什么触发两次,使用关门狗拦截
+            if(this.guanmengou){
+                this.formData.page++
+                this.getsystemmesg(this.formData,false)
+                this.guanmengou = false
+            }
+            setTimeout(()=>{
+                this.guanmengou = true
+            },500)
+		},
+		//刷新页面
+        refreshOrder(){
+            this.formData.page = 1
+            this.formData.limit = 10
+            this.getsystemmesg(this.formData,true)
+            this.pullup = true
+        },
+  	},
 	components:{
 		balanceHeader
 	}
@@ -30,6 +96,9 @@ export default {
 </script> 
 
 <style scoped lang="less">
+.bscroll-wrapper{
+	height:calc(100vh - 88px)
+}
 .news {
   min-height: 100vh;
   text-align: center;
@@ -52,7 +121,8 @@ export default {
     text-align: left;
     img {
       display: block;
-      width: 100%;
+	  width: 100%;
+	  height: 290px;
     }
     .text {
       height: 110px;
@@ -88,12 +158,18 @@ export default {
 .plr30 {
   box-sizing: border-box;
   padding: 0 30px;
+  
 }
 .fl {
   float: left;
 }
 .fr {
   float: right;
+}
+.aaa{
+	&:nth-last-child(1){
+	  margin-bottom: 30px;
+  }
 }
 
 </style>

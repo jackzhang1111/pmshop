@@ -19,7 +19,6 @@
                     <van-sidebar-item :title="leftData.attrTitle" v-for="leftData in dataList" :key="leftData.attrId"/>
                 </van-sidebar>
                 <div class="selection-right"  v-for="(rightData,index) in leftDataItem" :key="index">
-                   
                     <div class="selection-right-item" @click="getIndex(index)">
                         <div class="selection-right-p1">
                             <span class="ggms">{{rightData.attrTitle}}</span>
@@ -35,7 +34,6 @@
                                     <van-icon name="plus" />
                                 </div>
                             </div>
-                            
                         </div>
                         <div class="selection-right-p2">
                             <span>{{jn}}{{rightData.skuPrice}}</span>
@@ -43,22 +41,20 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="total">
-                <span class="c-orange" style="margin-left:10px;">{{jn}}{{money}}</span>
-                <span>件</span>
-                <span class="c-orange">&nbsp;{{leijia}} &nbsp;</span>  
-                <span>共 </span>
-            </div>
-            <div>
-                <div class="success-btn"  v-if="btnStatus" @click="buyProduct" :style="{backgroundColor:btnbgc}">{{btnName}}</div>
-                <div class="success-btn" v-else>
-                    <!--; -->
-                    <div class="btn-jrgwc" @click="buyshoppingCar" :style="{backgroundColor:btncolor.bgc,color:btncolor.color}">加入购物车</div>
-                    <div class="btn-qd" @click="buyProduct" :style="{backgroundColor:btnbgc}">立即购买</div>
+                <div class="total">
+                    <span class="c-orange" style="margin-left:10px;">{{jn}}{{money}}</span>
+                    <span>件</span>
+                    <span class="c-orange">&nbsp;{{leijia}} &nbsp;</span>  
+                    <span>共 </span>
+                </div>
+                <div>
+                    <div class="success-btn"  v-if="btnStatus" @click="buyProduct" :style="{backgroundColor:btnbgc}">{{btnName}}</div>
+                    <div class="success-btn" v-else>
+                        <div class="btn-jrgwc" @click="buyshoppingCar" :style="{backgroundColor:btncolor.bgc,color:btncolor.color}">加入购物车</div>
+                        <div class="btn-qd" @click="buyProduct" :style="{backgroundColor:btnbgc}">立即购买</div>
+                    </div>
                 </div>
             </div>
-            
         </div>
         
     </div>
@@ -281,6 +277,7 @@ export default {
     max-height: 90%;
     position: absolute;
     bottom: 0;
+    overflow: auto;
     .selection-title{
         width: 100%;
         height: 201px;
@@ -327,7 +324,7 @@ export default {
         width: 100%;
         position: relative;
         max-height: 1000px;
-        overflow: hidden;
+        overflow: auto;
         .selection-sidebar{
             float: left;
             width: 220px;
@@ -416,11 +413,16 @@ export default {
         height: 40px;
         line-height: 40px;
         padding-right: 40px;
+        float: left;
+        width: 100%;
+        box-sizing: border-box;
         span{
             float: right;
         }
     }
     .success-btn{
+        width: 100%;
+        float: left;
         height: 110px;
         line-height: 110px;
         color: #fff;

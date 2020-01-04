@@ -7,7 +7,7 @@
             <span class="header-t2" @click="jumpRouter('我的订单历史记录')">
                 <van-icon name="search" class="search"/>
             </span>
-            <van-icon name="ellipsis" class="ellipsis"/>
+            <van-icon name="chat-o" class="chat" size="17px" @click="jumpRouter('消息')"/>
         </div>
         <div class="commodity-tab ">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
@@ -36,6 +36,8 @@
                 <cancel-order ref="cancelorder" @closeOverlay="closeOverlay"  :orderId="orderId" @refreshOrder="refreshOrder"></cancel-order>
             </zhezhao>
         </transition>
+        <!-- 支付成功弹窗 -->
+        <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
         <!-- 密码弹窗 -->
         <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
         <!-- 付款方式弹窗 -->
@@ -48,10 +50,10 @@ import zhezhao from '@/multiplexing/zhezhao'
 import orderType from './itemComponents/orderType'
 import cancelOrder from './itemComponents/cancelOrder'
 import noSearch from './itemComponents/noSearch'
-// import BScroll from 'better-scroll'
-import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import {orderlistApi,orderlaunchpayApi} from '@/api/myOrder/index.js'
+import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
+import actionSheetSucess from '@/multiplexing/actionSheetSucess'
 export default {
     props: {
 
@@ -167,7 +169,11 @@ export default {
         //订单发起支付
         orderlaunchpay(data){
             orderlaunchpayApi(data).then(res => {
-                
+                if(res.code == 0){
+                    this.showsucess()
+                }else if(res.code == 21){
+                    this.$router.push({name:'设置支付密码'})
+                }
             })
         },
         //更改tab
@@ -189,10 +195,11 @@ export default {
         //弹出付款方式弹窗
         showPay(flag,alldata){
             this.$refs.actionSheetPaymen.showAction = flag
-            this.moeny = alldata.orderProductAmountWebsite
             if(!alldata) return
+            this.moeny = alldata.orderProductAmountWebsite
             this.orderData = alldata
         },
+        //密码弹窗
         showPassWord(flag,alldata){
             this.$refs.actionSheetPassword.showAction = flag
             if(!alldata) return
@@ -214,9 +221,18 @@ export default {
                 payPwd:value,
                 orderList:orderList
             }
-            console.log(obj);
             this.orderlaunchpay(obj)
-        }
+        },
+        //弹出支付成功
+        showsucess(){
+            this.$refs.sucess.showAction = true
+            setTimeout(()=>{
+                this.$refs.sucess.showAction = false
+                this.showPay(false)
+                this.showPassWord(false)
+                this.refreshOrder()
+            },1000)
+        },
     },
     components: {
         noSearch,
@@ -224,7 +240,8 @@ export default {
         zhezhao,
         cancelOrder,
         orderType,
-        actionSheetPaymen
+        actionSheetPaymen,
+        actionSheetSucess
     },
 };
 </script>
@@ -259,12 +276,10 @@ export default {
             right: 100px;
             font-size: 40px;
         }
-        .ellipsis{
+        .chat{
             position: absolute;
             top:20px;
             right: 30px;
-            font-size: 40px;
-            transform: rotate(-90deg)
         }
     }
     .commodity-tab{

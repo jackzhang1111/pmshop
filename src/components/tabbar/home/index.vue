@@ -3,7 +3,8 @@
     <div class="home">
         <search-header></search-header>
         <div class="big-pig pl-30 box"></div>
-        <div class="flash-sale pl-30 box">
+        <!-- 限时抢购先隐藏 -->
+        <div class="flash-sale pl-30 box" v-if="false">
             <div class="flash-sale-1">
                 <span class="put-line"></span>
                 <span class="t1">限时</span>
@@ -28,7 +29,7 @@
             </div>
             
         </div>
-        <div class="good-recommend pl-30 box">
+        <div class="good-recommend box">
             <div class="flash-sale-1">
                 <span class="put-line"></span>
                 <span class="t1">精品推荐</span>
@@ -36,37 +37,28 @@
             </div>
             <div class="flash-sale-2">
                 <div class="pictures">
-                    <div class="p1" v-for="(i,index) in 4" :key="index">
-                        <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
-                        <span class="good-name">LV女士手提包</span><br>
-                        <span class="good-price1">¥79.00</span><br>
+                    <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
+                        <img :src="$webUrl+finework.imgUrl">
+                        <span class="good-name">{{finework.supplyTitle}}</span><br>
+                        <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="good-world pl-30 box">
+        <div class="good-world box">
             <div class="flash-sale-1">
                 <span class="put-line"></span>
                 <span class="t1">全球品牌精选</span>
                 <span class="t2">查看更多</span>
             </div>
             <div class="good-world-brand">
-                <div class="brand-p-1">
-                    <img src="@/assets/img/tabbar/home/pinpaguanggao-01@3x.png" class="brand-p-1-left">
-                    <img src="@/assets/img/tabbar/home/pinpaguanggao-02@3x.png" class="brand-p-1-right-top">
-                    <img src="@/assets/img/tabbar/home/pinpaguanggao-03@3x.png" class="brand-p-1-right-bottom">
+                <div class="brand-p-1" v-if="false">
+                    <img :src="$webUrl+homeObj.producteFineBrand[0].brandLogo" class="brand-p-1-left">
+                    <img :src="$webUrl+homeObj.producteFineBrand[1].brandLogo" class="brand-p-1-right-top">
+                    <img :src="$webUrl+homeObj.producteFineBrand[2].brandLogo" class="brand-p-1-right-bottom">
                 </div>
                 <div class="brand-p-2">
-                    <img src="@/assets/img/tabbar/home/pinpai-01@3x.png" >
-                    <img src="@/assets/img/tabbar/home/pinpai-02@3x.png">
-                    <img src="@/assets/img/tabbar/home/pinpai-03@3x.png">
-                    <img src="@/assets/img/tabbar/home/pinpai-04@3x.png">
-                </div>
-                <div class="brand-p-2">
-                    <img src="@/assets/img/tabbar/home/pinpai-01@3x.png" >
-                    <img src="@/assets/img/tabbar/home/pinpai-02@3x.png">
-                    <img src="@/assets/img/tabbar/home/pinpai-03@3x.png">
-                    <img src="@/assets/img/tabbar/home/pinpai-04@3x.png">
+                    <img :src="$webUrl+globalPro.brandLogo" v-for="globalPro in globalProList" :key="globalPro.brandId">
                 </div>
             </div>
         </div>
@@ -78,10 +70,10 @@
             </div>
             <div class="flash-sale-2">
                 <div class="pictures">
-                    <div class="good-world-best-p1" v-for="(i,index) in 3" :key="index">
-                        <img src="@/assets/img/tabbar/home/quanqiu-01@3x.png">
-                        <span class="good-name">鳄鱼布鞋男帆布2019新款白鞋男鞋一脚蹬男士休闲板...鞋男鞋一脚蹬男士休闲板...</span>
-                        <span class="good-price">¥298.88</span>
+                    <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId">
+                        <img :src="$webUrl+fineSale1.imgUrl">
+                        <span class="good-name">{{fineSale1.supplyTitle}}</span>
+                        <span class="good-price">{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
                     </div>
                 </div>
             </div>
@@ -92,10 +84,10 @@
         <div class="exhibition">
             <div class="flash-sale-2">
                 <div class="pictures">
-                    <div class="p1" v-for="(i,index) in 4" :key="index">
+                    <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
                         <img src="@/assets/img/tabbar/home/01@3x.png">
-                        <span class="good-name">15.4英寸MacBook Pro 256G带触控栏六核i7 笔记...</span><br>
-                        <span class="good-price1">¥5999.00</span><br>
+                        <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
+                        <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
                     </div>
                 </div>
             </div>
@@ -103,43 +95,21 @@
         <div class="banner">
             <img src="@/assets/img/tabbar/home/guanggao-02@3x.png" >
         </div>
-        <div class="good-popular pl-30 box">
+        <div class="good-popular box">
             <div class="flash-sale-1">
                 <span class="put-line"></span>
                 <span class="t1">全球畅销榜</span>
                 <span class="t2">查看更多</span>
             </div>
-            <div class="good-popular-top">
-                
-                <div class="good-popular-top-1">
+            <div class="good-popular-top" >
+                <div class="good-popular-top-1" v-for="category in homeObj.producteFinecategory" :key="category.categoryId">
                     <div class="circle">
-                        <span>男鞋</span> 
+                        <span>{{category.categoryName}}</span> 
                     </div>
-                    <img src="@/assets/img/tabbar/home/fenlei-01@3x.png">
-                </div>
-                <div class="good-popular-top-2">
-                    <div class="circle">
-                        <span>手机</span> 
-                    </div>
-                    <img src="@/assets/img/tabbar/home/fenlei-02@3x.png">
-                </div>
-                
-            </div>
-            <div class="good-popular-bottom">
-                <div class="good-popular-top-1">
-                    <div class="circle">
-                        <span>女装</span> 
-                    </div>
-                    <img src="@/assets/img/tabbar/home/fenlei-03@3x.png">
-                </div>
-                <div class="good-popular-top-2">
-                    <div class="circle">
-                        <span>手表</span> 
-                    </div>
-                    <img src="@/assets/img/tabbar/home/fenlei-04@3x.png">
+                    <img :src="$webUrl+category.categoryImg">
                 </div>
             </div>
-            <div></div>
+            
         </div>
         <div class="banner">
             <img src="@/assets/img/tabbar/home/guanggao-03@3x.png" >
@@ -229,6 +199,7 @@
 
 <script>
 import searchHeader from '@/multiplexing/searchHeader'
+import {homePageApi} from '@/api/home/index.js'
 export default {
     props: {
 
@@ -236,7 +207,11 @@ export default {
     data() {
         return {
             active:0,
-            value:2
+            value:2,
+            homeObj:{},
+            globalProList:[],
+            fineSaleList1:[],
+            fineSaleList2:[]
         };
     },
     computed: {
@@ -246,7 +221,7 @@ export default {
 
     },
     mounted() {
-
+        this.homePage()
     },
     watch: {
 
@@ -255,6 +230,18 @@ export default {
         jumpRouter(name){
             this.$router.push({name})
         },
+        //首页数据
+        homePage(data){
+            homePageApi(data).then(res => {
+                if(res.code == 0){
+                    this.homeObj = res.Data
+                    this.globalProList = this.homeObj['producteFineBrand'].slice(3)
+                    this.fineSaleList1 = this.homeObj['productFineSale'].slice(0,3)
+                    this.fineSaleList2 = this.homeObj['productFineSale'].slice(3)
+                    console.log(this.globalProList,'this.globalProList');
+                }
+            })
+        }
     },
     components: {
         searchHeader,
@@ -321,7 +308,7 @@ export default {
             .van-count-down{
                 display: inline-block;
                 position: absolute;
-                top:20px;
+                top:20px;   
                 right:25px
             }
         }
@@ -341,10 +328,6 @@ export default {
                     display: inline-block;
                     margin-right:11px;
                     text-align: center;
-                    img{
-                        width: 100%;
-                        height: 100%;
-                    }
                     .good-name{
                         font-size: 20px;
                         color: #333333
@@ -390,8 +373,11 @@ export default {
     .good-recommend{
         width: 100%;
         height: 372px;
+        padding: 0 30px;
         .flash-sale-1{
             position: relative;
+            height: 50px;
+            line-height: 50px;
             .put-line{
                 width: 6px;
                 height: 40px;
@@ -406,9 +392,7 @@ export default {
                 margin-right:20px;
             }
             .t2{
-                position: absolute;
-                top:20px;
-                right:30px;
+                float: right;
                 font-size:20px;
                 color: #666
             }
@@ -419,18 +403,17 @@ export default {
             margin-top: 17px;
             overflow: scroll;
             .pictures{
-                height: 280px;
-                width: 1000px;
+                // height: 280px;
+                // width: 1000px;
+                display: flex;
+                flex-direction:row;
+                justify-content : space-between;
                 .p1{
-                    width: 220px;
+                    // width: 220px;
                     height: 200px;
                     display: inline-block;
                     margin-right:5px;
                     text-align: center;
-                    img{
-                        width: 100%;
-                        height: 100%;
-                    }
                     .good-name{
                         display: inline-block;
                         font-size: 20px;
@@ -450,8 +433,11 @@ export default {
     .good-world{
         width: 100%;
         height: 600px;
+        padding: 0 30px;
         .flash-sale-1{
             position: relative;
+            height: 50px;
+            line-height: 50px;
             .put-line{
                 width: 6px;
                 height: 40px;
@@ -468,9 +454,7 @@ export default {
 
             }
             .t2{
-                position: absolute;
-                top:20px;
-                right:30px;
+                float: right;
                 font-size:20px;
                 color: #666;
                
@@ -515,9 +499,13 @@ export default {
                 }
             }
             .brand-p-2{
-                width: 100%;
+                // width: 100%;
                 height: 80px;
                 margin-top: 10px;
+                display: flex;
+                flex-direction:row;
+                flex-wrap: wrap;
+                justify-content : space-between;
                 img{
                     width: 165px;
                     height: 80px;
@@ -614,32 +602,27 @@ export default {
     .banner{
         width: 100%;
         height: 250px;
-        img{
-            width: 100%;
-            height: 100%;
-        }
     }
     .exhibition{
-        width: 100%;
         height: 288px;
+        padding: 0 30px;
         .flash-sale-2{
             width: 100%;
             height: 300px;
             margin-top: 17px;
             overflow: scroll;
             .pictures{
-                height: 280px;
-                width: 1000px;
+                // height: 280px;
+                // width: 1000px;
+                display: flex;
+                flex-direction:row;
+                justify-content : space-between;
                 .p1{
                     width: 220px;
                     height: 200px;
                     display: inline-block;
                     margin-right:5px;
                     text-align: center;
-                    img{
-                        width: 100%;
-                        height: 100%;
-                    }
                     .good-name{
                         display: inline-block;
                         width: 100%;
@@ -663,8 +646,11 @@ export default {
     .good-popular{
         width: 100%;
         height: 462px;
+        padding: 0 30px;
         .flash-sale-1{
             position: relative;
+            height: 50px;
+            line-height: 50px;
             .put-line{
                 width: 6px;
                 height: 40px;
@@ -679,40 +665,26 @@ export default {
                 margin-right:20px;
             }
             .t2{
-                position: absolute;
-                top:20px;
-                right:30px;
+                float: right;
                 font-size:20px;
                 color: #666
             }
         }
-        .good-popular-top,.good-popular-bottom{
+        .good-popular-top{
             width: 100%;
             height: 170px;
             margin: 19px 0 10px;
             position: relative;
+            display: flex;
+            flex-direction:row;
+            flex-wrap: wrap;
+            justify-content : space-between;
             .good-popular-top-1{
                 width: 340px;
                 height: 170px;
-                float: left;
-                margin-right:10px;
                 position: relative;
-                img{
-                    width: 100%;
-                    height: 100%;
-                }
-                
             }
-            .good-popular-top-2{
-                width: 340px;
-                height: 170px;
-                float: left;
-                position: relative;
-                img{
-                    width: 100%;
-                    height: 100%;
-                }
-            }
+            
         }
         .good-popular-bottom{
             margin: 0px;
@@ -873,8 +845,9 @@ export default {
   border-radius:5px;
 }
 .circle{
-    width:120px;
+    min-width:120px;
     height:120px;
+    padding: 0 15px;
     background:rgba(0,0,0,1);
     opacity:0.47;
     border-radius:50%;

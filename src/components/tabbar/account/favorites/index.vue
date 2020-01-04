@@ -1,9 +1,9 @@
 <template>
 <!-- 收藏夹 -->
-    <div class="favorites">
+    <div class="favorites" ref="content">
         <div class="favorites-header">
             <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
-            <span class="header-t1">收藏夹(2)</span>
+            <span class="header-t1">收藏夹({{shoucangTotal}})</span>
             <van-icon name="search"  class="search" @click="toSearch"/>
             <span class="bj" @click="editBj">{{editBjName}}</span>
         </div>
@@ -16,17 +16,17 @@
         </van-dropdown-menu>
         <div v-show="viewOne">
             <!-- 收藏夹收藏商品(失效和未失效) -->
-            <good-list ref="goodList" :goodsObj="goodsObj"></good-list>
+            <good-list ref="goodList" :list="dataList"></good-list>
         </div>
         
         <div class="img-list" v-show="!viewOne">
-            <div v-for="i in 20" :key="i">
+            <div v-for="(good,index) in dataList" :key="index">
                 <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox" checked-color="#FA5300" v-if="showFooter"></van-checkbox>
-                <img src="@/assets/img/confirmOrder/product@2x.png">
+                <img :src="$webUrl+good.locationUrl">
             </div>
         </div>
         <!-- 你可能还喜欢,推荐商品页 -->
-        <footer-exhibition :footerData="footerData"></footer-exhibition>
+        <footer-exhibition :footerData="footerData" ref="footer"></footer-exhibition>
         
         <div class="settlement" v-if="showFooter">
             <span class="settlement-text" v-if="true">
@@ -73,13 +73,16 @@ export default {
                 seraname:'',
                 sort:2
             },
-            goodsObj:{},
             footerData:{},
             footerFromData:{
                 page:1,
                 limit:6,
                 seraname:''
-            }
+            },
+            shoucangTotal:0,
+            pullUp:true,
+            kanmengou:true,
+            dataList:[]
         };
     },
     computed: {
@@ -93,6 +96,11 @@ export default {
         this.$refs.goodList.searchHidden = false
         this.selectuserfavorites(this.formData)
         this.guessyoulike(this.footerFromData)
+
+        window.addEventListener('scroll', this.menu,true)
+    },
+    beforeDestroy(){
+        window.removeEventListener("scroll",this.menu,true);
     },
     watch: {
         showFooter:{
@@ -102,8 +110,25 @@ export default {
         },
     },
     methods: {
+        //获取滚动条距离底部距离
+        menu() {
+            let footerHeight = this.$refs.footer.$el.clientHeight
+            let componentsHeight = this.$refs.content.clientHeight
+            let pingmu = document.body.clientHeight
+            let dibujuli = pingmu+footerHeight
+            let cha = componentsHeight - dibujuli
+            this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            if(this.pullUp && this.scroll>=cha){
+                if(this.kanmengou){
+                    this.formData.page ++
+                    this.selectuserfavorites(this.formData,true)
+                    this.kanmengou = false
+                }
+            }
+        },
         //点击搜索页面
         toSearch(){
+            return
             this.$router.push({name:'收藏夹历史记录'})
         },
         //点击编辑
@@ -120,10 +145,19 @@ export default {
             this.viewOne = !this.viewOne
         },
         //收藏夹列表
-        selectuserfavorites(data){
+        selectuserfavorites(data,flag){
             selectuserfavoritesApi(data).then(res => {
                 if(res.code == 0){
-                    this.goodsObj = res.Data
+                    if(flag){
+                        this.dataList = this.dataList.concat(res.Data.list)
+                    }else{
+                        this.dataList = res.Data.list
+                    }
+                    this.kanmengou = true
+                    this.shoucangTotal = res.Data.totalCount
+                    if(this.dataList.length >= this.shoucangTotal){
+                        this.pullUp = false
+                    }
                 }
             })
         },

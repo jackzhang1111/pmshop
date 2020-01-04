@@ -18,17 +18,18 @@
             </div>
         </div>
         <div class="forgetPassword clearfix">
-            <span class="c1 fl-right fs-24" @click="jumpRouter('忘记密码')">Forgot Password？</span>
+            <span class="c1 fl-right fs-24" @click="jumpRouter('忘记密码')">忘记密码？</span>
         </div>
         <div class="upload">
-            <div class="load-btn" @click="logIn" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">Log In</div>
+            <div class="load-btn" @click="logIn" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">登录</div>
         </div>
         <div class="remarks-option">
-            <span class="c2 fs-24" @click="jumpRouter('注册')">Create Account</span>
+            <span class="c-999">还没有账号?</span>
+            <span class="c2 fs-24" @click="jumpRouter('注册')">立即注册</span>
         </div>
         <div class="footer">
             <div class="line left-80"></div>
-            <div class="other">Or join with</div> 
+            <div class="other">其他方式登录</div> 
             <div class="line right-80"></div>
             <div class="icons">
                 <van-row type="flex" justify="space-between">
@@ -44,11 +45,11 @@
                 </van-row>
             </div>
             <div class="agreement">
-                <input type="checkbox" class="checkbox">
+                <input type="checkbox" class="checkbox" v-model="checked">
                 <span class="c1 fs-24">
-                    <span>You agree to the</span>
-                    <span @click="zhengce=true">TOSPINO</span>
-                    <span>Law Aggrement and the Privacy Notice.</span>
+                    <span>同意</span>
+                    <span @click="zhengce=true">《TOSPINO法律协议》</span>
+                    <span>和《隐私政策》</span>
                 </span>
             </div>
         </div>
@@ -81,6 +82,7 @@ export default {
     },
     data() {
         return {
+            checked:true,
             inputType:'password',
             eyeName:'closed-eye',
             eyeStatus:Boolean,
@@ -104,7 +106,7 @@ export default {
     },
     computed: {
         disabledSubmit() {
-            return !this.$fn.isDisabled(this.userData,this.rules);
+            return !this.$fn.isDisabled(this.userData,this.rules)&&this.checked ;
         }
     },
     created() {
@@ -137,6 +139,7 @@ export default {
                 loginApi(this.userData).then(res => {
                     if(res.code == 0){
                         localStorage.token = res.token
+                        localStorage.userinfo = JSON.stringify(res.user) 
                         this.$router.push({name:'首页'})
                     }
                 })

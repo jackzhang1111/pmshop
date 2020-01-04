@@ -2,7 +2,7 @@
 <!-- 限时抢购 -->
     <div class="flash-sale">
         <search-header></search-header>
-        <div class="good-list" v-for="i in 20">
+        <div class="good-list" v-for="i in 20" :key="i">
             <div class="list-left">
                 <div class="good-img">
                     <img src="@/assets/img/tabbar/home/01@3x.png" alt="">

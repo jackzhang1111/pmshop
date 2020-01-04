@@ -1,11 +1,8 @@
 <template>
-    <div>
-        <div class="balance-header">
-            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
-            <span class="header-t1">{{title}}</span>
-            <span class="header-t2" @click="title2Click" v-if="iconShow"></span>
-        </div>
-        <div class="place"></div>
+    <div class="balance-header">
+        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
+        <span class="header-t1">{{title}}</span>
+        <span class="header-t2 c-orange" @click="title2Click">{{title2}}</span>
     </div>
 </template>
 
@@ -20,9 +17,9 @@ export default {
             type: String,
             default: ''
         },
-        iconShow:{
-            type: Boolean,
-            default: false
+        jumpName:{
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -44,10 +41,8 @@ export default {
     },
     methods: {
         title2Click(){
-            this.$emit('aaa')
-        },
-        aaa(){
-
+            if(this.jumpName =='') return
+            this.$emit('jumpRouter',this.jumpName)
         }
     },
     components: {
@@ -62,10 +57,8 @@ export default {
     height: 88px;
     background-color: #f2f3f5;
     text-align: center;
-    position: fixed;
+    position: relative;
     line-height: 88px;
-    border-bottom: 1px solid #DCDCDC;
-    z-index: 2;
     .arrow-left{
         position: absolute;
         top:20px;
@@ -82,12 +75,7 @@ export default {
     .header-t2{
         position: absolute;
         right: 30px;
-        width: 30px;
-        height: 30px;
-        top:50%;
-        background: url('~@/assets/img/confirmOrder/share@2x.png');
-        background-size: 100%;
-        transform: translateY(-50%)
+        font-size: 30px;
     }
 }
 </style>

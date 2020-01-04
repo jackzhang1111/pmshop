@@ -61,3 +61,47 @@ export function refundorderApi(params) {
         data:params
     })
 }
+
+//获取订单的物流（包裹）信息
+export function getlogisticsorderApi(params) {
+    return park({
+        url:`/appsaleorder/getlogisticsorder`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//订单申请仅退款（通过物流包裹申请）页面获取订单和订单商品明细
+export function getconfirmrefundorderbylogisticsApi(params) {
+    return park({
+        url:`/appsaleorder/getconfirmrefundorderbylogistics`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//订单申请仅退款（通过物流包裹申请）页面获取订单和订单商品明细
+export function refundorderbylogisticsApi(params) {
+    return park({
+        url:`/appsaleorder/refundorderbylogistics`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//订单申请退货退款页面获取订单和订单商品明细
+export function getconfirmreturnorderApi(params) {
+    return park({
+        url:`/appsaleorder/getconfirmreturnorder`,
+        method: 'POST',
+        data:params
+    })
+}
+//订单申请退货退款
+export function returnorderApi(params) {
+    return park({
+        url:`/appsaleorder/returnorder`,
+        method: 'POST',
+        data:params
+    })
+}

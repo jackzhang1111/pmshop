@@ -9,7 +9,7 @@
                 </div>
                 <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
                     <div class="good-detail-img">
-                        <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                        <img :src="$webUrl+data.skuImg">
                     </div>
                     <div class="good-detail-title">
                         <span class="name">{{data.skuName}}</span>
@@ -68,7 +68,7 @@
 import refundReason from './itemComponents/refundReason.vue'
 import uploadAll from '@/multiplexing/uploadAll.vue'
 import balanceHeader from './itemComponents/balanceHeader'
-import {getconfirmrefundorderApi,refundorderApi} from '@/api/myOrder/index.js'
+import {refundorderbylogisticsApi,getconfirmrefundorderbylogisticsApi} from '@/api/myOrder/index.js'
 import {Toast} from 'vant'
 export default {
     props: {
@@ -81,14 +81,12 @@ export default {
             uploadList:[],
             headerTitle:'申请退款',
             formData:{
-                orderId:'',
+                logisticsOrderId:'',
                 orderSource:1,
                 reason:'请选择',
                 remark:'',
                 detailList:[],
-                imgList:[
-
-                ]
+                imgList:[]
             },
             detailObj:{},
             dataList:[],
@@ -102,8 +100,8 @@ export default {
 
     },
     mounted() {
-        this.formData.orderId = this.$route.query.orderId
-        this.getconfirmrefundorder({orderId:this.$route.query.orderId})
+        this.formData.logisticsOrderId = this.$route.query.orderId
+        this.getconfirmrefundorderbylogistics(this.$route.query.orderId)
     },
     watch: {
 
@@ -124,20 +122,19 @@ export default {
         //获取上传图片列表
         getfilePathList(list){
             this.uploadList = list
-            
         },
-        getconfirmrefundorder(data){
-            getconfirmrefundorderApi(data).then(res => {
+        getconfirmrefundorderbylogistics(logisticsOrderId){
+            getconfirmrefundorderbylogisticsApi({logisticsOrderId:logisticsOrderId}).then(res => {
                 if(res.code == 0){
                     this.detailObj = res.Data.order
                     this.dataList = this.detailObj.detailList
-                    
                 }
             })
         },
-        refundorder(data){
+        //订单按包裹申请仅退款
+        refundorderbylogistics(data){
             data.reason = data.reason == '请选择' ? '': data.reason
-            refundorderApi(data).then(res => {
+            refundorderbylogisticsApi(data).then(res => {
                 if(res.code == 0){
                     Toast('提交成功')
                     setTimeout(()=>{
@@ -148,7 +145,6 @@ export default {
         },
         //提交订单
         submit(){
-            // this.formData.imgList = this.uploadList
             this.uploadList.forEach(ele => {
                 let obj = {
                     imgUrl:ele
@@ -161,13 +157,13 @@ export default {
                     detailNum:item.shouldRefundNum
                 }
                 this.formData.detailList.push(obj)
-                console.log(123);
+               
             })
             if(this.formData.reason == '请选择') {
                 Toast('请选择退款原因')
                 return
             }
-            this.refundorder(this.formData)
+            this.refundorderbylogistics(this.formData)
         }
     },
     components: {

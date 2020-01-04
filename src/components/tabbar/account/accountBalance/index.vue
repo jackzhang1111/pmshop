@@ -11,7 +11,7 @@
                 <span @click="jumpRouter('评论详情')">2,206条评论</span>
             </div>
             <div class="top-p3">
-                <span>当前余额: {{jn}}10825.00</span>
+                <span>当前余额: {{jn}}{{walletMoney}}</span>
             </div>
         </div>
         <div class="balance-bottom">
@@ -22,9 +22,9 @@
                 </div>
             </div>
             <div class="cell">
-                <input type="search" class="input-xt" placeholder="￥请输入金额">
+                <input type="number" class="input-xt" placeholder="请输入金额">
             </div>
-            <div class="btn-next" @click="showyinhang">
+            <div class="btn-next" @click="showyinhang" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
                 下一步
             </div>
             <div class="footer-tips">
@@ -55,6 +55,7 @@ import actionSheetPaymen from "@/multiplexing/actionSheetPaymen"
 import actionSheetYinhang from '@/multiplexing/actionSheetYinhang'
 import actionSheetSucess from '@/multiplexing/actionSheetSucess'
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
+import {walletInfoApi} from '@/api/accountBalance/index.js'
 export default {
     props: {
 
@@ -71,17 +72,20 @@ export default {
                 }
             ],
             showPaymen:false,
-            yinhangTitle:'￥10825.00'
+            yinhangTitle:'￥10825.00',
+            walletMoney:0
         };
     },
     computed: {
-
+        disabledSubmit(){
+            return false
+        }
     },
     created() {
 
     },
     mounted() {
-
+        this.walletInfo()
     },
     watch: {
 
@@ -92,6 +96,7 @@ export default {
         },
         //弹出银行
         showyinhang(){
+            if(!this.disabledSubmit) return
             this.$refs.yinhang.showAction = true
         },
         //弹出支付
@@ -105,6 +110,13 @@ export default {
         //弹出密码框
         showpassword(){
             this.$refs.password.showAction = true
+        },
+        walletInfo(){
+            walletInfoApi().then(res=>{
+                if(res.code == 0){
+                    this.walletMoney = res.wallet.walletMoney
+                }
+            })
         }
     },
     components: {
@@ -171,12 +183,12 @@ export default {
         }
         .btn-next{
             height:88px;
-            background:rgba(250,83,0,1);
             border-radius:10px;
             line-height: 88px;
             text-align: center;
             color: #fff;
             margin:20px 0 79px;
+            font-size: 32px;
         }
         .tip1{
             font-size:26px;

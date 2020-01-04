@@ -79,7 +79,6 @@ mainAxios.interceptors.response.use(function (response) {
             }else if(data.code == -4){
                 data.msg = "账户不存在或者密码错误"
             }
-            Toast(data.msg);
         }else{
             if (data.code == 500) {
                 data.msg = "网络繁忙，请稍后再试！"

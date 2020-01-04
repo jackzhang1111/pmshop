@@ -1,57 +1,76 @@
 <template>
     <div>
-       <div class="good-detail" v-for="i in 2" :key="i">
-            <div class="good-detail-header">
-                <span>订单编号：DJKLD561261</span>
-                <span class="dfk c-orange">待审核</span>
-            </div>
-            <div class="good-detail-content">
-                <div class="good-detail-img">
-                    <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
-                </div>
-                <div class="good-detail-title">
-                    <span class="name">啄木鸟女包2019新款时尚休闲单肩斜挎包百搭手提包大容量女...</span>
-                    <div class="guige">
-                        红色/L
+        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup" v-if="dataList.length>0">
+            <div class="bscroll-con">
+                <div class="good-detail" v-for="(product,index) in dataList" :key="index">
+                    <div class="good-detail-header">
+                        <span>订单编号：{{product.orderSn}}</span>
+                        <span class="fl-right c-orange">{{orderStatus(product.orderStatusApp,'statusList')}}</span>
                     </div>
-                </div>
-                <div class="price">
-                    <br>
-                    <br>
-                    <div class="p4 fl-right">
-                        x1
+                    <div class="good-detail-content" v-for="(detail,index) in product.detailList2" :key="index">
+                        <div class="good-detail-img">
+                            <img :src="$webUrl+detail.skuImg">
+                        </div>
+                        <div class="good-detail-title">
+                            <span class="name">{{detail.skuName}}</span>
+                            <div class="guige">{{detail.skuValuesTitle}}</div>
+                        </div>
+                        <div class="price">
+                            <div class="p4 fl-right">x{{detail.detailNum}}</div>
+                        </div>
                     </div>
-                </div>
-                <div style="height:35px;"></div>
-            </div>
-            <div class="good-detail-dfh-footer">
-                <div class="dfh-footer-top">
-                    <span>查看其他2个商品</span>
-                    <van-icon name="arrow-down" v-if="arrowDown"/>
-                    <van-icon name="arrow-up" v-else/>
-                </div>
-                <div class="dfh-footer-bottom">
-                    <div class="icon-img">
-                        <img src="@/assets/img/confirmOrder/refund@2x.png" alt="">
-                    </div>
-                    <span>退货退款</span>
-                    <div class="btn-detail c-orange" @click="toDetail">
-                        查看详情
+                    <div class="good-detail-dfh-footer">
+                        <div class="dfh-footer-top" v-if="product.detailList.length > 2" @click="shousuo(product)">
+                            <span>查看其他{{product.lengcha}}个商品</span>
+                            <van-icon name="arrow-down" v-if="product.arrowDown"/>
+                            <van-icon name="arrow-up" v-else/>
+                        </div>
+                        <div class="dfh-footer-bottom">
+                            <div class="icon-img">
+                                <img src="@/assets/img/confirmOrder/refund@2x.png">
+                            </div>
+                            <span>{{orderStatus(product.backType,'backTypeList')}}</span>
+                            <div class="btn-detail c-orange" @click="toDetail(product.orderId)">查看详情</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </scroll>
     </div>
 </template>
 
 <script>
+import {backorderlistApi} from '@/api/afterSales/index'
 export default {
     props: {
 
     },
     data() {
         return {
-            arrowDown:true
+            arrowDown:true,
+            recordGroup:[],
+            pulldown:true,
+            pullup:true,
+            guanmengou:true,
+            formData:{
+                page:1,
+                limit:10
+            },
+            dataList:[],
+            totalCount:0,
+            noSearchStatus:true,
+            statusList:[
+                {type:0,name:'待审核'},
+                {type:1,name:'待寄回'},
+                {type:2,name:'待退款'},
+                {type:3,name:'退款成功'},
+                {type:4,name:'已拒绝'},
+                {type:5,name:'已取消'},
+            ],
+            backTypeList:[
+                {type:1,name:'仅退款'},
+                {type:2,name:'退货退款'},
+            ]
         };
     },
     computed: {
@@ -61,17 +80,95 @@ export default {
 
     },
     mounted() {
-
+        this.backorderlist(this.formData,true)
     },
     watch: {
 
     },
     methods: {
-        toDetail(){
-            this.$router.push({name:'售后详情'})
+        toDetail(id){
+            this.$router.push({name:'售后详情',query:{id}})
         },
         jumpRouter(name){
             this.$router.push({name})
+        },
+        //售后列表
+        backorderlist(data,flag){
+            backorderlistApi(data).then(res => {
+                if(res.code == 0){
+                    if(flag){
+                        this.dataList = res.Data.list
+                    }else{
+                        this.dataList = this.dataList.concat(res.Data.list)
+                    }
+                    this.totalCount = res.Data.totalCount
+                    this.recordGroup = this.dataList
+
+                    if(this.dataList.length > 0){
+                        this.noSearchStatus = true
+                        if(this.dataList.length >= this.totalCount){
+                            this.pullup = false
+                        }
+                        if(this.dataList.length > 2){
+                            this.dataList.forEach(item => {
+                                item.detailList2 = item.detailList.slice(0,2)
+                                item.lengcha = item.detailList.length - 2
+                                item.arrowDown = true
+                            })
+                        }
+                    }else{
+                        this.noSearchStatus = false
+                        this.pulldown = false
+                        this.pullup = false
+                    }
+                }
+            })
+        },
+        //下拉刷新
+        _pulldown() {
+            setTimeout(()=>{
+                this.refreshOrder()
+            },500)
+        },
+        //上拉加载
+        _pullup() {
+            if(!this.pullup) return
+            //不知道为什么触发两次,使用关门狗拦截
+            if(this.guanmengou){
+                this.formData.page++
+                this.backorderlist(this.formData,false)
+                this.guanmengou = false
+            }
+            setTimeout(()=>{
+                this.guanmengou = true
+            },500)
+        },
+        //刷新页面
+        refreshOrder(){
+            this.formData.page = 1
+            this.formData.limit = 10
+            this.backorderlist(this.formData,true)
+            this.pullup = true
+        },
+        //编译状态
+        orderStatus(type,list){
+            let name = ''
+            this[list].forEach(statu => {
+                if(statu.type == type){
+                    name = statu.name
+                }
+            })
+            return name
+        },
+        //收缩栏逻辑
+        shousuo(list){
+            list.arrowDown = !list.arrowDown
+            if(list.arrowDown){
+                list.detailList2 = list.detailList.slice(0,2)
+            }else{
+                list.detailList2 = list.detailList
+            }
+            this.$forceUpdate()
         },
     },
     components: {
@@ -81,52 +178,39 @@ export default {
 </script>
 
 <style scoped lang="less">
+.bscroll-wrapper{
+    height:calc(100vh - 120px)
+}
 .good-detail{
     margin-bottom: 20px;
     .good-detail-header{
-        width: 100%;
         height: 79px;
         line-height: 79px;
         font-size:26px;
         color: #333;
         background-color: #fff;
-        padding-left: 30px;
-        box-sizing: border-box;
+        padding:0 30px;
         border-bottom: 1px solid #F2F3F5;
-        .dfk{
-            float: right;
-            margin-right: 30px;
-        }
     }
     .good-detail-content{
-        width: 100%;
         background-color: #fff;
-        box-sizing: border-box;
-        padding: 0 30px;
+        padding: 30px 30px 0;
         position: relative;
         .good-detail-img{
             width: 150px;
             height: 150px;
-            position: relative;
-            top:30px;
-            left:0px;
             display: inline-block;
+            vertical-align: top;
+            margin:0 19px 19px 0;
         }
         .good-detail-title{
             display: inline-block;
-            position: absolute;
-            width: 336px;
-            top:30px;
-            left:200px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
+            width: 398px;
             .name{
-                display: inline-block;
                 margin-bottom: 24px;
                 color: #333;
                 font-size: 22px;
+                line-height: 39px;
                 -webkit-line-clamp:2;
                 display: -webkit-box; 
                 -webkit-box-orient:vertical;
@@ -137,7 +221,7 @@ export default {
                 color: #999;
                 font-size: 18px;
                 display: inline-block;
-                margin-bottom: 12px;
+                margin-bottom: 28px;
             }
             
         }

@@ -1,13 +1,12 @@
 <template>
-<!-- 评价 -->
-    <div class="evaluate">
-        <order-title title="评价"></order-title>
-        <router-view></router-view>
+    <div>
+        <transition name="rightinleft">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
 <script>
-import orderTitle from '@/multiplexing/orderTitle'
 export default {
     props: {
 
@@ -33,13 +32,11 @@ export default {
 
     },
     components: {
-        orderTitle
+
     },
 };
 </script>
 
 <style scoped lang="less">
-.evaluate{
 
-}
 </style>

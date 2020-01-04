@@ -1,5 +1,6 @@
 <template>
 <!-- 修改地址 -->
+<!-- 等接口 -->
     <div class="edit-address">
         <balance-header title="修改地址"></balance-header>
         <div class="tips">
@@ -47,6 +48,7 @@
 <script>
 import kefu from '@/multiplexing/kefu.vue'
 import balanceHeader from './itemComponents/balanceHeader'
+import {querydefaultObjectApi} from '@/api/accountSettings/index'
 export default {
     props: {
 

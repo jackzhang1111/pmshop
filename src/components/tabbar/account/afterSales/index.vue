@@ -2,6 +2,7 @@
 <template>
     <div>
         <order-title title="售后"></order-title>
+        <router-view></router-view>
     </div>
 </template>
 

@@ -3,28 +3,28 @@
     <div class="account">
         <div class="header">
             <span class="header-wd">我的</span>
-            <van-icon name="chat-o" size="17px"/>
+            <van-icon name="chat-o" size="17px" @click="jumpRouter('消息')"/>
         </div>
         <div class="head-con">
             <div class="head-img">
                 <img src="@/assets/img/tabbar/my/account/touxiang@2x.png"><br>
-                <span class="head-name">设置您的个人昵称</span><br>
-                <span class="head-id">会员ID:123456</span>
+                <span class="head-name">{{userinfo.userName?userinfo.userName:"设置您的个人昵称"}}</span><br>
+                <span class="head-id">会员ID:{{userinfo.userId}}</span>
             </div>
         </div>
         <div class="record">
             <van-row>
                 <van-col span="8" @click="jumpRouter('收藏夹')">
                     <span class="t1">收藏</span>
-                    <span class="num">1</span>
+                    <span class="num">{{shoucangTotal}}</span>
                 </van-col>
                  <van-col span="8">
                     <span class="t1" @click="jumpRouter('我的足迹')">浏览</span>
-                    <span class="num">1280</span>
+                    <span class="num">{{zujiTotal}}</span>
                 </van-col>
                  <van-col span="8" @click="jumpRouter('账户余额')">
                     <span class="t1">余额</span>
-                    <span class="num">{{jn}}588.00</span>
+                    <span class="num">{{jn}}{{walletMoney}}</span>
                 </van-col>
             </van-row>
         </div>
@@ -38,7 +38,7 @@
                 <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666" >
                     <!-- <span>自定义</span> -->
                     <!-- <img slot="icon" slot-scope="props" :src="props.active ? icon.active : icon.inactive"> -->
-                    <van-tabbar-item info="3" @click="toMyOrder(1)">
+                    <van-tabbar-item @click="toMyOrder(1)">
                         <span>待付款</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.daifukuan : icon.daifukuan" class="icon-style">
                     </van-tabbar-item>
@@ -145,7 +145,7 @@
         </van-cell-group>
         
         <div class="footer-btn">
-            <van-button type="default">退出登录</van-button>
+            <van-button type="default" @click="logOut">退出登录</van-button>
         </div>
     </div>
 </template>
@@ -159,6 +159,10 @@ import xinyong from '@/assets/img/tabbar/my/account/xinyong@2x.png'
 import xinyuandan from '@/assets/img/tabbar/my/account/xinyuandan@2x.png'
 import yiwancheng from '@/assets/img/tabbar/my/account/yiwancheng@2x.png'
 import zuijinliulan from '@/assets/img/tabbar/my/account/zuijinliulan@2x.png'
+import {logoutApi} from '@/api/login/index'
+import {selectuserfavoritesApi} from '@/api/favorites/index.js'
+import {walletInfoApi} from '@/api/accountBalance/index.js'
+import {selectuserbrowhistoryApi} from '@/api/favorites/index'
 export default {
     props: {
 
@@ -176,7 +180,16 @@ export default {
                 yiwancheng,
                 zuijinliulan
             },
-            username:""
+            username:"",
+            userinfo:{},
+            shoucangTotal:0,
+            walletMoney:0,
+            zujiTotal:0,
+            formData:{
+                page:1,
+                limit:10,
+                createtime:''
+            },
         };
     },
     computed: {
@@ -186,7 +199,10 @@ export default {
 
     },
     mounted() {
-
+        this.userinfo = JSON.parse(localStorage.userinfo)
+        this.selectuserfavorites()
+        this.walletInfo()
+        this.selectuserbrowhistory(this.formData)
     },
     watch: {
 
@@ -197,7 +213,42 @@ export default {
         },
         toMyOrder(num){
             this.$router.push({name:'我的订单',query:{active:num}})
-        }
+        },
+        //登出
+        logOut(){
+            logoutApi().then(res => {
+                this.$router.push({name:'登录'})
+            })
+        },
+        //收藏夹总数
+        selectuserfavorites(){
+            let data = {
+                seraname:'',
+                sort:2,
+                page:1,
+                limit:10
+            }
+            selectuserfavoritesApi(data).then(res => {
+                if(res.code == 0){
+                    this.shoucangTotal = res.Data.totalCount
+                }
+            })
+        },
+        //钱包信息
+        walletInfo(){
+            walletInfoApi().then(res => {
+                if(res.code == 0){
+                    this.walletMoney = res.wallet.walletMoney
+                }
+            })
+        },
+        selectuserbrowhistory(data){
+            selectuserbrowhistoryApi(data).then(res => {
+                if(res.code == 0){
+                    this.zujiTotal = res.browtotal
+                }
+            })
+        },
     },
     components: {
         

@@ -1,17 +1,17 @@
 <template>
 <!-- 忘记密码 -->
   <div class="forget-password">
-        <navar title="Forgot Password"></navar>
+        <navar title="忘记密码"></navar>
         <div class="footer">
             <p>输入与您的TOSPINO账户相关联的电子邮箱地址或者手机号码</p>
             <div class="otp">
                 <div class="input-con">
-                    <input type="text" class="name-input" placeholder="+86 请输入您的手机号码">
+                    <input type="number" class="name-input" placeholder="+86 请输入您的手机号码" v-model="formData.msgphone">
                 </div>
                 
             </div>
             <div class="confirm-btn">
-                <div class="load-btn" @click="next">
+                <div class="load-btn" @click="next" :style="{backgroundColor:(disabledSubmit?'#FA5300':'#999')}">
                     下一步
                 </div>
             </div>
@@ -24,15 +24,28 @@
 <script>
 import navar from '@/multiplexing/navar'
 export default {
-  name: 'HelloWorld',
     data () {
         return {
-        msg: 'Welcome to Your Vue.js App'
+            formData:{
+                msgphone:''
+            },
+            rules:{
+                msgphone:{
+                    required: true,
+                    messages: "请输入手机号码"
+                }
+            }
         }
     },
     methods: {
         next(){
-            this.$router.push({name:'验证码'})
+            if(!this.disabledSubmit) return
+            this.$router.push({name:'验证码',query:{msgphone:this.formData.msgphone}})
+        }
+    },
+    computed:{
+        disabledSubmit() {
+            return !this.$fn.isDisabled(this.formData,this.rules)
         }
     },
     components: {

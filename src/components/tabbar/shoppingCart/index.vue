@@ -1,6 +1,6 @@
 <template>
 <!-- 购物车 -->
-    <div class="shopping-cart">
+    <div class="shopping-cart" ref="content">
         <div class="shopping-cart-header">
             <span class="header-t1">购物车({{shoplength}})</span>
             <span class="header-t2" @click="mange" v-if="conditions">{{showMange?'管理':'完成'}}</span>
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div>
-            <footer-exhibition v-if="footerShow" :footerData="footerData"></footer-exhibition>
+            <footer-exhibition v-if="footerShow" :footerData="footerData" ref="footer"></footer-exhibition>
         </div>
         <div style="height:60px" v-if="conditions">
             <div class="settlement">
@@ -93,9 +93,6 @@
             </div>
         </div>
         
-        <!-- <div style="height:60px"></div> -->
-
-
         <van-overlay :show="show">
             <!-- 遮罩层确认购买弹框 -->
             <div class="overlay-wrapper" @click.stop>
@@ -144,7 +141,10 @@ export default {
             shopList:[],
             totlaMoney:0,
             totlaNum:0,
-            selectionList:[]
+            selectionList:[],
+            pullUp:true,
+            kanmengou:true,
+            shopcarTotal:0
         };
     },
     computed: {
@@ -162,9 +162,12 @@ export default {
 
     },
     mounted() {
-        // window.addEventListener('scroll', this.menu)
-        this.shopcartlist()
+        window.addEventListener('scroll', this.menu,true)
+        this.shopcartlist(this.formData)
         this.guessyoulike()
+    },
+    beforeDestroy(){
+        window.removeEventListener("scroll",this.menu,true);
     },
     watch: {
 
@@ -184,20 +187,41 @@ export default {
         },
         //获取滚动条距离底部距离
         menu() {
-            // this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
-            // console.log(this.scroll,'scroll')
-            // console.log(this.$refs.shoppingContainer.clientHeight);
-            // console.log(document.documentElement.scrollHeight-document.documentElement.scrollTop-document.documentElement.clientHeight);
+            let footerHeight = this.$refs.footer.$el.clientHeight
+            let componentsHeight = this.$refs.content.clientHeight
+            let pingmu = document.body.clientHeight
+            let dibujuli = pingmu+footerHeight
+            let cha = componentsHeight - dibujuli
+            this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+
+
+            if(this.pullUp && this.scroll>=cha){
+                if(this.kanmengou){
+                    this.formData.page++
+                    this.shopcartlist(this.formData,true)
+                    this.kanmengou = false
+                }
+            }
         },
         jumpRouter(name){
             this.$router.push({name})
         },
         //购物车列表
-        shopcartlist(){
-            shopcartlistApi(this.formData).then(res => {
+        shopcartlist(data,flag){
+            shopcartlistApi(data).then(res => {
                 let youxiaoList = [], wuxiaoList = []
                 if(res.code == 0){
-                    this.shopList = res.Data.list
+                    if(flag){
+                        this.shopList = this.shopList.concat(res.Data.list)
+                    }else{
+                        this.shopList = res.Data.list
+                    }
+                    this.kanmengou = true
+                    this.shopcarTotal = res.Data.totalCount
+                    if(this.shopList.length >= this.shopcarTotal){
+                        this.pullUp = false
+                    }
+
                     this.shopList.forEach(item => {
                         if(item.isValid == 1){
                             youxiaoList.push(item)
@@ -219,6 +243,8 @@ export default {
                             }
                         })
                     })
+                }else{
+                    this.kanmengou = false
                 }
             })
         },
@@ -350,7 +376,7 @@ export default {
         deleteshopcart(dataList){
             deleteshopcartApi(dataList).then(res => {
                 if(res.code == 0){
-                    this.shopcartlist()
+                    this.shopcartlist(this.formData)
                     this.guessyoulike()
                     this.show = false
                 }
@@ -360,7 +386,7 @@ export default {
         emptycart(){
             emptycartApi().then(res => {
                 if(res.code == 0){
-                    this.shopcartlist()
+                    this.shopcartlist(this.formData)
                     this.guessyoulike()
                 }
             })
