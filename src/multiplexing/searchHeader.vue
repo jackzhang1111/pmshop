@@ -1,16 +1,19 @@
 <template>
 <!-- 首页搜索框 -->
-    <div class="search-header c-b-gray">
-        <div class="logo">
-            <img src="@/assets/img/tabbar/home/logo@3x.png">
+    <div>
+        <div class="search-header c-b-gray">
+            <div class="logo">
+                <img src="@/assets/img/tabbar/home/logo@3x.png">
+            </div>
+            <div class="search">
+                <van-search v-model="value" shape="round" @click="toSearch"/>
+            </div>
+            <div class="icons">
+                <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
+                <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
+            </div>
         </div>
-        <div class="search">
-            <van-search v-model="value" shape="round" @click="toSearch"/>
-        </div>
-        <div class="icons">
-            <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
-            <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
-        </div>
+        <div class="place"></div>
     </div>
 </template>
 
@@ -51,7 +54,8 @@ export default {
 .search-header{
     width: 100%;
     height: 88px;
-    position: relative;
+    position: fixed;
+    z-index: 1;
     .logo{
         position: absolute;
         left:30px;

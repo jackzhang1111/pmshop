@@ -1,4 +1,5 @@
 import axios from 'axios';
+import main from '@/main.js'
 import { Toast } from 'vant';
 import Qs from 'qs'
 //form Data格式
@@ -74,8 +75,18 @@ mainAxios.interceptors.response.use(function (response) {
                 data.msg = "token不能为空"
             }else if(data.code == -2){
                 data.msg = "用户信息不存在"
+                setTimeout(()=>{
+                    main.$router.push({
+                        name: '登录'
+                    })
+                },1000)
             }else if(data.code == -3){
                 data.msg = "用户登录信息已失效"
+                setTimeout(()=>{
+                    main.$router.push({
+                        name: '登录'
+                    })
+                },1000)
             }else if(data.code == -4){
                 data.msg = "账户不存在或者密码错误"
             }
@@ -116,9 +127,20 @@ parkAxios.interceptors.response.use(function (response) {
             if(data.code == -1){
                 data.msg = "token不能为空"
             }else if(data.code == -2){
-                data.msg = "用户信息不存在"
+                data.msg = "用户信息不存在,请重新登录"
+                setTimeout(()=>{
+                    main.$router.push({
+                        name: '登录'
+                    })
+                },1000)
+                
             }else if(data.code == -3){
-                data.msg = "用户登录信息已失效"
+                data.msg = "用户登录信息已失效,请重新登录"
+                setTimeout(()=>{
+                    main.$router.push({
+                        name: '登录'
+                    })
+                },1000)
             }else if(data.code == -4){
                 data.msg = "账户不存在或者密码错误"
             }

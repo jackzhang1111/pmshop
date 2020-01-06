@@ -3,12 +3,7 @@
     <div class="order-detail">
         <balance-header title="订单详情"></balance-header>
         <div class="address-p1">
-            <div class="p1-top">
-                {{orderStatus(detailObj.orderStatusApp,'status')}}
-            </div>
-            <div class="p1-bottom">
-                剩18小时47分自动关闭
-            </div>
+            <div class="p1-top">{{orderStatus(detailObj.orderStatusApp,'status')}}</div>
         </div>
         <div class="address-p2">
             <div class="p2-top">
@@ -19,7 +14,6 @@
                 <div class="fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics(detailObj.orderId)">
                     <van-icon name="arrow" size="21" class="arrow-icon"/>
                 </div>
-                
             </div>
             <div class="p2-bottom">
                 <div class="bottom-left">
@@ -27,7 +21,6 @@
                         <img src="@/assets/img/confirmOrder/add-02@2x.png">
                     </div>
                 </div>
-                
                 <div class="bottom-right">
                     <span class="name"> {{detailObj.consignee}}</span>
                     <span class="phone"> 86-{{detailObj.mobile}}</span>
@@ -35,13 +28,10 @@
                         {{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="address-p3">
-            <div class="p3-header">
-                商品信息
-            </div>
+            <div class="p3-header">商品信息</div>
             <div class="good-detail">
                 <div class="good-detail-content" v-for="data in dataList" :key="data.detailId">
                     <div class="good-detail-img" @click="jumpRouter('商品详情')">
@@ -96,8 +86,8 @@
                 </div>
                 <div class="middle-p2">
                     <span>订单编号:</span>
-                    <span>{{detailObj.orderSn}}</span>
-                    <span class="fl-right c-orange">复制</span>
+                    <span id="orderSn">{{detailObj.orderSn}}</span>
+                    <span class="fl-right c-orange" ref="copy" data-clipboard-action="copy" data-clipboard-target="#orderSn" @click="copyLink">复制</span>
                 </div>
                 <div class="middle-p1">
                     <span>下单时间:</span>
@@ -152,7 +142,6 @@
             <kefu></kefu>
         </van-overlay>
 
-
         <transition name="canorder">
             <zhezhao v-show="show">
                 <cancel-order @closeOverlay="closeOverlay" :orderId="orderId" ref="cancelorder" @refreshOrder="refreshOrder"></cancel-order>
@@ -172,6 +161,7 @@ import zhezhao from '@/multiplexing/zhezhao'
 import kefu from '@/multiplexing/kefu.vue'
 import balanceHeader from './itemComponents/balanceHeader'
 import {mapActions} from 'vuex'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -203,7 +193,9 @@ export default {
                 {type:2,name:'在线支付'},
                 {type:3,name:'余额支付'},
             ],
-            orderId:0
+            orderId:0,
+
+            copyBtn: null, //存储初始化复制按钮事件
         };
     },
     computed: {
@@ -214,6 +206,8 @@ export default {
     },
     mounted() {
         this.orderinfo()
+
+        this.copyBtn = new this.clipboard(this.$refs.copy)
     },
     watch: {
 
@@ -302,6 +296,18 @@ export default {
         },
         toLogistics(id){
             this.$router.push({name:'物流信息',query:{orderid:id}})
+        },
+
+        //复制
+        copyLink(){
+            let _this = this;
+            let clipboard = _this.copyBtn;
+            clipboard.on('success', function() {
+                Toast('复制成功！')
+            });
+            clipboard.on('error', function() {
+                Toast('复制失败，请手动选择复制！')
+            });
         }
     },
     components: {
@@ -324,9 +330,6 @@ export default {
         .p1-top{
             font-size:34px;
             margin-bottom: 25px;
-        }
-        .p1-bottom{
-            font-size:24px;
         }
     }
     .address-p2{

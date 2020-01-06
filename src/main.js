@@ -14,6 +14,9 @@ import {isDisabled,formValidate,strTrim,objTrim,priceReg,objDeepCopy,deepnull} f
 import store from './store'
 import * as mycomponents from '@/common/mycomponents.js'
 import VueScroller from "vue-scroller"
+import clipboard from 'clipboard';
+
+
 Vue.use(VueScroller);
 Vue.use(Vant);
 
@@ -29,8 +32,12 @@ Vue.prototype.$fn = {
 
 Vue.prototype.$webUrl = "http://192.168.3.161:8091/tospino/test/"
 Vue.prototype.jn = '₵'
+Vue.prototype.clipboard = clipboard;
+
 
 Vue.config.productionTip = false
+
+
 
 //注册全局组件
 Object.keys(mycomponents).forEach(key => {
@@ -43,10 +50,11 @@ router.afterEach((to,from,next) => {
 });
 
 /* eslint-disable no-new */
-new Vue({
+const main = new Vue({
   el: '#app',
   router,
   store,
   components: { App },
   template: '<App/>'
 })
+export default main

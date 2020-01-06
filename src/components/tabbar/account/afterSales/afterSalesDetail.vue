@@ -40,8 +40,8 @@
                 </div>
                 <div class="middle-p1">
                     <span class="c-999">订单编号:</span>
-                    <span class="margin-l-40 c-333">{{detailData.saleOrderSn}}</span>
-                    <span class="fl-right c-orange">复制</span>
+                    <span class="margin-l-40 c-333" id="orderSn">{{detailData.saleOrderSn}}</span>
+                    <span class="fl-right c-orange" ref="copy" data-clipboard-action="copy" data-clipboard-target="#orderSn" @click="copyLink">复制</span>
                 </div>
                 <div class="middle-p1">
                     <span class="c-999">申请时间:</span>
@@ -75,6 +75,7 @@
 <script>
 import kefu from '@/multiplexing/kefu.vue'
 import {backorderinfoApi,revokebackorderApi} from '@/api/afterSales/index'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -95,7 +96,8 @@ export default {
             backTypeList:[
                 {type:1,name:'仅退款'},
                 {type:2,name:'退货退款'},
-            ]
+            ],
+            copyBtn: null, //存储初始化复制按钮事件
         };
     },
     computed: {
@@ -106,6 +108,7 @@ export default {
     },
     mounted() {
         this.backorderinfo(this.$route.query.id)
+        this.copyBtn = new this.clipboard(this.$refs.copy)  
     },
     watch: {
 
@@ -142,6 +145,17 @@ export default {
                     this.backorderinfo(id)
                 }
             })
+        },
+        //复制
+        copyLink(){
+            let _this = this;
+            let clipboard = _this.copyBtn;
+            clipboard.on('success', function() {
+                Toast('复制成功！')
+            });
+            clipboard.on('error', function() {
+                Toast('复制失败，请手动选择复制！')
+            });
         }
     },
     components: {

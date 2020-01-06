@@ -2,204 +2,174 @@
 <!-- 首页 -->
     <div class="home">
         <search-header></search-header>
-        <div class="big-pig pl-30 box"></div>
-        <!-- 限时抢购先隐藏 -->
-        <div class="flash-sale pl-30 box" v-if="false">
-            <div class="flash-sale-1">
-                <span class="put-line"></span>
-                <span class="t1">限时</span>
-                <span class="t2">抢购</span>
-            </div>
-            <div class="flash-sale-2">
-                <div class="pictures">
-                    <div class="p1" v-for="(i,index) in 4" :key="index" @click="$router.push({name:'商品详情'})">
-                        <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
-                        <span class="good-name">OG法式连衣裙</span><br>
-                        <span class="good-price1">¥99.00</span><br>
-                        <span class="good-price2">¥199.00</span>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="jump-btn-con">
-                <van-button type="primary" size="large" class="jump-btn" @click="jumpRouter('限时抢购')">
-                    <span>进入主会场</span>
-                    <span class="jump-btn-icon"></span>
-                </van-button>
-            </div>
+        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pullup="pullup" @pullup="_pullup">
+            <div>
+
             
-        </div>
-        <div class="good-recommend box">
-            <div class="flash-sale-1">
-                <span class="put-line"></span>
-                <span class="t1">精品推荐</span>
-                <span class="t2">查看更多</span>
-            </div>
-            <div class="flash-sale-2">
-                <div class="pictures">
-                    <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                        <img :src="$webUrl+finework.imgUrl">
-                        <span class="good-name">{{finework.supplyTitle}}</span><br>
-                        <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
-                    </div>
+                <div class="commodity-swipe">
+                    <van-swipe @change="onChange">
+                        <van-swipe-item v-for="(banner,index) in 1" :key="index">
+                            <div class="w1">
+                                <img src="@/assets/img/tabbar/home/banner@3x.png">
+                            </div>
+                        </van-swipe-item>
+                        <div class="custom-indicator" slot="indicator">
+                            {{ current + 1 }}/{{leng}}
+                        </div>
+                    </van-swipe>
                 </div>
-            </div>
-        </div>
-        <div class="good-world box">
-            <div class="flash-sale-1">
-                <span class="put-line"></span>
-                <span class="t1">全球品牌精选</span>
-                <span class="t2">查看更多</span>
-            </div>
-            <div class="good-world-brand">
-                <div class="brand-p-1" v-if="false">
-                    <img :src="$webUrl+homeObj.producteFineBrand[0].brandLogo" class="brand-p-1-left">
-                    <img :src="$webUrl+homeObj.producteFineBrand[1].brandLogo" class="brand-p-1-right-top">
-                    <img :src="$webUrl+homeObj.producteFineBrand[2].brandLogo" class="brand-p-1-right-bottom">
+                <!-- 限时抢购先隐藏 -->
+                <div class="flash-sale pl-30 box" v-if="false">
+                    <div class="flash-sale-1">
+                        <span class="put-line"></span>
+                        <span class="t1">限时</span>
+                        <span class="t2">抢购</span>
+                    </div>
+                    <div class="flash-sale-2">
+                        <div class="pictures">
+                            <div class="p1" v-for="(i,index) in 4" :key="index" @click="$router.push({name:'商品详情'})">
+                                <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
+                                <span class="good-name">OG法式连衣裙</span><br>
+                                <span class="good-price1">¥99.00</span><br>
+                                <span class="good-price2">¥199.00</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="jump-btn-con">
+                        <van-button type="primary" size="large" class="jump-btn" @click="jumpRouter('限时抢购')">
+                            <span>进入主会场</span>
+                            <span class="jump-btn-icon"></span>
+                        </van-button>
+                    </div>
+                    
                 </div>
-                <div class="brand-p-2">
-                    <img :src="$webUrl+globalPro.brandLogo" v-for="globalPro in globalProList" :key="globalPro.brandId">
-                </div>
-            </div>
-        </div>
-        <div class="good-world-best pl-30 box">
-            <div class="flash-sale-1">
-                <span class="put-line"></span>
-                <span class="t1">全球畅销榜</span>
-                <span class="t2">查看更多</span>
-            </div>
-            <div class="flash-sale-2">
-                <div class="pictures">
-                    <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId">
-                        <img :src="$webUrl+fineSale1.imgUrl">
-                        <span class="good-name">{{fineSale1.supplyTitle}}</span>
-                        <span class="good-price">{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
+                <div class="good-recommend box">
+                    <div class="flash-sale-1">
+                        <span class="put-line"></span>
+                        <span class="t1">精品推荐</span>
+                        <span class="t2">查看更多</span>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="banner">
-            <img src="@/assets/img/tabbar/home/guanggao-01@3x.png">
-        </div>
-        <div class="exhibition">
-            <div class="flash-sale-2">
-                <div class="pictures">
-                    <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
-                        <img src="@/assets/img/tabbar/home/01@3x.png">
-                        <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
-                        <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="banner">
-            <img src="@/assets/img/tabbar/home/guanggao-02@3x.png" >
-        </div>
-        <div class="good-popular box">
-            <div class="flash-sale-1">
-                <span class="put-line"></span>
-                <span class="t1">全球畅销榜</span>
-                <span class="t2">查看更多</span>
-            </div>
-            <div class="good-popular-top" >
-                <div class="good-popular-top-1" v-for="category in homeObj.producteFinecategory" :key="category.categoryId">
-                    <div class="circle">
-                        <span>{{category.categoryName}}</span> 
-                    </div>
-                    <img :src="$webUrl+category.categoryImg">
-                </div>
-            </div>
-            
-        </div>
-        <div class="banner">
-            <img src="@/assets/img/tabbar/home/guanggao-03@3x.png" >
-        </div>
-        <div class="good-sort">
-            <van-tabs v-model="active" title-active-color="#FA5300" title-inactive-color="#000">
-                <van-tab title="标签1" >
-                    <div slot="title" >
-                        <span class="primary">精品</span>
-                        <span class="secondary">猜你喜欢</span>
-                    </div>
-                </van-tab>
-                <van-tab title="标签1" >
-                    <div slot="title" >
-                        <span class="primary">精品</span>
-                        <span class="secondary">猜你喜欢</span>
-                    </div>
-                </van-tab>
-                <van-tab title="标签1" >
-                    <div slot="title" >
-                        <span class="primary">精品</span>
-                        <span class="secondary">猜你喜欢</span>
-                    </div>
-                </van-tab>
-                <van-tab title="标签1" >
-                    <div slot="title" >
-                        <span class="primary">精品</span>
-                        <span class="secondary">猜你喜欢</span>
-                    </div>
-                </van-tab>
-                <van-tab title="标签1" >
-                    <div slot="title" >
-                        <span class="primary">精品</span>
-                        <span class="secondary">猜你喜欢</span>
-                    </div>
-                </van-tab>
-            </van-tabs>
-            <div class="footer-exhibition">
-                <div v-for="(i,index) in 3" :key="index" class="exhibition-con">
-                    <div class="exhibition-left" >
-                        <img src="@/assets/img/tabbar/home/chanpin@3x.png">
-                        <div class="produced">
-                            <span class="icon">
-                                <img src="@/assets/img/tabbar/home/guojia@3x.png" alt="">
-                            </span>
-                            <span class="produced-font">瑞士</span>
-                        </div>
-                        <div>
-                            <span>欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</span>
-                        </div>
-                        <div class="score">
-                            <van-rate v-model="value" readonly  color="#FA5300"/>
-                            <span>477</span>
-                        </div>
-                        <div class="price">
-                            <span class="price1">¥199.00</span>
-                            <span class="price2">258.00</span>
-                            <span class="poin">...</span>
-                        </div>
-                    </div>
-                    <div class="exhibition-right" >
-                        <img src="@/assets/img/tabbar/home/chanpin@3x.png">
-                        <div class="produced">
-                            <span class="icon">
-                                <img src="@/assets/img/tabbar/home/guojia@3x.png" alt="">
-                            </span>
-                            <span class="produced-font">瑞士</span>
-                        </div>
-                        <div>
-                            <span>欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</span>
-                        </div>
-                        <div class="score">
-                            <van-rate v-model="value" readonly  color="#FA5300"/>
-                            <span>477</span>
-                        </div>
-                        <div class="price">
-                            <span class="price1">¥199.00</span>
-                            <span class="price2">258.00</span>
-                            <span class="poin">...</span>
+                    <div class="flash-sale-2">
+                        <div class="pictures">
+                            <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
+                                <img :src="$webUrl+finework.imgUrl">
+                                <span class="good-name">{{finework.supplyTitle}}</span><br>
+                                <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="good-world box">
+                    <div class="flash-sale-1">
+                        <span class="put-line"></span>
+                        <span class="t1">全球品牌精选</span>
+                        <span class="t2">查看更多</span>
+                    </div>
+                    <div class="good-world-brand">
+                        <div class="brand-p-1">
+                            <img :src="$webUrl+brandLogo1" class="brand-p-1-left">
+                            <img :src="$webUrl+brandLogo2" class="brand-p-1-right-top">
+                            <img :src="$webUrl+brandLogo3" class="brand-p-1-right-bottom">
+                        </div>
+                        <div class="brand-p-2">
+                            <img :src="$webUrl+globalPro.brandLogo" v-for="globalPro in globalProList" :key="globalPro.brandId">
+                        </div>
+                    </div>
+                </div>
+                <div class="good-world-best pl-30 box">
+                    <div class="flash-sale-1">
+                        <span class="put-line"></span>
+                        <span class="t1">全球畅销榜</span>
+                        <span class="t2">查看更多</span>
+                    </div>
+                    <div class="flash-sale-2">
+                        <div class="pictures">
+                            <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId">
+                                <img :src="$webUrl+fineSale1.imgUrl">
+                                <span class="good-name">{{fineSale1.supplyTitle}}</span>
+                                <span class="good-price">{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner">
+                    <img src="@/assets/img/tabbar/home/guanggao-01@3x.png">
+                </div>
+                <div class="exhibition">
+                    <div class="flash-sale-2">
+                        <div class="pictures">
+                            <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
+                                <img src="@/assets/img/tabbar/home/01@3x.png">
+                                <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
+                                <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner">
+                    <img src="@/assets/img/tabbar/home/guanggao-02@3x.png" >
+                </div>
+                <div class="good-popular box">
+                    <div class="flash-sale-1">
+                        <span class="put-line"></span>
+                        <span class="t1">全球畅销榜</span>
+                        <span class="t2">查看更多</span>
+                    </div>
+                    <div class="good-popular-top" >
+                        <div class="good-popular-top-1" v-for="category in homeObj.producteFinecategory" :key="category.categoryId">
+                            <div class="circle">
+                                <span>{{category.categoryName}}</span> 
+                            </div>
+                            <img :src="$webUrl+category.categoryImg">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="banner">
+                    <img src="@/assets/img/tabbar/home/guanggao-03@3x.png" >
+                </div>
+                <div class="good-sort">
+                    <van-tabs v-model="active" title-active-color="#FA5300" title-inactive-color="#000" @change="changeTab(bottomTabs,$event)">
+                        <van-tab v-for="(tab,index) in bottomTabs" :key="index">
+                            <div slot="title">
+                                <span class="primary">{{tab.categoryName}}</span>
+                            </div>
+                        </van-tab>
+                    </van-tabs>
+                    <div class="footer-exhibition">
+                        <div  class="exhibition-con">
+                            <div class="exhibition-left" v-for="(searchgoodDao,index) in searchgoodDaolist" :key="index">
+                                <img :src="$webUrl + searchgoodDao.locationUrl">
+                                <div class="produced">
+                                    <span class="icon">
+                                        <img src="@/assets/img/tabbar/home/guojia@3x.png">
+                                    </span>
+                                    <span class="produced-font">瑞士</span>
+                                </div>
+                                <div class="clamp-2 miaoshu">欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</div>
+                                <div class="score">
+                                    <van-rate v-model="value" readonly  color="#FA5300"/>
+                                    <span>477</span>
+                                </div>
+                                <div class="price">
+                                    <span class="price1">¥199.00</span>
+                                    <span class="price2">258.00</span>
+                                    <!-- <span class="poin">...</span> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
+        </scroll>
     </div>
 </template>
 
 <script>
 import searchHeader from '@/multiplexing/searchHeader'
-import {homePageApi} from '@/api/home/index.js'
+import {homePageApi,HomePagebottomApi} from '@/api/home/index.js'
 export default {
     props: {
 
@@ -211,7 +181,25 @@ export default {
             homeObj:{},
             globalProList:[],
             fineSaleList1:[],
-            fineSaleList2:[]
+            fineSaleList2:[],
+            brandLogo1:'',
+            brandLogo2:'',
+            brandLogo3:'',
+            formData:{
+                brandId: 0,
+                categoryId: 0,
+                limit: 10,
+                page: 1,
+                seraname: "",
+                sort: 0
+            },
+            bottomTabs:[],
+            searchgoodDaolist:[],
+            current:0,
+            leng:1,
+            recordGroup:[],
+            pullup:true,
+            guanmengou:true
         };
     },
     computed: {
@@ -222,6 +210,7 @@ export default {
     },
     mounted() {
         this.homePage()
+        this.refreshOrder()
     },
     watch: {
 
@@ -236,12 +225,66 @@ export default {
                 if(res.code == 0){
                     this.homeObj = res.Data
                     this.globalProList = this.homeObj['producteFineBrand'].slice(3)
+                    this.brandLogo1 = this.homeObj['producteFineBrand'][0].brandLogo
+                    this.brandLogo2 = this.homeObj['producteFineBrand'][1].brandLogo
+                    this.brandLogo3 = this.homeObj['producteFineBrand'][2].brandLogo
                     this.fineSaleList1 = this.homeObj['productFineSale'].slice(0,3)
                     this.fineSaleList2 = this.homeObj['productFineSale'].slice(3)
-                    console.log(this.globalProList,'this.globalProList');
                 }
             })
-        }
+        },
+        //底部数据分类
+        homePagebottom(data,flag){
+            HomePagebottomApi(data).then(res => {
+                if(res.code == 0){
+                    this.bottomTabs = res.top
+                    
+                    if(flag){
+                        this.searchgoodDaolist = this.searchgoodDaolist.concat(res.Data.searchgoodDaolist)
+                    }else{
+                        this.searchgoodDaolist = res.Data.searchgoodDaolist
+                    }
+                    this.totalCount = res.Data.total
+                    this.recordGroup = this.searchgoodDaolist
+                    if(this.searchgoodDaolist.length > 0){
+                        if(this.searchgoodDaolist.length >= this.totalCount){
+                            this.pullup = false
+                        }
+                    }else{
+                        this.pullup = false
+                    }
+                }
+            })
+        },
+        //tab切换
+        changeTab(list,index){
+            this.formData.categoryId = list[index].categoryId
+            this.refreshOrder();
+        },
+        //轮播
+        onChange(index) {
+            this.current = index;
+        },
+        //上拉加载
+        _pullup(){
+            if(!this.pullup) return
+            //不知道为什么触发两次,使用关门狗拦截
+            if(this.guanmengou){
+                this.formData.page++
+                this.homePagebottom(this.formData,true)
+                this.guanmengou = false
+            }
+            setTimeout(()=>{
+                this.guanmengou = true
+            },500)
+        },
+        //刷新页面
+        refreshOrder(){
+            this.formData.page = 1
+            this.formData.limit = 10
+            this.homePagebottom(this.formData)
+            this.pullup = true
+        },
     },
     components: {
         searchHeader,
@@ -250,18 +293,28 @@ export default {
 </script>
 
 <style scoped lang="less">
+.bscroll-wrapper{
+    height: calc(100vh - 90px - 100px);
+}
 .home{
     position: relative;
     overflow: hidden;
-    .big-pig{
-        width: 100%;
-        height: 320px;
-        background-color: red;
+    .commodity-swipe{
         margin: 7px 0 40px;
-        background: url('~@/assets/img/tabbar/home/banner@3x.png') no-repeat center;
-        background-size: 100%;
+        .custom-indicator{
+            position: absolute;
+            bottom: 20px;
+            right:30px;
+            width:60px;
+            height:40px;
+            background:rgba(153,153,153,1);
+            border-radius:20px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 22px;
+            color: #FFFEFE;
+        }
     }
-    
     .flash-sale{
         width: 100%;
         height: 472px;
@@ -699,11 +752,11 @@ export default {
         /deep/ .van-tabs{
             .van-tabs__wrap{
                 height: 88px;
+                .van-tab{
+                    line-height: 88px;
+                }
                 .primary{
                    font-size:34px;
-                }
-                .secondary{
-                    font-size:20px;
                 }
             }
             
@@ -716,65 +769,23 @@ export default {
             margin-top: 20px;
             .exhibition-con{
                 width: 100%;
-                height: 570px;
                 margin-bottom: 10px;
+                display: flex;
+                flex-direction:row;
+                flex-wrap: wrap;
+                justify-content : space-between;
+
             }
             .exhibition-left{
                 width: 340px;
                 height: 570px;
                 float: left;
                 background-color: #fff;
-                img{
-                    width: 340px;
-                    height: 340px;
+                margin-bottom: 10px;
+                .miaoshu{
+                    line-height: 27px;
+                    font-size: 18px;
                 }
-                .icon{
-                    position: relative;
-                    top:8px;
-                    img{
-                        width: 30px;
-                        height: 30px;
-                        margin-left: 10px;
-                    }
-                }
-                .produced{
-                    margin-bottom: 18px;
-                    .produced-font{
-                        color: #DB9000;
-                        margin-left:10px;
-                    }
-                }
-                .score{
-                    margin:10px 0 20px;
-                    .van-rate{
-                        margin-right:8px;
-                    }
-                }
-                .price{
-                    position: relative;
-                    .price1{
-                        font-size:28px;
-                        color: #FA5300;
-                        margin-right:11px;
-                    }
-                    .price2{
-                        font-size:18px;
-                        color: #666666;
-                        text-decoration:line-through
-                    }
-                    .poin{
-                        position: absolute;
-                        font-size: 60px;
-                        top: -35px;
-                        right: 0;
-                    }
-                }
-            }
-            .exhibition-right{
-                width: 340px;
-                height: 570px;
-                float: right;
-                background-color: #fff;
                 img{
                     width: 340px;
                     height: 340px;

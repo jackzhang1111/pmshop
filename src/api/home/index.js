@@ -7,3 +7,12 @@ export function homePageApi(params) {
         data:params
     })
 }
+
+//首页分类
+export function HomePagebottomApi(params) {
+    return park({
+        url:`/apphomepage/HomePagebottom`,
+        method: 'POST',
+        data:params
+    })
+}

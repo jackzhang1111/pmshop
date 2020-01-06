@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+ 
 //引导屏
 import guidePage from '@/components/guidePage/index.vue'
 //登录页
@@ -149,9 +150,6 @@ export default new Router({
       path: '/forgetPassword',
       name: '忘记密码',
       component: forgetPassword,
-      children:[
-        
-      ]
     },
     {
       path: '/forgeSuccess',
@@ -608,3 +606,8 @@ export default new Router({
   ],
   
 })
+// 解决重复点击导航路由报错
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+}

@@ -24,8 +24,9 @@
                     <span class="t2">客服：61465656</span>
                 </div>
                 <div class="wuliu-num">
-                    物流单号：{{expressNo}}
-                    <span class="c-orange">复制</span>
+                    <span>物流单号：</span>
+                    <span id="orderSn">{{expressNo}}</span> 
+                    <span class="c-orange fl-right" ref="copy" data-clipboard-action="copy" data-clipboard-target="#orderSn" @click="copyLink">复制</span>
                 </div>
             </div>
 
@@ -48,6 +49,7 @@ import balanceHeader from './itemComponents/balanceHeader'
 import footerExhibition from '@/multiplexing/footerExhibition'
 import {getlogisticsorderApi} from '@/api/myOrder/index.js'
 import {guessyoulikeApi} from '@/api/search/index'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -64,7 +66,8 @@ export default {
                 limit:6,
                 seraname:''
             },
-            footerData:{}
+            footerData:{},
+            copyBtn: null, //存储初始化复制按钮事件
         };
     },
     computed: {
@@ -76,6 +79,7 @@ export default {
     mounted() {
         this.getlogisticsorder(this.$route.query.orderid)
         this.guessyoulike(this.footerFromData)
+        this.copyBtn = new this.clipboard(this.$refs.copy)  
     },
     watch: {
 
@@ -115,7 +119,17 @@ export default {
             if(parcel.detailList.length > 1){
                 this.$router.push({name:'包裹仅退款',query:{orderId:parcel.orderId}})
             }
-            console.log(parcel,'length');
+        },
+        //复制
+        copyLink(){
+            let _this = this;
+            let clipboard = _this.copyBtn;
+            clipboard.on('success', function() {
+                Toast('复制成功！')
+            });
+            clipboard.on('error', function() {
+                Toast('复制失败，请手动选择复制！')
+            });
         }
     },
     components: {

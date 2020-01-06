@@ -17,9 +17,7 @@
         <div class="balance-bottom">
             <p class="bottom-p1">选择金额（您可以选择充值面额或者自定义充值金额）</p>
             <div class="money-list" v-for="(money,index) in moneyList" :key="index">
-                <div v-for="num in money.numList" :key="num">
-                    {{num}}
-                </div>
+                <div v-for="num in money.numList" :key="num">{{num}}</div>
             </div>
             <div class="cell">
                 <input type="number" class="input-xt" placeholder="请输入金额">
