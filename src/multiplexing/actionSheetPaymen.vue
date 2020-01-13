@@ -42,7 +42,6 @@ export default {
                 }
             ],
             list:[],
-            
         };
     },
     computed: {
@@ -67,7 +66,7 @@ export default {
     },
     methods: {
         confirm(){
-            this.$emit('showPassWord',true)
+            this.$emit('showPassWord',true,'支付')
         },
         getonlinepaytypelist(){
             getonlinepaytypelistApi({}).then(res => {

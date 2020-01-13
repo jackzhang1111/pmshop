@@ -116,9 +116,7 @@ export default {
         },
         //退款
         tuikuan(parcel){
-            if(parcel.detailList.length > 1){
-                this.$router.push({name:'包裹仅退款',query:{orderId:parcel.orderId}})
-            }
+            this.$router.push({name:'包裹仅退款',query:{orderId:parcel.orderId}})
         },
         //复制
         copyLink(){

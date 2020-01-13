@@ -12,7 +12,7 @@
             </div>
             <div class="good-detail-content" v-for="(detail,index) in detailData.detailList" :key="index">
                 <div class="good-detail-img">
-                    <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                    <img :src="$webUrl+detail.skuImg">
                 </div>
                 <div class="good-detail-title">
                     <span class="name">{{detail.skuName}}</span>

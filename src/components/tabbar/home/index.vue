@@ -4,8 +4,6 @@
         <search-header></search-header>
         <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pullup="pullup" @pullup="_pullup">
             <div>
-
-            
                 <div class="commodity-swipe">
                     <van-swipe @change="onChange">
                         <van-swipe-item v-for="(banner,index) in 1" :key="index">
@@ -42,8 +40,8 @@
                             <span class="jump-btn-icon"></span>
                         </van-button>
                     </div>
-                    
                 </div>
+                <!-- 精品推荐 -->
                 <div class="good-recommend box">
                     <div class="flash-sale-1">
                         <span class="put-line"></span>
@@ -53,7 +51,7 @@
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                                <img :src="$webUrl+finework.imgUrl">
+                                <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)">
                                 <span class="good-name">{{finework.supplyTitle}}</span><br>
                                 <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
                             </div>
@@ -100,7 +98,7 @@
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
-                                <img src="@/assets/img/tabbar/home/01@3x.png">
+                                <img :src="$webUrl+fineSale2.imgUrl">
                                 <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
                                 <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
                             </div>
@@ -285,6 +283,10 @@ export default {
             this.homePagebottom(this.formData)
             this.pullup = true
         },
+        //跳转商品详情
+        toDetail(skuid){
+            this.$router.push({name:'商品详情',query:{skuId:skuid}})
+        }
     },
     components: {
         searchHeader,
@@ -403,7 +405,6 @@ export default {
         .jump-btn-con{
             margin-top:10px;
             margin-right: 30px;
-            
             .jump-btn{
                 height: 50px;
                 background-color: #fff;
@@ -456,13 +457,10 @@ export default {
             margin-top: 17px;
             overflow: scroll;
             .pictures{
-                // height: 280px;
-                // width: 1000px;
                 display: flex;
                 flex-direction:row;
                 justify-content : space-between;
                 .p1{
-                    // width: 220px;
                     height: 200px;
                     display: inline-block;
                     margin-right:5px;
@@ -606,7 +604,6 @@ export default {
                 background-color: #F7E8C7;
                 padding: 24px 24px 20px;
                 box-sizing: border-box;
-                
                 .good-world-best-p1{
                     padding: 45px 0 16px;
                     width: 200px;

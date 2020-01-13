@@ -9,7 +9,7 @@
                 </div>
                 <div class="good-detail-content" v-for="(data,index) in dataList" :key="index">
                     <div class="good-detail-img">
-                        <img src="@/assets/img/tabbar/shoppingCart/product-03@2x.png">
+                        <img :src="$webUrl+data.skuImg">
                     </div>
                     <div class="good-detail-title">
                         <span class="name">{{data.skuName}}</span>
@@ -126,6 +126,7 @@ export default {
             this.uploadList = list
             
         },
+        //订单申请仅退款页面获取订单和订单商品明细
         getconfirmrefundorder(data){
             getconfirmrefundorderApi(data).then(res => {
                 if(res.code == 0){
@@ -135,6 +136,8 @@ export default {
                 }
             })
         },
+
+        //订单申请仅退款
         refundorder(data){
             data.reason = data.reason == '请选择' ? '': data.reason
             refundorderApi(data).then(res => {
@@ -148,25 +151,30 @@ export default {
         },
         //提交订单
         submit(){
+            if(this.formData.reason == '请选择') {
+                Toast('请选择退款原因')
+                return
+            }
+            let arr = []
+            let imgList = []
             // this.formData.imgList = this.uploadList
             this.uploadList.forEach(ele => {
                 let obj = {
                     imgUrl:ele
                 }
-                this.formData.imgList.push(obj)
+                imgList.push(obj)
+                
             })
+            this.formData.imgList = imgList
+
             this.dataList.forEach(item => {
                 let obj = {
                     detailId:item.detailId,
                     detailNum:item.shouldRefundNum
                 }
-                this.formData.detailList.push(obj)
-                console.log(123);
+                arr.push(obj)
             })
-            if(this.formData.reason == '请选择') {
-                Toast('请选择退款原因')
-                return
-            }
+            this.formData.detailList = arr
             this.refundorder(this.formData)
         }
     },

@@ -123,6 +123,7 @@ export default {
         getfilePathList(list){
             this.uploadList = list
         },
+        //订单申请仅退款（通过物流包裹申请）页面获取订单和订单商品明细
         getconfirmrefundorderbylogistics(logisticsOrderId){
             getconfirmrefundorderbylogisticsApi({logisticsOrderId:logisticsOrderId}).then(res => {
                 if(res.code == 0){
@@ -145,24 +146,28 @@ export default {
         },
         //提交订单
         submit(){
+            if(this.formData.reason == '请选择') {
+                Toast('请选择退款原因')
+                return
+            }
+            let arr = []
+            let imgList = []
             this.uploadList.forEach(ele => {
                 let obj = {
                     imgUrl:ele
                 }
-                this.formData.imgList.push(obj)
+                imgList.push(obj)
             })
+            this.formData.imgList = imgList
+
             this.dataList.forEach(item => {
                 let obj = {
                     detailId:item.detailId,
                     detailNum:item.shouldRefundNum
                 }
-                this.formData.detailList.push(obj)
-               
+                arr.push(obj)
             })
-            if(this.formData.reason == '请选择') {
-                Toast('请选择退款原因')
-                return
-            }
+            this.formData.detailList = arr
             this.refundorderbylogistics(this.formData)
         }
     },

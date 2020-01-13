@@ -39,8 +39,8 @@
                         </template>
                         <div class="good-detail-img" @click="jumpRouter('商品详情')">
                             <img :src="$webUrl+product.skuImg">
-                        <div class="img-nochange" v-if="product.stockEnough==0 || product.canSell == 0">
-                                {{product.stockEnough==0 ? '库存不足': product.canSell == 0 ? "不可售":''}}
+                            <div class="img-nochange" v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0">
+                                {{product.stockEnough==0 ? '库存不足': product.canSell == 0 ? "不可售": product.freightCode == 1 ? '地址不支持配送':'超重，不支持配送' }}
                             </div>
                         </div>
                         <div class="good-detail-title" @click="jumpRouter('商品详情')">
@@ -229,15 +229,23 @@ export default {
         //提交订单按钮
         submit(){
             let flag = true
+            let flag2 = true
             this.orderData.orderList.forEach(ele => {
                 ele.detailList.forEach(ele2 => {
                     if(ele2.canSell==0 || ele2.stockEnough==0){
                         flag = false
                     }
+                    if(ele2.freightCode != 0){
+                        flag2 = false
+                    }
                 })
             })
             if(!flag){
                 Toast('请移除异常商品')
+                return
+            }
+            if(!flag2){
+                Toast('请移除异常商品或者更换地址')
                 return
             }
             //提交订单
@@ -347,7 +355,7 @@ export default {
                 }   
             })
         },
-        //提交订单
+        //确认订单提交订单接口
         batchmakeorder(orderObj){
             let obj = { 
                 addressId:this.defaultAdderss.addressId,
@@ -360,10 +368,17 @@ export default {
 
             batchmakeorderApi(obj).then(res => {
                 if(res.code == 0){
-                    this.showpaymen()
-                    res.Data.forEach(item => {
-                        this.orderIdList.push({orderId:Number(item.orderId)})
-                    })
+                    //支付方式为货到付款,直接跳转到我的订单(待发货)
+                    if(this.zffs == 1){
+                        this.$router.push({name:'我的订单',query:{active:2}})
+                    }else{
+                        //弹出支付弹框
+                        this.showpaymen()
+                        res.Data.forEach(item => {
+                            this.orderIdList.push({orderId:Number(item.orderId)})
+                        })
+                    }
+                    
                 }else if(res.code > 20){
                     let obj = {
                         addressId:this.defaultAdderss.addressId,
@@ -438,7 +453,7 @@ export default {
         background-color: #fff;
         line-height: 100px;
         position: relative;
-        z-index: 1;
+        z-index: 6;
         padding: 0 30px;
         span:nth-child(1){
             font-size:26px;
@@ -453,6 +468,7 @@ export default {
                 background-color: #fff;
                 text-align: center;
                 right:29px;
+                z-index: 1;
             }
         }
         .gj-img{
@@ -502,8 +518,13 @@ export default {
                     background-color: rgba(0,0,0,0.5);
                     color: #fff;
                     font-size: 30px;
+                    line-height: 40px;
                     text-align: center;
-                    line-height: 150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    flex-direction: column;
+
                 }
             }
             .good-detail-title{

@@ -29,13 +29,17 @@
 <script>
 export default {
     props: {
-        
+        typeLeixing:{
+            type:String,
+            value:''
+        }
     },
     data() {
         return {
             value: '',
             showAction:false,
-            showKeyboard:true
+            showKeyboard:true,
+            type:''
         };
     },
     computed: {
@@ -45,16 +49,19 @@ export default {
 
     },
     mounted() {
-        
     },
     watch: {
-
+        typeLeixing:{
+            handler:function(newVal){
+                this.type = newVal
+            }
+        }
     },
     methods: {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
             if(this.value.length==6){
-                this.$emit('getPassWord',this.value)
+                this.$emit('getPassWord',this.value,this.type)
             }
         },
         onDelete() {

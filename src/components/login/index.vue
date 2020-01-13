@@ -139,7 +139,7 @@ export default {
                 loginApi(this.userData).then(res => {
                     if(res.code == 0){
                         localStorage.token = res.token
-                        localStorage.userinfo = JSON.stringify(res.user) 
+                        localStorage.userinfoShop = JSON.stringify(res.user) 
                         this.$router.push({name:'首页'})
                     }
                 })

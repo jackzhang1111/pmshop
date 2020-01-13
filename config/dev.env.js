@@ -4,5 +4,5 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  SHOP_API:'"http://test.api.portal.xinquanjk.com:90"',  //商城 api
+  SHOP_API:'"http://192.168.3.161:8086"',   //ERP api
 })

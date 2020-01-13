@@ -17,6 +17,21 @@ import VueScroller from "vue-scroller"
 import clipboard from 'clipboard';
 
 
+import {gethttpimgurlApi} from '@/api/login/index'
+
+
+Vue.prototype.$webUrl = 'http://192.168.3.161:8091/tospino/test/'
+Vue.prototype.jn = '₵'
+gethttpimgurlApi().then(res => {
+  if(res.code == 0){
+    Vue.prototype.jn = res.currency
+    Vue.prototype.$webUrl = res.webUrl
+  }
+})
+
+
+
+
 Vue.use(VueScroller);
 Vue.use(Vant);
 
@@ -30,8 +45,7 @@ Vue.prototype.$fn = {
   deepnull
 }
 
-Vue.prototype.$webUrl = "http://192.168.3.161:8091/tospino/test/"
-Vue.prototype.jn = '₵'
+
 Vue.prototype.clipboard = clipboard;
 
 

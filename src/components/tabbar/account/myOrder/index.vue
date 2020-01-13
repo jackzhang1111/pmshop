@@ -39,7 +39,7 @@
         <!-- 支付成功弹窗 -->
         <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
         <!-- 密码弹窗 -->
-        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
+        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord" :typeLeixing="typeLeixing"></action-sheet-password>
         <!-- 付款方式弹窗 -->
         <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord"></action-sheet-paymen>
     </div>
@@ -50,7 +50,7 @@ import zhezhao from '@/multiplexing/zhezhao'
 import orderType from './itemComponents/orderType'
 import cancelOrder from './itemComponents/cancelOrder'
 import noSearch from './itemComponents/noSearch'
-import {orderlistApi,orderlaunchpayApi} from '@/api/myOrder/index.js'
+import {orderlistApi,orderlaunchpayApi,completeorderApi} from '@/api/myOrder/index.js'
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
 import actionSheetSucess from '@/multiplexing/actionSheetSucess'
@@ -101,7 +101,8 @@ export default {
             totalCount:0,//总条数
             orderId:0,
             payTypeDetail:201,//余额支付ID,暂时写死
-            orderData:{}
+            orderData:{},
+            typeLeixing:'',
         };  
     },
     computed: {
@@ -200,8 +201,9 @@ export default {
             this.orderData = alldata
         },
         //密码弹窗
-        showPassWord(flag,alldata){
+        showPassWord(flag,typeLeixing,alldata){
             this.$refs.actionSheetPassword.showAction = flag
+            this.typeLeixing = typeLeixing
             if(!alldata) return
             this.orderData = alldata
         },
@@ -213,15 +215,24 @@ export default {
             this.pullup = true
         },
         //获取到密码,请求接口
-        getPassWord(value){
-            let orderList = []
-            orderList.push({orderId:this.orderData.orderId})
-            let obj = {
-                payTypeDetail:this.payTypeDetail,
-                payPwd:value,
-                orderList:orderList
+        getPassWord(value,type){
+            if(type == '支付'){
+                let orderList = []
+                orderList.push({orderId:this.orderData.orderId})
+                let obj = {
+                    payTypeDetail:this.payTypeDetail,
+                    payPwd:value,
+                    orderList:orderList
+                }
+                this.orderlaunchpay(obj)
+            }else if(type == '确认收货'){
+                let obj = {
+                    orderId:this.orderData.orderId,
+                    payPwd:value,
+                }
+
+                this.completeorder(obj)
             }
-            this.orderlaunchpay(obj)
         },
         //弹出支付成功
         showsucess(){
@@ -233,6 +244,15 @@ export default {
                 this.refreshOrder()
             },1000)
         },
+        //确认收货
+        completeorder(data){
+            completeorderApi(data).then(res => {
+                if(res.code == 0){
+                    this.showPassWord(false)
+                    this.refreshOrder()
+                }
+            })
+        }
     },
     components: {
         noSearch,

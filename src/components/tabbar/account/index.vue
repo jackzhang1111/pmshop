@@ -8,8 +8,8 @@
         <div class="head-con">
             <div class="head-img">
                 <img src="@/assets/img/tabbar/my/account/touxiang@2x.png"><br>
-                <span class="head-name">{{userinfo.userName?userinfo.userName:"设置您的个人昵称"}}</span><br>
-                <span class="head-id">会员ID:{{userinfo.userId}}</span>
+                <span class="head-name">{{userinfoShop.userName?userinfoShop.userName:"设置您的个人昵称"}}</span><br>
+                <span class="head-id">会员ID:{{userinfoShop.userId}}</span>
             </div>
         </div>
         <div class="record">
@@ -181,7 +181,7 @@ export default {
                 zuijinliulan
             },
             username:"",
-            userinfo:{},
+            userinfoShop:{},
             shoucangTotal:0,
             walletMoney:0,
             zujiTotal:0,
@@ -199,7 +199,7 @@ export default {
 
     },
     mounted() {
-        this.userinfo = JSON.parse(localStorage.userinfo)
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
         this.selectuserfavorites()
         this.walletInfo()
         this.selectuserbrowhistory(this.formData)

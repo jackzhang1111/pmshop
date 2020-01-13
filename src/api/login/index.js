@@ -61,3 +61,13 @@ export function logoutApi(params) {
         data:params
     })
 }
+
+
+//返回图片服务器的路径
+export function gethttpimgurlApi(params) {
+    return park({
+        url:'/h5login/gethttpimgurl',
+        method: 'POST',
+        data:params
+    })
+}

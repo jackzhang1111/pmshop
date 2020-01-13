@@ -150,22 +150,27 @@ export default {
                 Toast('请选择退款原因')
                 return
             }
+            let arr = []
+            let imgList = []
             this.uploadList.forEach(ele => {
                 let obj = {
                     imgUrl:ele
                 }
-                this.formData.imgList.push(obj)
+                imgList.push(obj)
             })
+            this.formData.imgList = imgList
+
             this.dataList.forEach(item => {
                 let obj = {
                     detailId:item.detailId,
                     detailNum:item.shouldReturnNum
                 }
-                this.formData.detailList.push(obj)
+                arr.push(obj)
             })
-            console.log(this.formData);
+            this.formData.detailList
             this.returnorder(this.formData)
         },
+        //订单申请退货退款
         returnorder(data){
             returnorderApi(data).then(res => {
                 if(res.code == 0){

@@ -64,7 +64,7 @@ export default {
     top:0;
     left:0;
     line-height: 88px;
-    z-index: 1;
+    z-index: 10;
     .arrow-left{
         position: absolute;
         top:20px;

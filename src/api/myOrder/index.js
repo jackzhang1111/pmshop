@@ -80,7 +80,7 @@ export function getconfirmrefundorderbylogisticsApi(params) {
     })
 }
 
-//订单申请仅退款（通过物流包裹申请）页面获取订单和订单商品明细
+//订单按包裹申请仅退款
 export function refundorderbylogisticsApi(params) {
     return park({
         url:`/appsaleorder/refundorderbylogistics`,
@@ -101,6 +101,15 @@ export function getconfirmreturnorderApi(params) {
 export function returnorderApi(params) {
     return park({
         url:`/appsaleorder/returnorder`,
+        method: 'POST',
+        data:params
+    })
+}
+
+//订单订单确认收货
+export function completeorderApi(params) {
+    return park({
+        url:`/appsaleorder/completeorder`,
         method: 'POST',
         data:params
     })
