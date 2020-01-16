@@ -56,9 +56,8 @@
                 <upload-all @getfilePathList="getfilePathList" :maxCount="6"></upload-all>
             </div>
         </div>
-        <div class="btn-submit" @click="submit">
-            提交
-        </div>
+        <p class="f-22 c-999">注:确认退款，平台将扣除您订单总金额1%的手续费用！</p>
+        <div class="btn-submit" @click="submit">提交</div>
         <!-- 退款原因 -->
         <refundReason ref="refundReason" @getReasonText="getReasonText"></refundReason>
     </div>
@@ -227,6 +226,7 @@ export default {
         line-height: 100px;
         text-align: center;
         color: #fff;
+        margin: 50px 0 80px
     }
 }
 .good-detail{

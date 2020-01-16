@@ -101,12 +101,6 @@ export default {
         this.setorderdetaillist([])
     },
     beforeRouteEnter(to, from, next){
-        // console.log(to, from, next,'to, from, next');
-        // if(from.name == '订单详情'){
-        //     this.go = -1
-        // }else if(from.name=='批量退货退款'){
-        //     this.go = -2
-        // }
         next(vm => {
             if(from.name == '订单详情'){
                 vm.go = -1
@@ -167,7 +161,7 @@ export default {
                 }
                 arr.push(obj)
             })
-            this.formData.detailList
+            this.formData.detailList = arr
             this.returnorder(this.formData)
         },
         //订单申请退货退款
@@ -189,6 +183,8 @@ export default {
 
 <style scoped lang="less">
 .refund{
+    position: relative;
+    min-height: 100vh;
     .cell{
         height: 88px;
         line-height: 88px;
@@ -222,6 +218,8 @@ export default {
     .btn-submit{
         width: 100vw;
         height:100px;
+        position: absolute;
+        bottom: 0;
         background:rgba(250,83,0,1);
         font-size:36px;
         line-height: 100px;

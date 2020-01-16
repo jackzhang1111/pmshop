@@ -6,7 +6,7 @@
                 <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
                 <span class="header-t1" >我的足迹</span>
                 <span class="header-t2" @click="editBj">{{editBjName}}</span>
-                <van-icon name="chat-o" class="xiaoxi" info="99+"  @click="$router.push({name:'消息'})"/>
+                <van-icon name="chat-o" class="xiaoxi" info=""  @click="$router.push({name:'消息'})"/>
                 
             </div>
             <div class="place"></div>

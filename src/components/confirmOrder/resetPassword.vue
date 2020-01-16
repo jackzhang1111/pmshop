@@ -5,22 +5,22 @@
         <div class="content">
             <div class="line"></div>
             <div class="pass-word"> 
-                <span class="margin-l-30">New password:</span>
+                <span class="margin-l-30">新密码:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码">
-                    <van-icon :name="eyeName" class="eye" @click="eyeStatus = !eyeStatus" size="18px"/>
+                    <input :type="inputType" class="name-input bgc-moren" placeholder="请输入6-20个字符的密码" v-model="formData.userPwd">
+                    <van-icon :name="eyeName" class="fl-right" @click="eyeStatus = !eyeStatus" size="18px"/>
                 </div>
                 <div class="line"></div>
             </div>
             <div class="re-enter"> 
-                <span class="margin-l-30">Re-enter:</span>
+                <span class="margin-l-30">确认密码:</span>
                 <div class="input-con">
-                    <input type="text" class="name-input bgc-moren" placeholder="请再次输入新密码">
+                    <input :type="inputType2" class="name-input bgc-moren" placeholder="请再次输入新密码" v-model="formData.userPwd2">
                 </div>
                  <div class="line"></div>
             </div>
             <div class="upload">
-                <van-button type="info" size="large" class="load-btn" @click="confirm">Confirm</van-button>
+                <van-button type="info" size="large" class="load-btn" @click="confirm">确认</van-button>
             </div>
         </div>
     </div>
@@ -28,6 +28,8 @@
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
+import {setuserpaypasswordApi} from '@/api/login/index'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -36,6 +38,12 @@ export default {
         return {
             eyeStatus:false,
             eyeName:'closed-eye',
+            inputType:'password',
+            inputType2:'password',
+            formData:{
+                userPwd:'',
+                userPwd2:''
+            }
         };
     },
     computed: {
@@ -51,13 +59,25 @@ export default {
         eyeStatus:{
             handler:function(newVal, oldVal){
                 this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
-                console.log(newVal,'newVal')
+                this.eyeStatus ? this.inputType = 'text':this.inputType = 'password'
             },
         },
     },
     methods: {
         confirm(){
-            this.$router.push({name:'支付密码设置成功'})
+            if(this.formData.userPwd != this.formData.userPwd2){
+                Toast('两次密码不一致')
+            }else{
+                this.setuserpaypassword(this.formData)
+            }
+        },
+        //设置支付密码
+        setuserpaypassword(data){
+            setuserpaypasswordApi(data).then(res => {
+                if(res.code == 0){
+                    this.$router.push({name:'支付密码设置成功'})
+                }
+            })
         }
     },
     components: {
@@ -94,6 +114,7 @@ export default {
             .load-btn{
                 height:100%;
                 background-color: #999;
+                font-size: 40px;
             }
         }
     }
@@ -139,7 +160,6 @@ export default {
         top:130px;
         left:0;
         display: inline-block;
-        // padding: 0 30px;
         .input-con{
             position: absolute;
             top:-5px;
@@ -148,9 +168,6 @@ export default {
             height:60px;
             font-size: 26px;
             margin-bottom: 50px;
-            .eye{
-                float:right
-            }
         }
         .name-input{
             position: absolute;

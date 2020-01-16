@@ -27,7 +27,6 @@
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
-import {setuserpaypasswordApi} from '@/api/login/index'
 import {mapActions} from 'vuex'
 export default {
     props: {

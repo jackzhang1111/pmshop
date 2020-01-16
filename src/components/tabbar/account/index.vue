@@ -24,7 +24,7 @@
                 </van-col>
                  <van-col span="8" @click="jumpRouter('账户余额')">
                     <span class="t1">余额</span>
-                    <span class="num">{{jn}}{{walletMoney}}</span>
+                    <span class="num">{{jn}}{{walletMoney ? walletMoney:0}}</span>
                 </van-col>
             </van-row>
         </div>
@@ -59,7 +59,7 @@
         </div>
 
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="jumpRouter('评价列表')">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="评价已购商品" left-icon="arrow" disabled @click="jumpRouter('评价列表')" v-if="false">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/pingjia@2x.png">
                 </div>
@@ -73,7 +73,7 @@
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="我的优惠券" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="我的优惠券" left-icon="arrow" disabled v-if="false">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/youhuiquan@2x.png">
                 </div>
@@ -96,7 +96,7 @@
                 <van-tabbar class="icons" v-model="active" active-color="#666" inactive-color="#666" >
                     <!-- <span>自定义</span> -->
                     <!-- <img slot="icon" slot-scope="props" :src="props.active ? icon.active : icon.inactive"> -->
-                    <van-tabbar-item info='99'>
+                    <van-tabbar-item info='99' v-if="false">
                         <span>心愿单</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xinyuandan : icon.xinyuandan" class="icon-style">
                     </van-tabbar-item>
@@ -108,7 +108,7 @@
                         <span>消息提醒</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xiaoxitixing : icon.xiaoxitixing" class="icon-style">
                     </van-tabbar-item>
-                    <van-tabbar-item>
+                    <van-tabbar-item v-if="false">
                         <span>TOSPINO信用</span>
                         <img slot="icon" slot-scope="props" :src="props.active ? icon.xinyong : icon.xinyong" class="icon-style">
                     </van-tabbar-item>
@@ -116,14 +116,14 @@
             </div>
         </div>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="意见反馈" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="意见反馈" left-icon="arrow" disabled v-if="false">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/yijianfankui@2x.png">
                 </div>
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="联系客服" left-icon="arrow" disabled>
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="联系客服" left-icon="arrow" disabled @click="show2=true">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/kefu.png">
                 </div>
@@ -147,6 +147,13 @@
         <div class="footer-btn">
             <van-button type="default" @click="logOut">退出登录</van-button>
         </div>
+
+
+        <van-overlay :show="show2" @click="show2 = false" class="overlay">
+            <!-- 客服电话 -->
+            <kefu></kefu>
+        </van-overlay>
+
     </div>
 </template>
 
@@ -163,6 +170,7 @@ import {logoutApi} from '@/api/login/index'
 import {selectuserfavoritesApi} from '@/api/favorites/index.js'
 import {walletInfoApi} from '@/api/accountBalance/index.js'
 import {selectuserbrowhistoryApi} from '@/api/favorites/index'
+import kefu from '@/multiplexing/kefu.vue'
 export default {
     props: {
 
@@ -190,6 +198,7 @@ export default {
                 limit:10,
                 createtime:''
             },
+            show2:false
         };
     },
     computed: {
@@ -251,7 +260,7 @@ export default {
         },
     },
     components: {
-        
+        kefu
     },
 };
 </script>
@@ -414,6 +423,15 @@ export default {
     }
     .maigin-t-14{
         margin-top:14px;
+    }
+    .overlay{
+        // position: relative;
+        .overlay-wrapper{
+            width: 100%;
+            height: 1062px;
+            position: absolute;
+            bottom: 0;
+        }
     }
 }
 </style>

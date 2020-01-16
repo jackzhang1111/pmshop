@@ -59,9 +59,11 @@ Object.keys(mycomponents).forEach(key => {
 })
 
 
-router.afterEach((to,from,next) => {
-  window.scroll(0, 0);
-});
+// router.afterEach((to,from,next) => {
+//   window.scroll(200, 200);
+//   console.log(window.scrollY);
+// });
+
 
 /* eslint-disable no-new */
 const main = new Vue({

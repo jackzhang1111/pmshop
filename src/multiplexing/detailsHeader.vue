@@ -18,7 +18,7 @@
                 <!-- 最好能用icon做出显示消息数 -->
                 <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
                 <van-icon name="shopping-cart-o" class="ellipsis" :info="shopCarInfo" @click="$router.push({name:'购物车'})" />
-                <van-icon name="chat-o" class="xiaoxi" info="99+"  @click="$router.push({name:'消息'})"/>
+                <van-icon name="chat-o" class="xiaoxi" info=""  @click="$router.push({name:'消息'})"/>
             </div>
         </div>
         <div style="height:40px"></div>

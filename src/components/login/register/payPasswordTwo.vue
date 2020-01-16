@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             title:'确认支付密码',
-
+            userinfoShop:{}
         };
     },
     computed: {
@@ -24,7 +24,7 @@ export default {
 
     },
     mounted() {
-
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
     },
     beforeDestroy(){
         this.clearpaypassword()
@@ -50,10 +50,13 @@ export default {
                 }
             }
         },
+        //设置支付密码
         setuserpaypassword(data){
             setuserpaypasswordApi(data).then(res => {
                 if(res.code == 0){
                     Toast('设置成功')
+                    this.userinfoShop.payPwd = true
+                    localStorage.userinfoShop = JSON.stringify(this.userinfoShop) 
                     setTimeout(()=>{
                         this.$router.go(-2)
                     },1000)

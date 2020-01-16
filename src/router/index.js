@@ -125,6 +125,8 @@ import languSubPage from '@/components/tabbar/account/language/subPage'
 import information from '@/components/tabbar/account/information/index'
 import inforDetails from '@/components/tabbar/account/information/details'
 
+//扫码
+import sweepCode from '@/multiplexing/sweepCode'
 
 
 Vue.use(Router)
@@ -601,6 +603,12 @@ export default new Router({
       path: '/information/inforDetails',
       name: '消息详情',
       component: inforDetails
+    },
+
+    {
+      path: '/sweepCode',
+      name: '扫码',
+      component: sweepCode
     },
 
   ],

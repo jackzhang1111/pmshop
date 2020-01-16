@@ -28,21 +28,23 @@
             <span class="c2 fs-24" @click="jumpRouter('注册')">立即注册</span>
         </div>
         <div class="footer">
-            <div class="line left-80"></div>
-            <div class="other">其他方式登录</div> 
-            <div class="line right-80"></div>
-            <div class="icons">
-                <van-row type="flex" justify="space-between">
-                    <van-col span="8" style="text-align:center">
-                        <img src="@/assets/img/login/weixin@3x.png">
-                    </van-col>
-                    <van-col span="8" style="text-align:center">
-                        <img src="@/assets/img/login/weixin@3x.png">
-                    </van-col>
-                    <van-col span="8" style="text-align:center">
-                        <img src="@/assets/img/login/weixin@3x.png">
-                    </van-col>
-                </van-row>
+            <div v-if="false"> 
+                <div class="line left-80"></div>
+                <div class="other">其他方式登录</div> 
+                <div class="line right-80"></div>
+                <div class="icons">
+                    <van-row type="flex" justify="space-between">
+                        <van-col span="8" style="text-align:center">
+                            <img src="@/assets/img/login/weixin@3x.png">
+                        </van-col>
+                        <van-col span="8" style="text-align:center">
+                            <img src="@/assets/img/login/weixin@3x.png">
+                        </van-col>
+                        <van-col span="8" style="text-align:center">
+                            <img src="@/assets/img/login/weixin@3x.png">
+                        </van-col>
+                    </van-row>
+                </div>
             </div>
             <div class="agreement">
                 <input type="checkbox" class="checkbox" v-model="checked">

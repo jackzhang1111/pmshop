@@ -9,7 +9,8 @@
                 <van-search v-model="value" shape="round" @click="toSearch"/>
             </div>
             <div class="icons">
-                <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
+                <!-- 扫码功能去掉 -->
+                <!-- <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1" @click="saoma"> -->
                 <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
             </div>
         </div>
@@ -42,6 +43,9 @@ export default {
     methods: {
         toSearch(){
             this.$router.push({name:'历史记录'})
+        },
+        saoma(){
+            this.$router.push({name:'扫码'})
         }
     },
     components: {

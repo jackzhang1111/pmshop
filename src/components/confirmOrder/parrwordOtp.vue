@@ -4,13 +4,13 @@
         <balanceHeader></balanceHeader>
         <div class="parrwordOtp-text">
             <div class="p1 czjz spjz">我们已发送验证码短信到您的手机：</div>
-            <div class="p2">+86 131******00</div>
+            <div class="p2">{{userinfoShop.mobileCode}} {{userinfoShop.mobile}}</div>
         </div>
         <div class="paymen-content">
             <van-password-input
             :value="value"
             :focused="showKeyboard"
-            :length="4"
+            :length="6"
             info="收短信大约需要59秒"
             @focus="showKeyboard = true"
             :mask="false"
@@ -35,6 +35,8 @@
 
 <script>
 import balanceHeader from './itemComponents/balanceHeader'
+import {msglistApi,getverificationcodeApi} from '@/api/login/index.js'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -43,7 +45,18 @@ export default {
         return {
             show2:true,
             value: '',
-            showKeyboard: true
+            showKeyboard: true,
+            userinfoShop:{},
+            formData:{
+                msgphone:'',
+                types:3,
+                areaCode:''
+            },
+            jiaoyan:{
+                msg_phone:'',
+                msg_types:'3',
+                msg_num:''
+            }
         };
     },
     computed: {
@@ -53,24 +66,51 @@ export default {
 
     },
     mounted() {
-
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
+        this.formData.msgphone = this.userinfoShop.mobile
+        this.formData.areaCode = this.userinfoShop.mobileCode
+        this.msglist(this.formData)
     },
     watch: {
 
     },
     methods: {
+        //实时获取输入值
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
+            console.log(this.value,'this.value');
         },
+        //删除一个
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1);
         },
-        toparrwordOtp(){
-            this.$router.push({name:'支付密码输入验证码'})
-        },
+        //完成按钮
         wancheng(){
-            this.$router.push({name:'重置支付密码'})
+            this.jiaoyan.msg_num = this.value
+            this.jiaoyan.msg_phone = this.userinfoShop.mobile
+            this.getverificationcode(this.jiaoyan)
+        },
+        //发送短信
+        msglist(data){
+            msglistApi(data).then(res => {
+                if(res.code == 0){
+
+                }else if(res.code == 1){
+                    Toast('手机号一天不能超于20条短信发送请求')
+                }else{
+                    Toast('error')
+                }
+            })
+        },
+        //校验验证码是否正确的接口
+        getverificationcode(data){
+            getverificationcodeApi(data).then(res => {
+                if(res.code == 0){
+                   this.$router.push({name:'重置支付密码'})
+                }
+            })
         }
+
     },
     components: {
         balanceHeader

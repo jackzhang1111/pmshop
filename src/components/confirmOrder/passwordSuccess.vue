@@ -29,7 +29,9 @@ export default {
 
     },
     mounted() {
-
+        setTimeout(()=>{
+            this.$router.go(-3)
+        },1500)
     },
     watch: {
 

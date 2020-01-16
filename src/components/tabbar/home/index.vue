@@ -51,7 +51,7 @@
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                                <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)">
+                                <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)" class="good-recommend-img">
                                 <span class="good-name">{{finework.supplyTitle}}</span><br>
                                 <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
                             </div>
@@ -166,8 +166,10 @@
 </template>
 
 <script>
+
 import searchHeader from '@/multiplexing/searchHeader'
 import {homePageApi,HomePagebottomApi} from '@/api/home/index.js'
+var scan = null;
 export default {
     props: {
 
@@ -197,7 +199,9 @@ export default {
             leng:1,
             recordGroup:[],
             pullup:true,
-            guanmengou:true
+            guanmengou:true,
+
+            codeUrl: '',
         };
     },
     computed: {
@@ -295,6 +299,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+
+
 .bscroll-wrapper{
     height: calc(100vh - 90px - 100px);
 }
@@ -465,6 +471,9 @@ export default {
                     display: inline-block;
                     margin-right:5px;
                     text-align: center;
+                    .good-recommend-img{
+                        max-width:220px;
+                    }
                     .good-name{
                         display: inline-block;
                         font-size: 20px;

@@ -125,7 +125,7 @@
             <span class="settlement-p2 c-orange">{{orderData.currencySignWebsite}}{{orderData.allOrderAmountWebsite}}</span>
             <div class="settlement-btn" @click="submit">提交订单</div>
         </div>
-
+        <div class="settlement-place"></div>
         <!-- 支付成功弹窗 -->
         <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
         <!-- 密码弹窗 -->
@@ -187,7 +187,8 @@ export default {
             shopcrtList:[],
             moeny:0,
             payTypeDetail:201,//余额支付ID,暂时写死
-            orderIdList:[]
+            orderIdList:[],
+            userinfoShop:{}
         };
     },
     computed: {
@@ -217,6 +218,7 @@ export default {
                 this.shopcrtList.push(shopCarObj)
             })
         }
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
     },
     watch: {
         
@@ -246,6 +248,10 @@ export default {
             }
             if(!flag2){
                 Toast('请移除异常商品或者更换地址')
+                return
+            }
+            if(!this.userinfoShop.payPwd){
+                this.$router.push({name:'设置支付密码'})
                 return
             }
             //提交订单
@@ -716,6 +722,9 @@ export default {
             }
         }
     }
+    .settlement-place{
+        height: 120px;
+    }
     .settlement{
         width: 100%;
         height: 120px;
@@ -723,6 +732,8 @@ export default {
         line-height: 120px;
         padding-left:30px;
         box-sizing: border-box;
+        position: fixed;
+        bottom: 0;
         .settlement-p1{
             font-size:20px;
             color: #333;
