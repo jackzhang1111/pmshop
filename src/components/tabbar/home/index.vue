@@ -2,13 +2,13 @@
 <!-- 首页 -->
     <div class="home">
         <search-header></search-header>
-        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pullup="pullup" @pullup="_pullup">
+        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pullup="pullup" @pullup="_pullup" :scrollX="true">
             <div>
                 <div class="commodity-swipe">
                     <van-swipe @change="onChange">
-                        <van-swipe-item v-for="(banner,index) in 1" :key="index">
+                        <van-swipe-item v-for="(banner,index) in topBananerList" :key="index">
                             <div class="w1">
-                                <img src="@/assets/img/tabbar/home/banner@3x.png">
+                                <img :src="banner.imgsrc">
                             </div>
                         </van-swipe-item>
                         <div class="custom-indicator" slot="indicator">
@@ -52,7 +52,7 @@
                         <div class="pictures">
                             <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
                                 <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)" class="good-recommend-img">
-                                <span class="good-name">{{finework.supplyTitle}}</span><br>
+                                <div class="good-name clamp-2">{{finework.supplyTitle}}</div>
                                 <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
                             </div>
                         </div>
@@ -83,22 +83,22 @@
                     </div>
                     <div class="flash-sale-2">
                         <div class="pictures">
-                            <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId">
-                                <img :src="$webUrl+fineSale1.imgUrl">
-                                <span class="good-name">{{fineSale1.supplyTitle}}</span>
+                            <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId" >
+                                <img :src="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)">
+                                <div class="good-name">{{fineSale1.supplyTitle}}</div>
                                 <span class="good-price">{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="banner">
-                    <img src="@/assets/img/tabbar/home/guanggao-01@3x.png">
+                    <img src="@/assets/img/login/quick-Decontamination5.jpg">
                 </div>
                 <div class="exhibition">
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
-                                <img :src="$webUrl+fineSale2.imgUrl">
+                                <img :src="$webUrl+fineSale2.imgUrl" @click="toDetail(fineSale2.skuId)">
                                 <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
                                 <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
                             </div>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="banner">
-                    <img src="@/assets/img/tabbar/home/guanggao-02@3x.png" >
+                    <img src="@/assets/img/login/quick-Decontamination7.jpg" >
                 </div>
                 <div class="good-popular box">
                     <div class="flash-sale-1">
@@ -125,7 +125,7 @@
                     
                 </div>
                 <div class="banner">
-                    <img src="@/assets/img/tabbar/home/guanggao-03@3x.png" >
+                    <img src="@/assets/img/login/quick-Decontamination6.jpg" >
                 </div>
                 <div class="good-sort">
                     <van-tabs v-model="active" title-active-color="#FA5300" title-inactive-color="#000" @change="changeTab(bottomTabs,$event)">
@@ -138,21 +138,21 @@
                     <div class="footer-exhibition">
                         <div  class="exhibition-con">
                             <div class="exhibition-left" v-for="(searchgoodDao,index) in searchgoodDaolist" :key="index">
-                                <img :src="$webUrl + searchgoodDao.locationUrl">
+                                <img :src="$webUrl + searchgoodDao.imgUrl" @click="toDetail(searchgoodDao.skuId)">
                                 <div class="produced">
-                                    <span class="icon">
-                                        <img src="@/assets/img/tabbar/home/guojia@3x.png">
+                                    <span class="icon" v-if="searchgoodDao.locationUrl">
+                                        <img :src="$webUrl + searchgoodDao.locationUrl">
                                     </span>
-                                    <span class="produced-font">瑞士</span>
+                                    <span class="produced-font">{{searchgoodDao.locationName ? searchgoodDao.locationName : ''}}</span>
                                 </div>
-                                <div class="clamp-2 miaoshu">欧格双肩包男士背包可扩容大容量出差旅行李包15.6寸笔记本电脑包</div>
+                                <div class="clamp-2 miaoshu">{{searchgoodDao.supplyTitle}}</div>
                                 <div class="score">
                                     <van-rate v-model="value" readonly  color="#FA5300"/>
                                     <span>477</span>
                                 </div>
                                 <div class="price">
-                                    <span class="price1">¥199.00</span>
-                                    <span class="price2">258.00</span>
+                                    <span class="price1">{{jn}}{{searchgoodDao.discountPrice ?searchgoodDao.discountPrice : searchgoodDao.salePrice}}</span>
+                                    <span class="price2" v-if="searchgoodDao.discountPrice">{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
                                 </div>
                             </div>
@@ -169,6 +169,10 @@
 
 import searchHeader from '@/multiplexing/searchHeader'
 import {homePageApi,HomePagebottomApi} from '@/api/home/index.js'
+import quickDecontamination1 from '@/assets/img/login/quick-Decontamination1.jpg'
+import quickDecontamination2 from '@/assets/img/login/quick-Decontamination2.jpg'
+import quickDecontamination3 from '@/assets/img/login/quick-Decontamination3.jpg'
+import quickDecontamination4 from '@/assets/img/login/quick-Decontamination4.jpg'
 var scan = null;
 export default {
     props: {
@@ -200,8 +204,13 @@ export default {
             recordGroup:[],
             pullup:true,
             guanmengou:true,
-
             codeUrl: '',
+            topBananerList:[
+                {name:'quickDecontamination1',imgsrc:quickDecontamination1},
+                {name:'quickDecontamination2',imgsrc:quickDecontamination2},
+                {name:'quickDecontamination3',imgsrc:quickDecontamination3},
+                {name:'quickDecontamination4',imgsrc:quickDecontamination4}
+            ]
         };
     },
     computed: {
@@ -213,6 +222,7 @@ export default {
     mounted() {
         this.homePage()
         this.refreshOrder()
+        this.leng = this.topBananerList.length
     },
     watch: {
 
@@ -475,7 +485,6 @@ export default {
                         max-width:220px;
                     }
                     .good-name{
-                        display: inline-block;
                         font-size: 20px;
                         color: #333333;
                         margin-top:9px;
@@ -616,7 +625,6 @@ export default {
                 .good-world-best-p1{
                     padding: 45px 0 16px;
                     width: 200px;
-                    // height: 306px;
                     display: inline-block;
                     text-align: center;
                     margin-right: 21px;

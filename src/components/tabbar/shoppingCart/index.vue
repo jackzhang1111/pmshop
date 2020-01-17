@@ -27,7 +27,7 @@
                             <span>物流：TOSPINO物流</span>
                         </div> -->
                         <div class="good-price">
-                            <span class="price-p1">¥{{dataitem.discountPrice}}</span>
+                            <span class="price-p1">{{jn}}{{dataitem.discountPrice}}</span>
                             <span class="price-p2" v-if="dataitem.salePriceFlag">159.00</span>
                             <van-stepper class="price-quantity" v-model="dataitem.shopNumber" :min="dataitem.numIntervalStart" @change="changeStepper" />
                             <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
@@ -80,7 +80,7 @@
                 <span class="settlement-text" v-if="showMange">
                     <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#F83600" @change="cliAllcheck"></van-checkbox>
                     <span class="btn" @click="settlementBtn" :style="{background : (totlaNum>0 ? '#FA5300':'#999')}">结算({{totlaNum}})</span>
-                    <span class="p3">¥{{totlaMoney}}</span>
+                    <span class="p3">{{jn}}{{totlaMoney}}</span>
                     <span class="p2">合计:</span>
                     <span class="p1">全选</span>
                 </span>

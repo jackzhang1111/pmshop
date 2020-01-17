@@ -15,7 +15,6 @@
                 </van-search>
             </div>
             <div class="icons">
-                <!-- 最好能用icon做出显示消息数 -->
                 <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
                 <van-icon name="shopping-cart-o" class="ellipsis" :info="shopCarInfo" @click="$router.push({name:'购物车'})" />
                 <van-icon name="chat-o" class="xiaoxi" info=""  @click="$router.push({name:'消息'})"/>
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import {shopcartlistApi} from '@/api/shoppingCart/index'
+import {logousercartNumApi} from '@/api/home/commodityDetails.js'
 export default {
     props: {
         
@@ -49,20 +48,20 @@ export default {
 
     },
     mounted() {
-        this.shopcartlist()
+        this.logousercartNum()
     },
     watch: {
 
     },
     methods: {
-         //购物车列表
-        shopcartlist(){
-            shopcartlistApi(this.formData).then(res => {
+
+        logousercartNum(){
+            logousercartNumApi().then(res => {
                 if(res.code == 0){
-                    this.shopCarInfo = res.Data.list.length > 99 ? '99+' : res.Data.list.length
+                    this.shopCarInfo = res.cartNum == 0 ? "" : res.cartNum
                 }
             })
-        },
+        }
     },
     components: {
 
