@@ -26,7 +26,7 @@
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="(i,index) in 4" :key="index" @click="$router.push({name:'商品详情'})">
-                                <img src="@/assets/img/tabbar/home/01@3x.png" alt="">
+                                <img src="@/assets/img/tabbar/home/01@3x.png">
                                 <span class="good-name">OG法式连衣裙</span><br>
                                 <span class="good-price1">¥99.00</span><br>
                                 <span class="good-price2">¥199.00</span>
@@ -46,12 +46,12 @@
                     <div class="flash-sale-1">
                         <span class="put-line"></span>
                         <span class="t1">精品推荐</span>
-                        <span class="t2">查看更多</span>
+                        <!-- <span class="t2">查看更多</span> -->
                     </div>
                     <div class="flash-sale-2">
                         <div class="pictures">
                             <div class="p1" v-for="finework in homeObj.producteFineWorkpro" :key="finework.skuId">
-                                <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)" class="good-recommend-img">
+                                <img :src="$webUrl+finework.imgUrl" @click="toDetail(finework.skuId)">
                                 <div class="good-name clamp-2">{{finework.supplyTitle}}</div>
                                 <span class="good-price1">{{jn}}{{finework.discountPrice == null ? finework.salePrice:finework.discountPrice}}</span><br>
                             </div>
@@ -62,28 +62,28 @@
                     <div class="flash-sale-1">
                         <span class="put-line"></span>
                         <span class="t1">全球品牌精选</span>
-                        <span class="t2">查看更多</span>
+                        <!-- <span class="t2">查看更多</span> -->
                     </div>
                     <div class="good-world-brand">
                         <div class="brand-p-1">
-                            <img :src="$webUrl+brandLogo1" class="brand-p-1-left">
-                            <img :src="$webUrl+brandLogo2" class="brand-p-1-right-top">
-                            <img :src="$webUrl+brandLogo3" class="brand-p-1-right-bottom">
+                            <img :src="$webUrl+brandLogo1.brandLogo" class="brand-p-1-left" @click="toSearOne(brandLogo1.brandId,'brandId')">
+                            <img :src="$webUrl+brandLogo2.brandLogo" class="brand-p-1-right-top" @click="toSearOne(brandLogo2.brandId,'brandId')">
+                            <img :src="$webUrl+brandLogo3.brandLogo" class="brand-p-1-right-bottom" @click="toSearOne(brandLogo3.brandId,'brandId')">
                         </div>
                         <div class="brand-p-2">
-                            <img :src="$webUrl+globalPro.brandLogo" v-for="globalPro in globalProList" :key="globalPro.brandId">
+                            <img :src="$webUrl+globalPro.brandLogo" v-for="globalPro in globalProList" :key="globalPro.brandId" @click="toSearOne(globalPro.brandId,'brandId')">
                         </div>
                     </div>
                 </div>
-                <div class="good-world-best pl-30 box">
+                <div class="good-world-best">
                     <div class="flash-sale-1">
                         <span class="put-line"></span>
                         <span class="t1">全球畅销榜</span>
-                        <span class="t2">查看更多</span>
+                        <!-- <span class="t2">查看更多</span> -->
                     </div>
                     <div class="flash-sale-2">
                         <div class="pictures">
-                            <div class="good-world-best-p1" v-for="fineSale1 in fineSaleList1" :key="fineSale1.skuId" >
+                            <div class="good-world-best-p1" :class="'cximg'+(index+1)" v-for="(fineSale1,index) in fineSaleList1" :key="fineSale1.skuId" >
                                 <img :src="$webUrl+fineSale1.imgUrl" @click="toDetail(fineSale1.skuId)">
                                 <div class="good-name">{{fineSale1.supplyTitle}}</div>
                                 <span class="good-price">{{jn}}{{fineSale1.discountPrice ? fineSale1.discountPrice : fineSale1.salePrice}}</span>
@@ -99,7 +99,7 @@
                         <div class="pictures">
                             <div class="p1" v-for="fineSale2 in fineSaleList2" :key="fineSale2.skuId">
                                 <img :src="$webUrl+fineSale2.imgUrl" @click="toDetail(fineSale2.skuId)">
-                                <span class="good-name">{{fineSale2.supplyTitle}}</span><br>
+                                <span class="good-name clamp-2">{{fineSale2.supplyTitle}}</span><br>
                                 <span class="good-price1">{{jn}}{{fineSale2.discountPrice ? fineSale2.discountPrice : fineSale2.salePrice}}</span><br>
                             </div>
                         </div>
@@ -111,14 +111,11 @@
                 <div class="good-popular box">
                     <div class="flash-sale-1">
                         <span class="put-line"></span>
-                        <span class="t1">全球畅销榜</span>
-                        <span class="t2">查看更多</span>
+                        <span class="t1">热门分类</span>
+                        <!-- <span class="t2">查看更多</span> -->
                     </div>
                     <div class="good-popular-top" >
-                        <div class="good-popular-top-1" v-for="category in homeObj.producteFinecategory" :key="category.categoryId">
-                            <div class="circle">
-                                <span>{{category.categoryName}}</span> 
-                            </div>
+                        <div class="good-popular-top-1" v-for="category in homeObj.producteFinecategory" :key="category.categoryId" @click="toSearOne(category.categoryId,'categoryId')">
                             <img :src="$webUrl+category.categoryImg">
                         </div>
                     </div>
@@ -186,9 +183,18 @@ export default {
             globalProList:[],
             fineSaleList1:[],
             fineSaleList2:[],
-            brandLogo1:'',
-            brandLogo2:'',
-            brandLogo3:'',
+            brandLogo1:{
+                brandLogo:'',
+                brandId:0
+            },
+            brandLogo2:{
+                brandLogo:'',
+                brandId:0
+            },
+            brandLogo3:{
+                brandLogo:'',
+                brandId:0
+            },
             formData:{
                 brandId: 0,
                 categoryId: 0,
@@ -237,9 +243,12 @@ export default {
                 if(res.code == 0){
                     this.homeObj = res.Data
                     this.globalProList = this.homeObj['producteFineBrand'].slice(3)
-                    this.brandLogo1 = this.homeObj['producteFineBrand'][0].brandLogo
-                    this.brandLogo2 = this.homeObj['producteFineBrand'][1].brandLogo
-                    this.brandLogo3 = this.homeObj['producteFineBrand'][2].brandLogo
+                    this.brandLogo1.brandLogo = this.homeObj['producteFineBrand'][0].brandLogo
+                    this.brandLogo1.brandId = this.homeObj['producteFineBrand'][0].brandId
+                    this.brandLogo2.brandLogo = this.homeObj['producteFineBrand'][1].brandLogo
+                    this.brandLogo2.brandId = this.homeObj['producteFineBrand'][1].brandId
+                    this.brandLogo3.brandLogo = this.homeObj['producteFineBrand'][2].brandLogo
+                    this.brandLogo3.brandId = this.homeObj['producteFineBrand'][2].brandId
                     this.fineSaleList1 = this.homeObj['productFineSale'].slice(0,3)
                     this.fineSaleList2 = this.homeObj['productFineSale'].slice(3)
                 }
@@ -300,7 +309,16 @@ export default {
         //跳转商品详情
         toDetail(skuid){
             this.$router.push({name:'商品详情',query:{skuId:skuid}})
-        }
+        },
+        //去到搜索里面
+        toSearOne(id,type){
+            if(type == 'categoryId'){
+                this.$router.push({name:'搜索商品1',query:{categoryId:id}})
+            }else if(type == 'brandId'){
+                this.$router.push({name:'搜索商品1',query:{brandId:id}})
+            }
+        },
+        
     },
     components: {
         searchHeader,
@@ -331,6 +349,9 @@ export default {
             line-height: 40px;
             font-size: 22px;
             color: #FFFEFE;
+        }
+        .w1{
+            height: 320px;
         }
     }
     .flash-sale{
@@ -391,8 +412,6 @@ export default {
             .pictures{
                 height: 210px;
                 width: 1000px;
-                // white-space:nowrap;
-                // overflow: scroll;
                 .p1{
                     width: 200px;
                     height: 210px;
@@ -442,8 +461,8 @@ export default {
     }
     .good-recommend{
         width: 100%;
-        height: 372px;
         padding: 0 30px;
+        margin-bottom: 40px;
         .flash-sale-1{
             position: relative;
             height: 50px;
@@ -469,25 +488,28 @@ export default {
         }
         .flash-sale-2{
             width: 100%;
-            height: 300px;
             margin-top: 17px;
-            overflow: scroll;
             .pictures{
                 display: flex;
                 flex-direction:row;
                 justify-content : space-between;
                 .p1{
-                    height: 200px;
                     display: inline-block;
                     margin-right:5px;
                     text-align: center;
-                    .good-recommend-img{
-                        max-width:220px;
+                    flex: 1;
+                    background-color: #fff;
+                    padding-bottom:  24px;
+                    box-shadow:0px 2px 5px 0px rgba(0, 0, 0, 0.2);
+                    img{
+                        width: 220px;
+                        height: 220px;
                     }
                     .good-name{
                         font-size: 20px;
                         color: #333333;
                         margin-top:9px;
+                        height: 50px;
                     }
                     .good-price1{
                         display: inline-block;
@@ -587,8 +609,8 @@ export default {
         }
     }
     .good-world-best{
-        width: 100%;
-        height: 442px;
+        margin-bottom: 40px;
+        padding: 0 30px;
         .flash-sale-1{
             position: relative;
             .put-line{
@@ -614,14 +636,10 @@ export default {
         }
         .flash-sale-2{
             width: 100%;
-            height: 300px;
             margin-top: 17px;
             .pictures{
-                height: 350px;
-                width: 690px;
                 background-color: #F7E8C7;
                 padding: 24px 24px 20px;
-                box-sizing: border-box;
                 .good-world-best-p1{
                     padding: 45px 0 16px;
                     width: 200px;
@@ -630,17 +648,6 @@ export default {
                     margin-right: 21px;
                     background-color: #F2F3F5;
                     position: relative;
-                    &:after {
-                        content: ' ';
-                        position: absolute;
-                        left: 0px;
-                        top: -10px;
-                        width: 35px;
-                        height: 35px;
-                        background: url('~@/assets/img/tabbar/home/NO.1@3x.png') no-repeat center;
-                        background-size: 100%;
-                        
-                    }
                     &:last-child {
                         margin-right: 0;
                     }
@@ -650,6 +657,7 @@ export default {
                     }
                     .good-name{
                         padding: 0 12px;
+                        height: 48px;
                         display: -webkit-box;
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
@@ -671,40 +679,31 @@ export default {
         height: 250px;
     }
     .exhibition{
-        height: 288px;
-        padding: 0 30px;
+        padding: 16px 30px 40px;
+        background-color:#fff;
         .flash-sale-2{
-            width: 100%;
-            height: 300px;
-            margin-top: 17px;
-            overflow: scroll;
             .pictures{
-                // height: 280px;
-                // width: 1000px;
                 display: flex;
                 flex-direction:row;
                 justify-content : space-between;
                 .p1{
-                    width: 220px;
-                    height: 200px;
+                    width: 166px;
                     display: inline-block;
                     margin-right:5px;
                     text-align: center;
+                    img{
+                        width: 166px;
+                        height: 166px;
+                    }
                     .good-name{
-                        display: inline-block;
-                        width: 100%;
                         font-size: 20px;
                         color: #333333;
                         margin-top:9px;
-                        overflow: hidden;
-                        text-overflow:ellipsis;
-                        white-space: nowrap;
                     }
                     .good-price1{
                         display: inline-block;
                         color: #F83600;
                         font-size: 20px;
-                        margin-top: 14px;
                     }
                 }
             }
@@ -750,6 +749,7 @@ export default {
                 width: 340px;
                 height: 170px;
                 position: relative;
+                margin-bottom: 10px;
             }
             
         }
@@ -856,37 +856,21 @@ export default {
 .box{
     box-sizing: border-box
 }
-.c-666{
-    color: #666;
-}
-.item {
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-  background-color: #FA5300;
-  border-radius:5px;
-}
-.circle{
-    min-width:120px;
-    height:120px;
-    padding: 0 15px;
-    background:rgba(0,0,0,1);
-    opacity:0.47;
-    border-radius:50%;
-    position: absolute;
-    top:50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    text-align: center;
-    span{
-        display: inline-block;
-        color: #fff;
-        margin-top:50%;
-        transform: translateY(-50%);
-        font-size: 34px;
+.pictures(@counter) when (@counter < 4 ) {
+    .cximg@{counter} {
+        &:after {
+            content: ' ';
+            position: absolute;
+            left: 0px;
+            top: -10px;
+            width: 49px;
+            height: 44px;
+            background: url('~@/assets/img/tabbar/home/NO.@{counter}@3x.png') no-repeat center;
+            background-size: 100%;
+        }
     }
+    .pictures(( @counter + 1 ));// 递归调用自身
 }
+.pictures(1);
+
 </style>

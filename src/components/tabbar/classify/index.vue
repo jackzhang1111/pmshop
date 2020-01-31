@@ -15,7 +15,7 @@
                     <div>
                         <van-row gutter="40">
                             <van-col span="7" v-for="product in rightGoods.productCategory" :key="product.categoryId">
-                                <div class="aaa" @click="toSearOne(product.categoryId)">
+                                <div class="sanji" @click="toSearOne(product.categoryId)">
                                     <img :src="$webUrl+product.categoryImg">
                                     <span class="name">{{product.categoryName}}</span>
                                 </div>
@@ -103,14 +103,15 @@ export default {
         max-height: 1139px;
         overflow: auto;
         .van-sidebar-item{
-            height: 110px;
-            line-height: 70px;
-            // background-color: #F2F3F5;
+            min-height: 110px;
+            line-height: 40px;
             text-align: center;
             margin-bottom: 2px;
             font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        
     }
     .classify-right{
         width: 524px;
@@ -124,7 +125,6 @@ export default {
         .banner{
             width: 524px;
             height: 180px;
-            
         }
         .recommend{
             margin-top: 40px;
@@ -134,7 +134,7 @@ export default {
                 display: inline-block;
                 margin-bottom: 19px;
             }
-            .aaa{
+            .sanji{
                 width: 160px;
                 height: 190px;
                 margin-bottom: 17px;

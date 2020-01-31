@@ -112,28 +112,18 @@
         <div style="height:100px"></div>
         <div class="good-detail-footer">
             <!-- 待付款按钮栏 -->
-            <div class="lan" v-if="detailObj.orderStatusApp == 0">
-                <div class="btn-qzf fl-right c-orange" @click="showPay">付款</div>
+            <div class="lan">
+                <div class="btn-qzf fl-right c-orange" @click="showPay" v-if="detailObj.orderStatusApp == 0">付款</div>
+                <div class="btn-xgdz fl-right" @click="toEditAddress" v-if="detailObj.orderStatusApp == 0">修改地址</div>
+                <div class="btn-xgdz fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics(detailObj.orderId)">查看物流</div>
+                <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 3">评价</div>
+                <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 4">删除订单</div>
+
                 <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)" v-if="detailObj.canRevoke == 1">取消订单</div>
-                <div class="btn-xgdz fl-right" @click="toEditAddress">修改地址</div>
-            </div>
-            <div class="lan" v-if="detailObj.orderStatusApp == 1">
                 <div class="btn-qzf fl-right c-orange" @click="toRefund" v-if="detailObj.canRefund == 1">退款</div>
-            </div>
-            <div class="lan" v-if="detailObj.orderStatusApp == 2">
-                <div class="btn-qzf fl-right c-orange" @click="showPay">确认收货</div>
+                <div class="btn-qzf fl-right c-orange" @click="showPay" v-if="detailObj.canComplete == 1">确认收货</div>
                 <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1 && detailObj.canReturn == 1">退货退款</div>
                 <div class="btn-xgdz fl-right" @click="toBatchRefund" v-if="dataList.length > 1 && detailObj.canReturn == 1">退货退款</div>
-                <div class="btn-xgdz fl-right" >查看物流</div>
-            </div>
-            <div class="lan" v-if="detailObj.orderStatusApp == 3">
-                <div class="btn-qzf fl-right c-orange">评价</div>
-                <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1 && detailObj.canReturn == 1">退货退款</div>
-               <div class="btn-xgdz fl-right" @click="toBatchRefund" v-if="dataList.length > 1 && detailObj.canReturn == 1">退货退款</div>
-                <div class="btn-xgdz fl-right" >查看物流</div>
-            </div>
-            <div class="lan" v-if="detailObj.orderStatusApp == 4">
-                <div class="btn-qzf fl-right c-orange">删除订单</div>
             </div>
         </div>
 

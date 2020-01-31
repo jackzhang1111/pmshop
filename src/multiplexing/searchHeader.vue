@@ -10,7 +10,7 @@
             </div>
             <div class="icons">
                 <!-- 扫码功能去掉 -->
-                <!-- <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1" @click="saoma"> -->
+                <img src="@/assets/img/tabbar/home/scan@3x.png" class="img1">
                 <img src="@/assets/img/tabbar/home/msg@3x.png" class="img2" @click="$router.push({name:'消息'})">
             </div>
         </div>
@@ -62,10 +62,10 @@ export default {
     z-index: 1;
     .logo{
         position: absolute;
-        left:30px;
+        left:20px;
         top:39px;
-        width: 120px;
-        height: 31px;
+        width: 142px;
+        height: 32px;
         img{
             width: 100%;
             height: 100%;
@@ -84,6 +84,7 @@ export default {
                 height: 58px;
                 border-radius:29px;
                 margin-top:-12px;
+                background-color: #fff;
                 .van-field__left-icon{
                     margin-top:10px;
                     .van-icon.van-icon-search{

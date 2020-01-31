@@ -94,7 +94,8 @@ export default {
                 page: 1,
                 seraname: "",
                 sort: 0,
-                categoryId:0
+                categoryId:0,
+                brandId:0
             },
             dataList:[],
             footerData:{},
@@ -113,6 +114,7 @@ export default {
     mounted() {
         this.formData.seraname = this.$route.query.seraname ? this.$route.query.seraname : ''
         this.formData.categoryId = this.$route.query.categoryId ? this.$route.query.categoryId : 0
+        this.formData.brandId = this.$route.query.brandId ? this.$route.query.brandId : 0
         this.searName = this.$route.query.seraname
         this.refreshOrder()
     },

@@ -4,7 +4,7 @@
 		<balance-header title="消息"></balance-header>
 		<scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup" >
 			<div class="bscroll-con">
-				<div class="plr30 aaa" v-for="(data,index) in dataList" :key="index">
+				<div class="plr30 dy" v-for="(data,index) in dataList" :key="index">
 					<div class="time">{{data.publishTime}}</div>
 					<div class="list" @click="$router.push({name:'消息详情',query:{announceId:data.announceId}})">
 						<img :src="$webUrl+data.announceImg"/>
@@ -166,7 +166,7 @@ export default {
 .fr {
   float: right;
 }
-.aaa{
+.dy{
 	&:nth-last-child(1){
 	  margin-bottom: 30px;
   }

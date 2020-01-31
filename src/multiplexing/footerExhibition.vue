@@ -86,6 +86,7 @@ export default {
             if(!this.footerObj.list) return
             this.dataList = this.footerObj.list
         }
+
     },
     components: {
 

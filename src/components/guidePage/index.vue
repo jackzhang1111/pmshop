@@ -2,7 +2,12 @@
 <!-- 引导页 -->
   <div class="guidePage">
       <div class="logo"></div>
-      <div class="title">TOSPINO</div>
+      <p class="title">Shopping made Easy</p>
+      <div class="con">
+        Convenient and Affordable prices, 
+        Timely delivery and easy access to 
+        world class products.
+      </div>
   </div>
 </template>
 
@@ -29,25 +34,30 @@ export default {
 .guidePage{
   width: 100%;
   height: 100%;
-  background-color: #f2f3f5;
+  background-color: #fff;
   position: relative;
+  text-align: center;
   .logo{
-    width: 250px;
-    height:250px;
-    background-image:url('~@/assets/img/guidePage/logo.png');
+    width: 100vw;
+    height:996px;
+    background-image:url('~@/assets/img/guidePage/yindao.png');
     background-size: 100%;
-    position: absolute;
-    top:800px;
-    left: 50%;
-    right: 50%;
-    transform: translate(-50%)
   }
   .title{
-    width: 100%;
-    position: absolute;
-    top:1074px;
-    font-size: 40px;
-    text-align: center
+    font-size:44px;
+    font-family:Arial;
+    font-weight:bold;
+    color:rgba(250,83,0,1);
+    text-align: center;
+    margin: 39px 0 25px
+  }
+  .con{
+    display: inline-block;
+    width: 464px;
+    font-size:30px;
+    line-height:48px;
+    color: #333;
+    font-family:Arial;
   }
 }
 

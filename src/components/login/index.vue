@@ -214,11 +214,8 @@ export default {
             margin-left:20px;
         }
         .name-input{
-            width: 450px;
+            width: 420px;
             border: 0;
-        }
-        .password-icon{
-            
         }
     }
     .forgetPassword{

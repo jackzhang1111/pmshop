@@ -73,7 +73,7 @@
             </div>
         </div>
         <div>
-            <footer-exhibition v-if="footerShow" :footerData="footerData" ref="footer"></footer-exhibition>
+            <footer-exhibition v-if="footerShow" :footerData="footerData" ref="footer" @clickPro="toDetail"></footer-exhibition>
         </div>
         <div style="height:60px" v-if="conditions">
             <div class="settlement">

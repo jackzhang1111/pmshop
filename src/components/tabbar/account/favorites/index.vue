@@ -26,7 +26,7 @@
             </div>
         </div>
         <!-- 你可能还喜欢,推荐商品页 -->
-        <footer-exhibition :footerData="footerData" ref="footer"></footer-exhibition>
+        <footer-exhibition :footerData="footerData" ref="footer" @clickPro="toDetail"></footer-exhibition>
         
         <div class="settlement" v-if="showFooter">
             <span class="settlement-text" v-if="true">
@@ -173,6 +173,10 @@ export default {
                     });
                 }
             })
+        },
+        //跳转详情页
+        toDetail(skuId){
+            this.$router.push({name:'商品详情',query:{skuId}})
         },
     },
     components: {
