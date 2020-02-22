@@ -7,6 +7,9 @@
         <div class="user-name">
             <img src="@/assets/img/login/user@3x.png" alt="图标" class="name-icon">
             <div class="input-con">
+                <select name=""> 
+                    <option value="0">+86</option> 
+                </select> 
                 <input type="text" class="name-input" placeholder="请输入用户名" v-model="userData.username">
             </div>
         </div>
@@ -143,6 +146,7 @@ export default {
                         localStorage.token = res.token
                         localStorage.userinfoShop = JSON.stringify(res.user) 
                         this.$router.push({name:'首页'})
+                        
                     }
                 })
             }
@@ -195,7 +199,7 @@ export default {
             margin-left:20px;
         }
         .name-input{
-            width: 450px;
+            width: 380px;
             border: 0;
         }
     }

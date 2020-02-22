@@ -23,10 +23,14 @@
                     <div class="p4 through">
                         {{detail.currencySignWebsite}}{{detail.originPriceWebsite}}
                     </div>
-                    <div class="p4 fl-right">
+                    <div class="p4">
                         x{{detail.detailNum}}
                     </div>
-                    
+                    <div class="p2">
+                        <span v-if="detail.applyRefund == 1">仅退款</span>
+                        <span v-if="detail.applyReturn == 1">退货</span>
+                        <span v-if="detail.applyReturnAndRefund == 1">退货退款</span>
+                    </div>
                 </div>
                 <div style="height:15px;"></div>
             </div>
@@ -56,13 +60,13 @@
                         <div class="btn-qxdd fl-right c-orange">确认收货</div>
                     </div>
                     <!-- 已完成按钮栏 -->
-                    <div class="lan" v-if="dfkData.orderStatusApp == 3">
+                    <!-- <div class="lan" v-if="dfkData.orderStatusApp == 3">
                         <div class="btn-qzf fl-right c-orange">评价</div>
-                    </div>
+                    </div> -->
                     <!-- 订单关闭 -->
-                    <div class="lan" v-if="dfkData.orderStatusApp == 4">
+                    <!-- <div class="lan" v-if="dfkData.orderStatusApp == 4">
                         <div class="btn-qxdd fl-right c-orange">删除订单</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div v-else>
@@ -115,6 +119,7 @@ export default {
                 {type:4,name:'交易关闭'},
             ],
             show:false,
+            userinfoShop:{}
         };
     },
     computed: {
@@ -124,7 +129,7 @@ export default {
 
     },
     mounted() {
-
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
     },
     watch: {
         dfkList:{
@@ -185,6 +190,10 @@ export default {
         },
         //点击去支付
         payMoney(alldata){
+            if(!this.userinfoShop.payPwd){
+                this.$router.push({name:'设置支付密码'})
+                return
+            }
             this.$emit('showPay',true,alldata)
         },
         //确认收货
@@ -271,7 +280,10 @@ export default {
                 color: #999;
                 font-size: 20px;
             }
-            
+            .p2{
+                color: #DB9000;
+                font-size: 20px;
+            }
             .selection-right-stepper{
                 position: relative;
                 width: 100%;

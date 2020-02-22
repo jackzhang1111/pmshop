@@ -1,10 +1,10 @@
 <template>
     <div>
-        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup" v-if="dataList.length>0">
-            <div class="bscroll-con">
+        <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup">
+            <div class="bscroll-con" v-if="dataList.length>0">
                 <div class="good-detail" v-for="(product,index) in dataList" :key="index">
                     <div class="good-detail-header">
-                        <span>订单编号：{{product.orderSn}}</span>
+                        <span>编号：{{product.orderSn}}</span>
                         <span class="fl-right c-orange">{{orderStatus(product.orderStatusApp,'statusList')}}</span>
                     </div>
                     <div class="good-detail-content" v-for="(detail,index) in product.detailList2" :key="index">
@@ -35,12 +35,16 @@
                     </div>
                 </div>
             </div>
+            <div v-else>
+                <noSearch></noSearch>
+            </div>
         </scroll>
     </div>
 </template>
 
 <script>
 import {backorderlistApi} from '@/api/afterSales/index'
+import noSearch from './itemComponents/noSearch'
 export default {
     props: {
 
@@ -81,6 +85,7 @@ export default {
     },
     mounted() {
         this.backorderlist(this.formData,true)
+        console.log(this.dataList,'this.dataList');
     },
     watch: {
 
@@ -172,7 +177,7 @@ export default {
         },
     },
     components: {
-
+        noSearch
     },
 };
 </script>

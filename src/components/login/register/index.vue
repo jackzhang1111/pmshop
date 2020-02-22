@@ -165,7 +165,7 @@ export default {
             formData:{
                 nickName:'',//用户名称
                 mobile:'',//用户手机号码
-                mobileCode:'+86',//用户手机号码所在国家的编号
+                mobileCode:'86',//用户手机号码所在国家的编号
                 smsCode:'',//验证码
                 email:'',//邮箱
                 userPwd:'',//密码

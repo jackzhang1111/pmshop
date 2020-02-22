@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <van-cell-group class="border-0" @click="changeComStatus(true,false)" ref="guige">
+                <van-cell-group class="border-0" @click="changeComStatus(true,false)">
                     <van-field v-model="username" clearable right-icon="arrow" :placeholder="detailmData.skuValuesTitle" left-icon="arrow" disabled>
                         <div slot="left-icon" size="small" type="primary" class="text-left" >
                             <span>规格</span>
@@ -80,6 +80,17 @@
                     <div class="comment-arrow">
                         <van-icon name="arrow" />
                     </div>
+                </div>
+                <div ref="guige">
+                    <div class="canshu" v-for="(param,index) in productParamList" :key="index" >
+                        <div class="canshu-item fl-left">{{param.paramTitle}}</div>
+                        <div class="canshu-item fl-left">{{param.pvValue}}{{param.paramUnit}}</div>
+                    </div>
+                    <div class="shousuo" v-if="shousuoStatus" @click="zankai">
+                        <span>展开</span>
+                        <van-icon name="arrow-down" />
+                    </div>
+                    <div v-html="detailmData.supplyDetailpara"></div>
                 </div>
                 <div class="bbxq" ref="xiangqing">
                     <span class="line-left"></span>
@@ -150,7 +161,10 @@ export default {
             comStatus:false,
             selectionData:{},
             btnStatus:false,
-            btnName:''
+            btnName:'',
+            productParamList:[],
+            productParamList2:[],
+            shousuoStatus:false
         };
     },
     computed: {
@@ -188,6 +202,12 @@ export default {
                     this.footerData.list = res.GuessyouLike
                     this.showfooter = true //数据回调回来,显示猜你喜欢
                     this.Isfavorites = res.Data.isfavorites  //收藏状态
+
+                    this.productParamList = res.Data.productParamList.slice(0,5)
+                    this.productParamList2 = res.Data.productParamList
+                    if(res.Data.productParamList.length > 5){
+                        this.shousuoStatus = true
+                    }
                 }
             })
         },
@@ -232,7 +252,9 @@ export default {
         //点击收藏图标
         cliShoucang(){
             if(this.Isfavorites == 1) return
-            this.adduserfavorites({skuid:this.detailmData.skuId})           
+            let arr = []
+            arr.push(this.detailmData.skuId)
+            this.adduserfavorites(arr)           
         },
         //加入收藏夹
         adduserfavorites(data){
@@ -241,6 +263,11 @@ export default {
                     this.Isfavorites = 1
                 }
             })
+        },
+        //展开
+        zankai(){
+            this.productParamList = this.productParamList2
+            this.shousuoStatus = false
         }
     },
     components: {
@@ -439,6 +466,28 @@ export default {
             .van-icon-arrow{
                 font-size: 30px;
             }
+        }
+    }
+    .canshu{
+        overflow: hidden;
+        text-align: center;
+        border: 1px solid #999;
+        padding: 20px 0;
+        display: flex;
+        display: -webkit-flex;
+        align-items:center;
+        justify-content:center;
+        .canshu-item{
+            width: 48%;
+        }
+    }
+    .shousuo{
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #999;
+        span{
+            vertical-align: text-bottom;
         }
     }
     .bbxq{

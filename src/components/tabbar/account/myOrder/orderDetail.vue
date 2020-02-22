@@ -50,8 +50,13 @@
                         <div class="p4 through">
                             {{data.currencySignWebsite}}{{data.originPriceWebsite}}
                         </div>
-                        <div class="p4 fl-right">
+                        <div class="p4">
                             x{{data.detailNum}}
+                        </div>
+                        <div class="p2">
+                            <span v-if="data.applyRefund == 1">仅退款</span>
+                            <span v-if="data.applyReturn == 1">退货</span>
+                            <span v-if="data.applyReturnAndRefund == 1">退货退款</span>
                         </div>
                     </div>
                     <!-- 售后成功:按钮审核中或者退款成功 -->
@@ -67,7 +72,7 @@
                 </div>
                 <div class="mingxi">
                     <span>运费：</span>
-                    <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderProductAmountWebsite}}</span>
+                    <span class="fl-right">{{detailObj.currencySignWebsite}}{{detailObj.orderFareWebsite}}</span>
                 </div>
                 <div class="mingxi">
                     <span>订单总价：</span>
@@ -116,8 +121,8 @@
                 <div class="btn-qzf fl-right c-orange" @click="showPay" v-if="detailObj.orderStatusApp == 0">付款</div>
                 <div class="btn-xgdz fl-right" @click="toEditAddress" v-if="detailObj.orderStatusApp == 0">修改地址</div>
                 <div class="btn-xgdz fl-right" v-if="detailObj.orderStatusApp == 2 || detailObj.orderStatusApp == 3" @click="toLogistics(detailObj.orderId)">查看物流</div>
-                <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 3">评价</div>
-                <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 4">删除订单</div>
+                <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 3">评价</div> -->
+                <!-- <div class="btn-qzf fl-right c-orange" v-if="detailObj.orderStatusApp == 4">删除订单</div> -->
 
                 <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)" v-if="detailObj.canRevoke == 1">取消订单</div>
                 <div class="btn-qzf fl-right c-orange" @click="toRefund" v-if="detailObj.canRefund == 1">退款</div>
@@ -167,11 +172,12 @@ export default {
             dataList:[],
             detailObj:{},
             status:[
-                {type:0,name:'等待买家付款'},
-                {type:1,name:'买家已付款'},
-                {type:2,name:'卖家已发货'},
-                {type:3,name:'交易成功'},
+                {type:0,name:'待付款'},
+                {type:1,name:'待发货'},
+                {type:2,name:'待收货'},
+                {type:3,name:'已收货(已完成)'},
                 {type:4,name:'交易关闭'},
+                {type:5,name:'已拒签'},
             ],
             deliverTypes:[
                 {type:1,name:'Tospino物流'},
@@ -186,6 +192,7 @@ export default {
             orderId:0,
 
             copyBtn: null, //存储初始化复制按钮事件
+            userinfoShop:{}
         };
     },
     computed: {
@@ -196,7 +203,7 @@ export default {
     },
     mounted() {
         this.orderinfo()
-
+        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
         this.copyBtn = new this.clipboard(this.$refs.copy)
     },
     watch: {
@@ -239,6 +246,10 @@ export default {
         },
         //弹出付款弹窗
         showPay(){
+            if(!this.userinfoShop.payPwd){
+                this.$router.push({name:'设置支付密码'})
+                return
+            }
             this.$refs.actionSheetPassword.showAction = true
         },
         //修改地址
@@ -461,6 +472,10 @@ export default {
             }
             .p4{
                 color: #999;
+                font-size: 20px;
+            }
+            .p2{
+                color: #DB9000;
                 font-size: 20px;
             }
         }

@@ -5,19 +5,18 @@
             <div class="footprint-goods-content">
                 <div class="fl-left">
                     <div class="good-img">
-                        <van-checkbox v-model="checked" icon-size="24px" class="img-checkbox" v-if="showCheck"></van-checkbox>
-                        <img :src="$webUrl+product.locationUrl">
+                        <van-checkbox v-model="product.checked" icon-size="24px" class="img-checkbox" v-if="showCheck"></van-checkbox>
+                        <img :src="$webUrl+product.imgUrl" @click="toDetail(product.skuId)">
                         <div class="shixiao" v-if="false">已失效</div>
                     </div>
                 </div>
                 <div class="fl-right clearfix">
                     <div class="good-desc">
-                        <span class="p1 clamp-2">{{product.supplyTitle}}</span><br>
-                        <span class="p2" v-if="false">{{product.scTotal}}人收藏</span>
-                        <span class="p2" v-else>已售{{product.skuSalesNum}}件</span>
+                        <span class="p1 clamp-2">{{product.supplyTitle}}</span>
+                        <span class="p2">{{product.scTotal}}人收藏</span>
                     </div>
                     <div class="good-price">
-                        <span class="p1" v-if="false">{{jn}}{{product.discountPrice ? product.discountPrice : product.salePrice}}</span>
+                        <span class="p1" v-if="true">{{jn}}{{product.discountPrice ? product.discountPrice : product.salePrice}}</span>
                         <span class="p3" v-else>货品已不能购买，如有需求请联系客服</span>
                         <span class="p2 fl-right" @click="toResembleGood">找相似</span>
                     </div>
@@ -102,7 +101,11 @@ export default {
         //列表数据
         getList(){
             this.dataList = this.list.map(o => Object.assign({}, o));
-        }
+        },
+        //跳转商品详情
+        toDetail(skuid){
+            this.$router.push({name:'商品详情',query:{skuId:skuid}})
+        },
     },
     components: {
         

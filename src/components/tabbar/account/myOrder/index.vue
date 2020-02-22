@@ -112,8 +112,9 @@ export default {
         
     },
     mounted() {
-        this.active = Number(this.$route.query.active) 
-        this.formData.order_status_app = this.$route.query.active-1
+        
+        this.active = Number(sessionStorage.getItem("activeIndex")) 
+        this.formData.order_status_app = this.active - 1
         this.refreshOrder()
     },
     watch: {
@@ -184,6 +185,7 @@ export default {
             }else{
                 this.formData.order_status_app = index-1
             }
+            sessionStorage.setItem("activeIndex", index);
             this.refreshOrder()
         },
         //控制取消订单弹窗

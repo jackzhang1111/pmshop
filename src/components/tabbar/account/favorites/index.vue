@@ -9,19 +9,20 @@
         </div>
         <!-- 下拉框 -->
         <van-dropdown-menu active-color="#DB9000" class="adropdown">
-            <van-dropdown-item v-model="value1" :options="option1" class="scj"/>
+            <van-dropdown-item v-model="value1" :options="option1" class="scj" @close="timeSort(value1)"/>
             <van-dropdown-item v-model="value2" :options="option2" disabled />
             <van-dropdown-item v-model="value2" :options="option2" disabled />
             <van-icon name="apps-o" class="apps-o " @click="iconView"/>
         </van-dropdown-menu>
+        <div class="favorites-place"></div>
         <div v-show="viewOne">
             <!-- 收藏夹收藏商品(失效和未失效) -->
             <good-list ref="goodList" :list="dataList"></good-list>
         </div>
         
         <div class="img-list" v-show="!viewOne">
-            <div v-for="(good,index) in dataList" :key="index">
-                <van-checkbox v-model="checked" icon-size="15px" class="img-checkbox" checked-color="#FA5300" v-if="showFooter"></van-checkbox>
+            <div v-for="(good,index) in twoDataList" :key="index">
+                <van-checkbox v-model="good.checked" icon-size="15px" class="img-checkbox" checked-color="#FA5300" v-if="showFooter"></van-checkbox>
                 <img :src="$webUrl+good.locationUrl">
             </div>
         </div>
@@ -30,8 +31,8 @@
         
         <div class="settlement" v-if="showFooter">
             <span class="settlement-text" v-if="true">
-                <van-checkbox v-model="checked" icon-size="24px" class="checkbox" checked-color="#FA5300"></van-checkbox>
-                <span class="btn1">取消收藏</span>
+                <van-checkbox v-model="allChecked" icon-size="24px" class="checkbox" checked-color="#FA5300" @change="allCheck"></van-checkbox>
+                <span class="btn1" @click="delet">取消收藏</span>
                 <span class="p1">全选</span>
             </span>
         </div>
@@ -43,8 +44,9 @@
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
 import goodList from './itemComponents/goodList'
-import {selectuserfavoritesApi} from '@/api/favorites/index'
+import {selectuserfavoritesApi,deleteuserfavoritesApi} from '@/api/favorites/index'
 import {guessyoulikeApi} from '@/api/search/index'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -55,8 +57,8 @@ export default {
             value2: 'a',
             option1: [
                 { text: '收藏时间', value: 0 },
-                { text: '新款商品', value: 1 },
-                { text: '活动商品', value: 2 }
+                { text: '从远到近', value: 1 },
+                { text: '从近到远', value: 2 }
             ],
             option2: [
                 { text: '', value: '' },
@@ -82,7 +84,9 @@ export default {
             shoucangTotal:0,
             pullUp:true,
             kanmengou:true,
-            dataList:[]
+            allChecked:false,
+            dataList:[],
+            twoDataList:[],
         };
     },
     computed: {
@@ -158,6 +162,11 @@ export default {
                     if(this.dataList.length >= this.shoucangTotal){
                         this.pullUp = false
                     }
+                    this.dataList.forEach(item => {
+                        item.checked = false
+                    })
+
+                    this.twoDataList = this.dataList.map(o => Object.assign({}, o));
                 }
             })
         },
@@ -178,6 +187,55 @@ export default {
         toDetail(skuId){
             this.$router.push({name:'商品详情',query:{skuId}})
         },
+        //排序
+        timeSort(sort){
+            if(sort == 0) return
+            this.formData.sort = sort
+            this.selectuserfavorites(this.formData)
+        },
+        //全选
+        allCheck(){
+            if(this.viewOne){
+                let arr = this.dataList.map(o => Object.assign({}, o));
+                arr.forEach(item => {
+                    item.checked = this.allChecked
+                })
+                this.dataList = arr
+            }else{
+                let arr = this.twoDataList.map(o => Object.assign({}, o));
+                arr.forEach(item => {
+                    item.checked = this.allChecked
+                })
+                this.twoDataList = arr
+            }
+        },
+        //删除
+        delet(){
+            let arr = []
+            if(this.viewOne){
+                this.$refs.goodList.dataList.forEach(item => {
+                    if(item.checked){
+                        arr.push(item.dataId)
+                    }
+                })
+            }else{
+                this.twoDataList.forEach(item => {
+                    if(item.checked){
+                        arr.push(item.dataId)
+                    }
+                })
+            }
+            this.deleteuserfavorites(arr)
+        },
+        //删除收藏夹
+        deleteuserfavorites(data){
+            deleteuserfavoritesApi(data).then(res => {
+                if(res.code == 0){
+                    Toast('操作成功')
+                    this.selectuserfavorites(this.formData)
+                }
+            })
+        },
     },
     components: {
         footerExhibition,
@@ -194,8 +252,10 @@ export default {
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: relative;
+        position: fixed;
+        top:0;
         line-height: 88px;
+        z-index: 3;
         .arrow-left{
             position: absolute;
             top:20px;
@@ -225,9 +285,13 @@ export default {
         
     }
     /deep/ .van-dropdown-menu{
-        height: 69px;
+        width: 100%;
+        height: 70px;
         font-size: 26px;
         background-color: #F2F3F5;
+        position: fixed;
+        top:88px;
+        z-index: 3;
          .van-dropdown-menu__title{
             height: 60px;
             line-height: 60px;
@@ -338,6 +402,8 @@ export default {
             border: 2px solid #999
         }
     }
-    
+    .favorites-place{
+        height: 160px;
+    }
 }
 </style>

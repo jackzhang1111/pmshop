@@ -52,3 +52,12 @@ export function selectuserfavoritesApi(params) {
         data:params
     })
 }
+
+//删除收藏
+export function deleteuserfavoritesApi(params) {
+    return park({
+        url:`/appbrowserachistory/deleteuserfavorites`,
+        method: 'POST',
+        data:params
+    })
+}
