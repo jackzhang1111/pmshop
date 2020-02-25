@@ -102,8 +102,20 @@ export default {
                 if(res.code == 0){
                     this.closeCancel()
                     this.$emit('refreshOrder')
-                }else{
-                    Toast('提交失败')
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('订单Id必须大于0')
+                }else if(res.code == 21){
+                    Toast('该订单不存在')
+                }else if(res.code == 22){
+                    Toast('该订单不属于当前用户，不能进行操作')
+                }else if(res.code == 23){
+                    Toast('该订单支付方式是在线支付，状态不是待付款，无法进行取消')
+                }else if(res.code == 24){
+                    Toast('该订单支付方式是货到付款，后台已执行发货操作，无法进行取消')
+                }else if(res.code == 25){
+                    Toast('该订单已经取消，无需重复取消')
                 }
             })
         },

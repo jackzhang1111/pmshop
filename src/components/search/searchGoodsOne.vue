@@ -19,7 +19,7 @@
                                 <img :src='$webUrl+good.imgUrl' :alt="good">
                             </div>
                             <div class="good-desc">
-                                <span class="p1">{{good.supplyTitle}}</span><br>
+                                <span class="p1 clamp-2">{{good.supplyTitle}}</span>
                                 <div class="country">
                                     <div class="country-img">
                                         <img :src="$webUrl+good.locationUrl">
@@ -102,7 +102,8 @@ export default {
             searName:'',
             totalCount:0,
             noSearchStatus:true,
-            nosear1:nosear1
+            nosear1:nosear1,
+            isgo:false
         };
     },
     computed: {
@@ -118,7 +119,14 @@ export default {
         this.searName = this.$route.query.seraname
         this.refreshOrder()
     },
-    
+    beforeRouteLeave(to, from, next){
+        if(to.name == '首页'){
+            this.isgo = false
+        }else{
+            this.isgo = true
+        }
+        next()
+    },
     watch: {
 
     },
@@ -145,7 +153,11 @@ export default {
         },
         //输入框获得焦点时触发
         onfocus(){
-            this.$router.go(-1)
+            if(this.isgo){
+                this.$router.go(-1)
+            }else{
+                this.$router.push({name:'历史记录'})
+            }
             this.$store.state.serchName = this.searName
         },
         //输入框内容变化时触发
@@ -319,6 +331,7 @@ export default {
                 color: #333;
                 .p1{
                     line-height:39px;
+                    height: 80px;
                 }
                 .p2{
                     font-size:20px;

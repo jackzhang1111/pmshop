@@ -34,7 +34,7 @@
             <div class="cell">
                 <span>退款金额</span>
                 <span class="text-tk c-orange f-30">
-                    <span>{{orderData.orderAmountWebsite}}</span> 
+                    <span>{{orderData.currencySignWebsite}}{{orderData.orderAmountWebsite}}</span> 
                     <span class="c-999 f-22">(含运费）</span>
                 </span>
             </div>
@@ -169,6 +169,30 @@ export default {
             returnorderApi(data).then(res => {
                 if(res.code == 0){
                     this.$router.go(this.go)
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('参数订单Id必须大于0')
+                }else if(res.code == 3){
+                    Toast('退货退款单来源不能为空')
+                }else if(res.code == 4){
+                    Toast('请选择退货退款原因')
+                }else if(res.code == 11){
+                    Toast('参数商品列表detailList不能为空')
+                }else if(res.code == 12){
+                    Toast('参数退货退款商品数量必须大于0')
+                }else if(res.code == 21){
+                    Toast('该订单不存在')
+                }else if(res.code == 22){
+                    Toast('该订单不属于当前用户，您无权限操作该订单')
+                }else if(res.code == 23){
+                    Toast('FBM订单不能申请退货退款')
+                }else if(res.code == 24){
+                    Toast('该订单未付款，不能申请仅退款')
+                }else if(res.code == 25){
+                    Toast('该订单暂无可申请退货退款商品')
+                }else if(res.code == 26){
+                    Toast('申请退货退款商品数量已超过可申请退货退款商品数量')
                 }
             })
         }

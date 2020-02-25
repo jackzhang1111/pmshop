@@ -173,8 +173,31 @@ export default {
             orderlaunchpayApi(data).then(res => {
                 if(res.code == 0){
                     this.showsucess()
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('参数支付方式不能为空')
+                }else if(res.code == 3){
+                    Toast('余额支付支付密码不能为空')
+                }else if(res.code == 4){
+                    Toast('参数订单列表orderList不能为空')
+                }else if(res.code == 5){
+                    Toast('参数订单Id必须大于0')
                 }else if(res.code == 21){
-                    this.$router.push({name:'设置支付密码'})
+                    Toast('请先设置支付密码')
+                    setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
+                }else if(res.code == 22){
+                    Toast('支付密码不正确')
+                }else if(res.code == 31){
+                    Toast('提交的订单列表不能为空')
+                }else if(res.code == 32){
+                    Toast('存在订单不属于当前用户，不能进行操作')
+                }else if(res.code == 33){
+                    Toast('存在订单已经支付，不能重复支付')
+                }else if(res.code == 34){
+                    Toast('提交的订单列表包含状态不为待付款的订单')
+                }else if(res.code == 35){
+                    Toast('提交的订单列表包含已过支付有效期的订单')
                 }
             })
         },
@@ -199,7 +222,7 @@ export default {
         showPay(flag,alldata){
             this.$refs.actionSheetPaymen.showAction = flag
             if(!alldata) return
-            this.moeny = alldata.orderProductAmountWebsite
+            this.moeny = alldata.orderAmountWebsite
             this.orderData = alldata
         },
         //密码弹窗
@@ -252,6 +275,26 @@ export default {
                 if(res.code == 0){
                     this.showPassWord(false)
                     this.refreshOrder()
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('订单Id必须大于0')
+                }else if(res.code == 3){
+                    Toast('支付密码不能为空')
+                }else if(res.code == 21){
+                    Toast('请先设置支付密码')
+                }else if(res.code == 22){
+                    Toast('支付密码不正确')
+                }else if(res.code == 23){
+                    Toast('该订单不存在')
+                }else if(res.code == 24){
+                    Toast('该订单不属于当前用户，不能进行操作')
+                }else if(res.code == 25){
+                    Toast('该订单未支付，不能确认收货')
+                }else if(res.code == 26){
+                    Toast('该订单已完成，无需重复确认收货')
+                }else if(res.code == 27){
+                    Toast('该订单不是待收货状态，不能确认收货')
                 }
             })
         }

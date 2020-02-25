@@ -45,7 +45,7 @@
                     <div class="fl-right">
                         <span>共{{dfkData.goodCount}}件</span>
                         <span>合计:</span>
-                        <span class="c-orange">{{dfkData.currencySignWebsite}}{{dfkData.orderProductAmountWebsite}}</span>
+                        <span class="c-orange">{{dfkData.currencySignWebsite}}{{dfkData.orderAmountWebsite}}</span>
                     </div>
                 </div>
                 <div class="good-detail-footer">
@@ -80,7 +80,7 @@
                     <div class="dfh-footer-bottom">
                         <span>共{{dfkData.goodCount}}件</span>
                         <span>合计:</span>
-                        <span class="c-orange font-30">{{dfkData.currencySignWebsite}}{{dfkData.orderProductAmountWebsite}}</span>
+                        <span class="c-orange font-30">{{dfkData.currencySignWebsite}}{{dfkData.orderAmountWebsite}}</span>
                         <span>(含运费{{dfkData.currencySignWebsite}}{{dfkData.orderFareWebsite}}）</span>
                     </div>
                 </div>
@@ -129,7 +129,9 @@ export default {
 
     },
     mounted() {
-        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
+        if(localStorage.userinfoShop){
+            this.userinfoShop = JSON.parse(localStorage.userinfoShop)
+        }
     },
     watch: {
         dfkList:{
@@ -195,6 +197,7 @@ export default {
                 return
             }
             this.$emit('showPay',true,alldata)
+            console.log(alldata,'alldata');
         },
         //确认收货
         receiGood(alldata){

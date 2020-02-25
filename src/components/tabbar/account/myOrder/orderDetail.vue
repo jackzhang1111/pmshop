@@ -203,7 +203,9 @@ export default {
     },
     mounted() {
         this.orderinfo()
-        this.userinfoShop = JSON.parse(localStorage.userinfoShop)
+        if(localStorage.userinfoShop){
+            this.userinfoShop = JSON.parse(localStorage.userinfoShop)
+        }
         this.copyBtn = new this.clipboard(this.$refs.copy)
     },
     watch: {

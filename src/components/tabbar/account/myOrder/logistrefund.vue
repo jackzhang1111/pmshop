@@ -79,7 +79,7 @@ export default {
             fileList:[],
             show1:false,
             uploadList:[],
-            headerTitle:'申请退款',
+            headerTitle:'',
             formData:{
                 logisticsOrderId:'',
                 orderSource:1,
@@ -129,6 +129,13 @@ export default {
                 if(res.code == 0){
                     this.detailObj = res.Data.order
                     this.dataList = this.detailObj.detailList
+                    this.headerTitle = res.Data.order.saleOrderPayStatus == 0 ? '申请退货':'申请退款'
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('参数logisticsOrderId必须大于0')
+                }else if(res.code == 4){
+                    Toast('您无权限查看该订单或者该订单不存在')
                 }
             })
         },
@@ -141,6 +148,30 @@ export default {
                     setTimeout(()=>{
                         this.$router.go(-1)
                     },1000)
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('参数物流单Id必须大于0')
+                }else if(res.code == 3){
+                    Toast('退款单来源不能为空')
+                }else if(res.code == 4){
+                    Toast('请选择退款原因')
+                }else if(res.code == 11){
+                    Toast('参数商品列表detailList不能为空')
+                }else if(res.code == 12){
+                    Toast('参数退款商品数量必须大于0')
+                }else if(res.code == 21){
+                    Toast('该订单不存在')
+                }else if(res.code == 22){
+                    Toast('该订单不属于当前用户，您无权限操作该订单')
+                }else if(res.code == 23){
+                    Toast('包裹不是未签收状态，不能申请包裹仅退款')
+                }else if(res.code == 24){
+                    Toast('该订单未付款，不能申请仅退款')
+                }else if(res.code == 25){
+                    Toast('该包裹已申请仅退款，不能重复申请')
+                }else if(res.code == 26){
+                    Toast('该包裹可退款数量已经改变，请重新确认退款单')
                 }
             })
         },

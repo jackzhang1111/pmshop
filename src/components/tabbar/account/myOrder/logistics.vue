@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="btns" v-if="parcel.canRefund == 1">
-                        <div class="tk-btn" @click="tuikuan(parcel)">退款</div>
+                        <div class="tk-btn" @click="tuikuan(parcel)">{{parcel.saleOrderPayStatus == 0 ? '退货':'退款' }}</div>
                     </div>
                 </div>
             </div>

@@ -143,6 +143,20 @@ export default {
             revokebackorderApi({orderId:id}).then(res => {
                 if(res.code == 0){
                     this.backorderinfo(id)
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('售后单Id必须大于0')
+                }else if(res.code == 21){
+                    Toast('该售后单不存在')
+                }else if(res.code == 22){
+                    Toast('该售后单不属于当前用户，不能进行操作')
+                }else if(res.code == 23){
+                    Toast('该售后单已经审核通过，不能撤销')
+                }else if(res.code == 24){
+                    Toast('该售后单已经拒绝，不能撤销')
+                }else if(res.code == 25){
+                    Toast('该售后单已经撤销，无需重复撤销')
                 }
             })
         },

@@ -5,7 +5,9 @@
                 <div class="good-detail" v-for="(product,index) in dataList" :key="index">
                     <div class="good-detail-header">
                         <span>编号：{{product.orderSn}}</span>
+                        
                         <span class="fl-right c-orange">{{orderStatus(product.orderStatusApp,'statusList')}}</span>
+                        <br><span>订单编号:{{product.saleOrderSn}}</span>
                     </div>
                     <div class="good-detail-content" v-for="(detail,index) in product.detailList2" :key="index">
                         <div class="good-detail-img">
@@ -74,6 +76,7 @@ export default {
             backTypeList:[
                 {type:1,name:'仅退款'},
                 {type:2,name:'退货退款'},
+                {type:3,name:'退货'},
             ]
         };
     },
@@ -189,12 +192,11 @@ export default {
 .good-detail{
     margin-bottom: 20px;
     .good-detail-header{
-        height: 79px;
-        line-height: 79px;
+        line-height: 40px;
         font-size:26px;
         color: #333;
         background-color: #fff;
-        padding:0 30px;
+        padding:10px 30px;
         border-bottom: 1px solid #F2F3F5;
     }
     .good-detail-content{
