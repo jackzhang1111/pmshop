@@ -765,7 +765,7 @@ export default {
         padding-top:20px;
         /deep/ .van-tabs{
             .van-tabs__wrap{
-                height: 88px;
+                height: 100px;
                 .van-tab{
                     line-height: 88px;
                 }

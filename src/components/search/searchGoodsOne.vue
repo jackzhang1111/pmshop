@@ -303,7 +303,7 @@ export default {
         margin-bottom: 20px;
         .footprint-goods-content{
             width: 100%;
-            height: 250px;
+            height: 280px;
             background-color: #fff;
             position: relative;
             border-bottom: 1px solid #F2F3F5;
@@ -342,10 +342,10 @@ export default {
             }
             .good-price{
                 position: absolute;
-                top:184px;
                 left:250px;
                 color: #F83600;
                 font-size:36px;
+                margin-top:20px;
                 .p2{
                     position: absolute;
                     left:470px;

@@ -54,6 +54,7 @@ import {orderlistApi,orderlaunchpayApi,completeorderApi} from '@/api/myOrder/ind
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
 import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
 import actionSheetSucess from '@/multiplexing/actionSheetSucess'
+import { Toast } from 'vant';
 export default {
     props: {
 
@@ -188,6 +189,8 @@ export default {
                     setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
                 }else if(res.code == 22){
                     Toast('支付密码不正确')
+                }else if(res.code == 23){
+                    Toast('余额不足')
                 }else if(res.code == 31){
                     Toast('提交的订单列表不能为空')
                 }else if(res.code == 32){
@@ -283,6 +286,7 @@ export default {
                     Toast('支付密码不能为空')
                 }else if(res.code == 21){
                     Toast('请先设置支付密码')
+                    setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
                 }else if(res.code == 22){
                     Toast('支付密码不正确')
                 }else if(res.code == 23){

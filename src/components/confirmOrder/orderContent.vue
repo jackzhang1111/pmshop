@@ -440,6 +440,8 @@ export default {
                     setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
                 }else if(res.code == 22){
                     Toast('支付密码不正确')
+                }else if(res.code == 23){
+                    Toast('余额不足')
                 }else if(res.code == 31){
                     Toast('提交的订单列表不能为空')
                 }else if(res.code == 32){
@@ -780,6 +782,7 @@ export default {
         box-sizing: border-box;
         position: fixed;
         bottom: 0;
+        z-index: 10;
         .settlement-p1{
             font-size:20px;
             color: #333;

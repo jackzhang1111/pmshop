@@ -373,8 +373,8 @@ export default {
                 }
             }
             .icon-style{
-                width: 43px;
-                height: 43px;
+                // width: 43px;
+                height: 40px;
                 margin-bottom: 3px;
             }
            /deep/ .van-hairline--top-bottom{
@@ -404,8 +404,8 @@ export default {
                 }
             }
             .icon-left{
-                width: 33px;
-                height: 29px;
+                // width: 33px;
+                // height: 33px;
                 position: absolute;
                 left:23px;
                 top:36px;
