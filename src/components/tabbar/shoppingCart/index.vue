@@ -30,7 +30,7 @@
                         <div class="good-price">
                             <span class="price-p1">{{jn}}{{dataitem.discountPrice ? dataitem.discountPrice : dataitem.salePrice}}</span>
                             <!-- <span class="price-p2" v-if="dataitem.discountPrice">{{dataitem.salePrice}}</span> -->
-                            <van-stepper class="price-quantity" v-model="dataitem.shopNumber" :min="dataitem.numIntervalStart" :max="dataitem.canSalesNum" @change="changeStepper" />
+                            <van-stepper class="price-quantity" v-model="dataitem.shopNumber" :min="dataitem.numIntervalStart" :max="dataitem.canSalesNum" @change="changeStepper(dataitem)" />
                             <span class="price-batch">起订量{{dataitem.numIntervalStart}}件</span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
 
 <script>
 import footerExhibition from '@/multiplexing/footerExhibition'
-import {shopcartlistApi,deleteshopcartApi,emptycartApi,getproductskunumpricelistApi} from '@/api/shoppingCart/index'
+import {shopcartlistApi,deleteshopcartApi,emptycartApi,getproductskunumpricelistApi,addshopcartApi} from '@/api/shoppingCart/index'
 import {guessyoulikeApi} from '@/api/search/index'
 import { Toast,Dialog } from 'vant';
 import {mapState,mapActions} from 'vuex'
@@ -154,14 +154,14 @@ export default {
             return this.shopList.length>0
         },
         shoplength(){
-            return this.shopList.length
+            return this.shopcarTotal
         },
         ...mapState({
             selectionShopCar:state=>state.selectionShopCar
         })
     },
     created() {
-
+        
     },
     mounted() {
         window.addEventListener('scroll', this.menu,true)
@@ -364,8 +364,12 @@ export default {
             this.getproductskunumpricelist(arr2)
         },
         //更改数量
-        changeStepper(){
+        changeStepper(itemdetail){
             let arr = []
+            let addshopcartObj = {
+                shopcrtId:itemdetail.shopcrtId,
+                shopNumber:itemdetail.shopNumber
+            }
             this.dataList.forEach(ele => {
                 ele.list.forEach(item => {
                     if(item.checkStatus){
@@ -377,7 +381,7 @@ export default {
                     }
                 })
             })
-            
+            this.addshopcart([addshopcartObj])
             this.zongji()
         },
         //删除订单
@@ -408,7 +412,7 @@ export default {
         },
         //清空失效商品
         emptycart(){
-            emptycartApi().then(res => {
+            emptycartApi({name:'不请求'}).then(res => {
                 if(res.code == 0){
                     this.shopcartlist(this.formData)
                     this.guessyoulike()
@@ -453,7 +457,15 @@ export default {
                     })
                 }
             })
-        }
+        },
+        //添加购物车
+        addshopcart(data){
+            addshopcartApi(data).then(res => {
+                if(res.code == 0){
+                    
+                }
+            })
+        },
     },
     components: {
         footerExhibition

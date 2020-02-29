@@ -126,6 +126,8 @@ export default {
                 orderId:this.id,
                 remark:this.remark
             }
+            Toast('请选择取消订单原因')
+            if(!this.remark) return
             this.revokeorder(data)
         }
     },
