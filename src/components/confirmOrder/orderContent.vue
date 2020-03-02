@@ -97,7 +97,7 @@
             <div class="beizhu">
                 <van-cell-group>
                     <van-field
-                        v-model="message"
+                        v-model="order.remark"
                         rows="3"
                         autosize
                         label="备注"
@@ -131,7 +131,7 @@
         <!-- 密码弹窗 -->
         <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord"></action-sheet-password>
         <!-- 付款方式弹窗 -->
-        <action-sheet-paymen ref="actionSheetPaymen" :moeny="orderData.allOrderAmountWebsite" @showPassWord="showPassWord" @showpaymen="showpaymen"></action-sheet-paymen>
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="Number(orderData.allOrderAmountWebsite)" @showPassWord="showPassWord" @showpaymen="showpaymen"></action-sheet-paymen>
     </div>
 </template>
 
@@ -174,7 +174,6 @@ export default {
                 }
             ],
             showPayment:false,
-            message:'',
             checked:false,
             show:true,
             show1:false,

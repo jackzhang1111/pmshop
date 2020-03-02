@@ -31,25 +31,29 @@
         <div class="address-p4">
             <div class="p4-middle">
                 <div class="middle-p1">
-                    <span class="c-999">退货原因:</span>
-                    <span class="margin-l-40 c-333">{{detailData.reason}}</span>
+                    <span class="c-999 t-left">退货原因:</span>
+                    <span class=" c-333 t-right">{{detailData.reason}}</span>
                 </div>
                 <div class="middle-p2">
-                    <span class="c-999">退货编号:</span>
-                    <span class="margin-l-40 c-333">{{detailData.orderSn}}</span>
+                    <span class="c-999 t-left">退货编号:</span>
+                    <span class=" c-333 t-right">{{detailData.orderSn}}</span>
                 </div>
                 <div class="middle-p1">
-                    <span class="c-999">编号:</span>
-                    <span class="margin-l-40 c-333" id="orderSn">{{detailData.saleOrderSn}}</span>
+                    <span class="c-999 t-left">编号:</span>
+                    <span class=" c-333 t-right" id="orderSn">{{detailData.saleOrderSn}}</span>
                     <span class="fl-right c-orange" ref="copy" data-clipboard-action="copy" data-clipboard-target="#orderSn" @click="copyLink">复制</span>
                 </div>
                 <div class="middle-p1">
-                    <span class="c-999">申请时间:</span>
-                    <span class="margin-l-40 c-333">{{detailData.orderAddtime}}</span>
+                    <span class="c-999 t-left">申请时间:</span>
+                    <span class=" c-333 t-right">{{detailData.orderAddtime}}</span>
                 </div>
                 <div class="middle-p1">
-                    <span class="c-999">退款总额:</span>
-                    <span class="margin-l-40 c-orange">{{detailData.currencySignWebsite}}{{detailData.orderAmountWebsite}}</span>
+                    <span class="c-999 t-left">总运费:</span>
+                    <span class=" c-orange t-right">{{detailData.currencySignWebsite}}{{detailData.orderFareWebsite}}</span>
+                </div>
+                <div class="middle-p1">
+                    <span class="c-999 t-left">退款总额:</span>
+                    <span class="c-orange t-right">{{detailData.currencySignWebsite}}{{detailData.orderAmountWebsite}}</span>
                 </div>
             </div>
         </div>
@@ -225,6 +229,15 @@ export default {
             font-size: 20px;
             color: #666;
             line-height:45px;
+            .t-left{
+                display: inline-block;
+                width: 150px;
+                vertical-align: top;
+            }
+            .t-right{
+                display: inline-block;
+                max-width: 500px;
+            }
         }
     }
     .address-p5{
@@ -377,8 +390,5 @@ export default {
             line-height: 40px;
         }
     }
-}
-.margin-l-40{
-    margin-left:40px
 }
 </style>

@@ -433,6 +433,11 @@ export default {
                     }
                 })
             })
+            if(arr.length == 0){
+                Toast('请选择移入收藏夹的商品')
+                return
+            }
+            
             this.adduserfavorites(arr)
         },
         //根据商品skuid与商品数量获取优惠价
