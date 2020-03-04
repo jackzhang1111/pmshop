@@ -3,10 +3,10 @@
         <div v-show = choiceShow>
             <settings-header :title="title" title2="保存" @rightBtn="rightBtn"></settings-header>
         <div class="cell">
-            <input type="search" :class="{'c-333':isBace}" class="input-xt" placeholder="收货人" v-model="form.shr">
+            <input type="search" :class="{'c-333':isBace}" class="input-xt" placeholder="收货人" v-model="form.shr" :maxlength="20">
         </div>
         <div class="cell">
-            <input type="search" :class="{'c-333':isBace}" class="input-xt" placeholder="手机号码" v-model="form.sjhm">
+            <input type="search" :class="{'c-333':isBace}" class="input-xt" placeholder="手机号码" v-model="form.sjhm" :maxlength="11">
             <span class="hm c-999">+86</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
@@ -127,7 +127,20 @@ export default {
             this.$refs.choiceList.formData.parent_id = obj.parent_id
             this.$refs.choiceList.basearealist(obj)            
         },
+        //点击保存
         rightBtn(){
+            if(this.form.message == ''){
+                Toast('请填写详细地址')
+                return
+            }
+            if(this.form.shr == ''){
+                Toast('请填写收货人')
+                return
+            }
+            if(this.form.sjhm == ''){
+                Toast('请填写手机号码')
+                return
+            }
             this.axiosAddress()
         },
         //判断是否编辑状态

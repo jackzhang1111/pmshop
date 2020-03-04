@@ -1,8 +1,11 @@
 <template>
-    <div class="settings-header">
-        <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
-        <span class="header-t1">{{title}}</span>
-        <span class="header-t2 c-orange" v-if="title2Show" @click="toAddAdder">{{title2}}</span>
+    <div>
+        <div class="settings-header">
+            <van-icon name="arrow-left" class="arrow-left" @click="$router.go(-1)"/>
+            <span class="header-t1">{{title}}</span>
+            <span class="header-t2 c-orange" v-if="title2Show" @click="toAddAdder">{{title2}}</span>
+        </div>
+        <div class="place"></div>
     </div>
 </template>
 
@@ -56,8 +59,10 @@ export default {
     height: 88px;
     background-color: #f2f3f5;
     text-align: center;
-    position: relative;
+    position: fixed;
     line-height: 88px;
+    top:0;
+    z-index: 5;
     .arrow-left{
         position: absolute;
         top:20px;

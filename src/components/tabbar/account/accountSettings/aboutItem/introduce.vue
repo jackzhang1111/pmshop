@@ -1,7 +1,7 @@
 <template>
 <!-- 平台介绍 -->
     <div class="introduce">
-        <div class="title">关于我们</div>
+        <div class="title" v-if="showTitle">关于我们</div>
         <p>
             TOSPINO APP是一款跨境B2B线上商城，专注于通过智能高效的线上交易模式帮助零售商家完成海量商品的轻松采购。<br>
             TOSPINO拥有数十年的进出口经验，发展了丰富的产品渠道，通过供应链升级的方式，TOSPINO汇聚了来自各地优质品牌和工厂的产品，品类全面，性价比更高。为了进一步升级采购体验，Tospino以移动互联网为媒介，让用户在手机上随时随地即可大小批量的采购活动，下单时，用户可选择充值余额/Paypal 线上支付和货到付款的结算方式。<br>
@@ -30,7 +30,10 @@
 <script>
 export default {
     props: {
-
+        showTitle:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {

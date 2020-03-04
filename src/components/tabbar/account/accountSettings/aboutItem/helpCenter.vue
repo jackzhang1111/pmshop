@@ -1,7 +1,7 @@
 <template>
 <!-- 帮助中心 -->
     <div class="help-center">
-        <div class="title">APP用户帮助中心内容</div>
+        <div class="title" v-if="showTitle">APP用户帮助中心内容</div>
         <p>
             1、订单管理<br>
             ①修改/取消订单<br>
@@ -133,7 +133,10 @@
 <script>
 export default {
     props: {
-
+        showTitle:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {

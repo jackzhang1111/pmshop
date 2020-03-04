@@ -6,14 +6,14 @@
             <div class="item-title">创建用户</div>
             <div class="create-user">
                 <van-cell-group>
-                    <van-field v-model="formData.nickName" placeholder="用户名称"/>
+                    <van-field v-model="formData.nickName" placeholder="用户名称" :maxlength="20"/>
                     <div class="iphone-option">
                         <select name=""> 
                             <option value="0">+86</option> 
                         </select> 
                     </div>
-                    <van-field v-model="formData.mobile" placeholder="请输入您的手机号"  class="iphone-input"/>
-                    <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp">
+                    <van-field v-model="formData.mobile" placeholder="请输入您的手机号"  class="iphone-input" type="number" :maxlength="11"/>
+                    <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp" :maxlength="4">
                         <div slot="button" class="daojishi" @click="getCode" v-show="countTrue">
                             {{countdown}}
                         </div>
@@ -23,8 +23,8 @@
 
                     </van-field>
                     <van-field v-model="formData.email" placeholder="请输入您的邮箱(可不填）" />
-                    <van-field v-model="formData.userPwd" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password" :type="fieldType" />
-                    <van-field v-model="formData.userPwd2" placeholder="确认密码" type="password"/>
+                    <van-field v-model="formData.userPwd" clearable :right-icon="eyeName" placeholder="请设置6至20位字符的登录密码" @click-right-icon="eyeStatus = !eyeStatus" class="password" :type="fieldType" :maxlength="20"/>
+                    <van-field v-model="formData.userPwd2" clearable :right-icon="eyeName1" placeholder="确认密码" :maxlength="20" @click-right-icon="eyeStatus1 = !eyeStatus1" class="password" :type="fieldType1"/>
                 </van-cell-group>
             </div>
             <div class="item-title">公司信息</div>
@@ -104,9 +104,9 @@
                 <input type="checkbox" class="checkbox" v-model="xieyi">
                 <span>
                     <span class="c1">我已阅读并同意网站的</span>
-                    <span class="c-orange">使用条件</span>
+                    <span class="c-orange" @click="userStatus=true">使用条件</span>
                     <span>及</span>
-                    <span  class="c-orange">隐私声明</span>
+                    <span class="c-orange" @click="zhengce=true">隐私声明</span>
                 </span>
             </div>
             <div class="confirm-btn" @click="toRevise">
@@ -130,6 +130,35 @@
                 <div class="txt2">已注册成功</div>
             </div>
         </van-popup>
+
+        <zhezhao v-if="zhengce">
+            <div class="tanchuang">
+                <div class="tanchuang-header">
+                    <span>隐私政策</span>
+                    <div class="fl-right">
+                        <van-icon name="cross" @click="zhengce=false"/>
+                    </div>
+                </div>
+                <div class="tanchuang-content">
+                    <yinsi :showTitle="false"></yinsi>
+                </div>
+            </div>
+        </zhezhao>
+
+        <zhezhao v-if="userStatus">
+            <div class="tanchuang">
+                <div class="tanchuang-header">
+                    <span>用户协议</span>
+                    <div class="fl-right">
+                        <van-icon name="cross" @click="userStatus=false"/>
+                    </div>
+                </div>
+                <div class="tanchuang-content">
+                    <user-agreement :showTitle="false"></user-agreement>
+                </div>
+            </div>
+        </zhezhao>
+
     </div>
 </template>
 
@@ -141,6 +170,9 @@ import uploadOne from '@/multiplexing/uploadOne'
 import choiceList from '@/multiplexing/choiceList.vue'
 import {msglistApi} from '@/api/login/index.js'
 import {Toast} from 'vant'
+import zhezhao from '@/multiplexing/zhezhao'
+import yinsi from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue'
+import userAgreement from '@/components/tabbar/account/accountSettings/aboutItem/userAgreement.vue'
 export default {
     props: {
 
@@ -156,11 +188,14 @@ export default {
             show:false,
             show2:false,
             eyeStatus:false,
+            eyeStatus1:false,
             choiceShow:true,
             isBace:true,
             registDisabled:true,
             eyeName:'closed-eye',
+            eyeName1:'closed-eye',
             fieldType:'password',
+            fieldType1:'password',
             fileList:[],
             formData:{
                 nickName:'',//用户名称
@@ -253,7 +288,9 @@ export default {
                 msgphone:'',
                 types:'1',
                 areaCode:'86'
-            }
+            },
+            zhengce:false,
+            userStatus:false
         };
     },
     computed: {
@@ -272,17 +309,36 @@ export default {
             handler:function(newVal, oldVal){
                 this.eyeStatus ? this.eyeName = 'eye-o':this.eyeName = 'closed-eye'
                 this.fieldType =  this.eyeStatus ? 'text' : 'password'
-                console.log(newVal,'newVal')
+            },
+        },
+        eyeStatus1:{
+            handler:function(newVal, oldVal){
+                this.eyeStatus1 ? this.eyeName1 = 'eye-o':this.eyeName1 = 'closed-eye'
+                this.fieldType1 =  this.eyeStatus1 ? 'text' : 'password'
             },
         },
     },
     methods: {
         toRevise(){
             if(!this.disabledSubmit) return
+            var emReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; //正则表达式
+            if(this.formData.email == ''){
+                
+            }else if(!emReg.test(this.formData.email)){
+                Toast("邮箱格式不正确!");
+                return
+            }
+            if(this.formData.userPwd.length < 6){
+                Toast("请设置6至20位字符的登录密码!");
+                return
+            }
+            if(this.formData.userPwd != this.formData.userPwd2){
+                Toast("密码与确认密码不一致!");
+                return
+            }
             this.userregister()
         },
         getCode(){
-            console.log(this.formData,'this.formData');
             if(this.formData.mobile == ''){
                 Toast('请输入手机号码')
                 return
@@ -406,7 +462,10 @@ export default {
     components: {
         navar,
         uploadOne,
-        choiceList
+        choiceList,
+        zhezhao,
+        yinsi,
+        userAgreement
     },
 };
 </script>
@@ -441,9 +500,6 @@ export default {
             /deep/ .van-cell__value{
                 .van-field__body{
                     margin-left: 100px;
-                    .van-field__control{
-                        
-                    }
                 }
             }
         }
@@ -623,6 +679,29 @@ export default {
             top:50%;
             transform: translateY(-50%);
             right:57px;
+        }
+    }
+    .tanchuang{
+        height: 80%;
+        margin: 80px 30px;
+        background-color: #fff;
+        .tanchuang-header{
+            height: 109px;
+            line-height: 109px;
+            font-size:36px;
+            text-align: center;
+            color: #333;
+            font-weight:bold;
+            padding: 0 40px;
+            border-bottom: 1px solid #C9C9C9;
+            div{
+                display: inline-block;
+            }
+        }
+        .tanchuang-content{
+            max-height: 85%;
+            overflow: auto;
+            padding-top: 29px;
         }
     }
 }

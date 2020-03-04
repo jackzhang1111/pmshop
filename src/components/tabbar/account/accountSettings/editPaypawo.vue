@@ -84,6 +84,15 @@ export default {
         },
         //保存
         submit(){
+            if(this.formData.oldPwd.length < 6 || this.formData.userPwd.length < 6 ||this.formData.userPwd2.length < 6){
+                Toast('所有密码都请输入6位数字')
+                return
+            }
+            if(this.formData.userPwd != this.formData.userPwd2){
+                Toast('密码与确认密码不一致')
+                return
+            }
+            
             this.updateuserpaypassword(this.formData)
         },
         inputFun(e){

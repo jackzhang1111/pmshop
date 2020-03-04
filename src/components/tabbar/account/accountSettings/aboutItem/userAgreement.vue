@@ -1,7 +1,7 @@
 <template>
 <!-- 用户协议 -->
     <div>
-        <div class="title">用户协议</div>
+        <div class="title" v-if="showTitle">用户协议</div>
         <p>
             一、服务条款的确认及接受<br>
             1、Tospino网站（指tospino.com及其移动客户端软件、应用程序，以下称“本网站”）各项电子服务的所有权和运作权归属于“Tospino”所有，本网站提供的服务将完全按照其发布的服务条款和操作规则严格执行。您确认所有服务条款并完成注册程序时，本协议在您与本网站间成立并发生法律效力，同时您成为本网站正式用户。<br>
@@ -82,7 +82,10 @@
 <script>
 export default {
     props: {
-
+        showTitle:{
+            type:Boolean,
+            default:true
+        }
     },
     data() {
         return {

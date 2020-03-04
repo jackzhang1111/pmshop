@@ -53,8 +53,9 @@
                 <input type="checkbox" class="checkbox" v-model="checked">
                 <span class="c1 fs-24">
                     <span>同意</span>
-                    <span @click="zhengce=true">《TOSPINO法律协议》</span>
-                    <span>和《隐私政策》</span>
+                    <span >《TOSPINO法律协议》</span>
+                    <span>和</span>
+                    <span @click="zhengce=true" class="c2">《隐私政策》</span>
                 </span>
             </div>
         </div>
