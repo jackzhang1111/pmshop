@@ -13,7 +13,7 @@
                         </select> 
                     </div>
                     <van-field v-model="formData.mobile" placeholder="请输入您的手机号"  class="iphone-input" type="number" :maxlength="11"/>
-                    <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp" :maxlength="4">
+                    <van-field v-model="formData.smsCode" placeholder="请输入验证码" class="register-otp" :maxlength="6">
                         <div slot="button" class="daojishi" @click="getCode" v-show="countTrue">
                             {{countdown}}
                         </div>
@@ -242,18 +242,6 @@ export default {
                     required: true,
                     messages: "确认密码不正确"
                 },
-                companyName:{
-                    required: true,
-                    messages: "公司名称不正确"
-                },
-                mainBusiness:{
-                    required: true,
-                    messages: "主营业务不正确"
-                },
-                companyAreaId:{
-                    required: true,
-                    messages: "公司地址ID不正确"
-                }
             },
             form:{
                 lev1:null,

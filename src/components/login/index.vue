@@ -200,7 +200,7 @@ export default {
             margin-left:20px;
         }
         .name-input{
-            width: 380px;
+            width: 300px;
             border: 0;
         }
     }

@@ -114,6 +114,9 @@ export default {
             justify-content: center;
             align-items: center;
         }
+        .van-sidebar-item--select{
+            border-left:15px solid red;
+        }
     }
     .classify-right{
         width: 524px;
