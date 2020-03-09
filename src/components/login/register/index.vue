@@ -431,6 +431,12 @@ export default {
                     setTimeout(()=>{
                         this.$router.push({name:'登录'})
                     },2000)
+                }else if(res.code == -110){
+                    Toast('验证码不正确')
+                }else if(res.code == -25){
+                    Toast('手机号已注册')
+                }else{
+                    Toast('error')
                 }
             })
         },
@@ -441,6 +447,18 @@ export default {
                     
                 }else if(res.code == 1){
                     Toast('手机号一天不能超于20条短信发送请求')
+                }else if(res.code == 2){
+                    Toast('发送失败')
+                }else if(res.code == -130){
+                    Toast('该手机号未注册')
+                }else if(res.code == -131){
+                    Toast('该手机号已被系统冻结')
+                }else if(res.code == -132){
+                    Toast('该手机号已被系统删除')
+                }else if(res.code == -133){
+                    Toast('该手机号还在审核中')
+                }else if(res.code == -134){
+                    Toast('该手机号未通过审核')
                 }else{
                     Toast('error')
                 }
