@@ -7,7 +7,7 @@
                 <span class="dqmr" v-if="data.isDefault == 1">当前默认</span>
             </div>
             <div class="content-p2">
-                <span>收货地址：{{data.addreCitys}} {{data.userAddress}}</span>
+                <span class="break-word">收货地址：{{data.addreCitys}} {{data.userAddress}}</span>
             </div>
             <div class="content-p3">
                 <span>地区编码：{{data.areaCode}}</span>
@@ -133,6 +133,9 @@ export default {
             line-height:36px;
             color: #333;
             margin-bottom: 20px;
+            .break-word{
+                word-wrap:break-word
+            }
         }
         .content-btns{
             position: relative;

@@ -92,7 +92,10 @@ export default {
                 Toast('密码与确认密码不一致')
                 return
             }
-            
+            if(this.formData.userPwd == this.formData.oldPwd){
+                Toast('新密码与旧密码不能相同')
+                return
+            }
             this.updateuserpaypassword(this.formData)
         },
         inputFun(e){
