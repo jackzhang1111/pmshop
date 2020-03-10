@@ -405,7 +405,7 @@ export default {
             max-height: 750px;
             overflow-y: auto;
             .selection-right-item{
-                padding: 50px 30px 19px 17px;
+                padding: 37px 30px 19px 17px;
                 .selection-right-p1{
                     overflow: hidden;
                     .ggms{

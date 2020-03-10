@@ -12,7 +12,7 @@ const mainAxios = axios.create({
 });
 
 const parkAxios = axios.create({
-    timeout: 20000,
+    timeout: 30000,
     headers: {
         'Content-Type':'application/json;charset=utf-8'
     },
@@ -49,7 +49,7 @@ parkAxios.interceptors.request.use(function (config) {
         message: 'loading',
         forbidClick: true,
         loadingType: 'spinner',
-        duration:10000
+        duration:30000
       });
     config.transformRequest = [function (data) {
         if(config.loading == 'shouyedibu'){
@@ -128,13 +128,15 @@ parkAxios.interceptors.response.use(function (response) {
             if(data.code == -1){
                 data.msg = "请重新登录"
                 setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
+                if(localStorage.token) {localStorage.removeItem('token')}
             }else if(data.code == -2){
                 data.msg = "用户信息不存在,请重新登录"
                 setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
-                
+                if(localStorage.token) {localStorage.removeItem('token')}
             }else if(data.code == -3){
                 data.msg = "用户登录信息已失效,请重新登录"
                 setTimeout(()=>{main.$router.replace({name: '登录'})},1000)
+                if(localStorage.token) {localStorage.removeItem('token')}
             }else if(data.code == -4){
                 data.msg = "账户不存在或者密码错误"
             }
