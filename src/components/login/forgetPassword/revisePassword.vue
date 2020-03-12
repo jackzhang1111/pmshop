@@ -89,11 +89,11 @@ export default {
         confirm(){
             if(!this.disabledSubmit) return
             if(this.reviseData.userPwd.length < 6 ||this.reviseData.userPwd2.length < 6){
-                Toast('All passwords should contain 6 figures.')
+                Toast('所有密码都请输入6位数字')
                 return
             }
             if(this.reviseData.userPwd != this.reviseData.userPwd2){
-                Toast('The entered password isn’t consistent with the one confirmed.')
+                Toast('密码与确认密码不一致')
                 return
             }
             this.setretrievepassword(this.reviseData)
@@ -103,6 +103,12 @@ export default {
             setretrievepasswordApi(data).then(res => {
                 if(res.code == 0){
                     this.$router.push({name:'修改密码成功'})
+                }else if(res.code == -26){
+                    Toast('该手机号已被冻结，请联系后台客服')
+                }else if(res.code == -27){
+                    Toast('该手机号已被删，除请联系后台客服')
+                }else if(res.code == -28){
+                    Toast('该手机号未注册')
                 }
             })
         },

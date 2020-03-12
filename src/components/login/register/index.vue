@@ -420,6 +420,10 @@ export default {
                     Toast('验证码不正确')
                 }else if(res.code == -25){
                     Toast('手机号已注册')
+                }else if(res.code == -26){
+                    Toast('该手机号已被冻结，请联系后台客服')
+                }else if(res.code == -27){
+                    Toast('该手机号已被删，除请联系后台客服')
                 }else{
                     Toast('error')
                 }
@@ -429,7 +433,7 @@ export default {
         msglist(data){
             msglistApi(data).then(res => {
                 if(res.code == 0){
-                    const TIME_COUNT = 60;
+                    const TIME_COUNT = 120;
                     if (!this.timer) {
                         this.count = TIME_COUNT;
                         this.countTrue = false;

@@ -82,6 +82,7 @@ import {loginApi} from '@/api/login/index';
 import {accReg,passReg} from '@/common/reg.js'
 import zhezhao from '@/multiplexing/zhezhao'
 import yinsi from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -147,7 +148,14 @@ export default {
                         localStorage.token = res.token
                         localStorage.userinfoShop = JSON.stringify(res.user) 
                         this.$router.push({name:'首页'})
-                        
+                    }else if(res.code == -4){
+                        Toast('密码错误')
+                    }else if(res.code == -26){
+                        Toast('该手机号已被冻结，请联系后台客服')
+                    }else if(res.code == -27){
+                        Toast('该手机号已被删，除请联系后台客服')
+                    }else if(res.code == -28){
+                        Toast('该手机号未注册')
                     }
                 })
             }
