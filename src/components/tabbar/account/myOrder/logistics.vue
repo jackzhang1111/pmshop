@@ -178,7 +178,6 @@ export default {
                 .btns{
                     overflow: hidden;
                     .tk-btn{
-                        width:88px;
                         height:44px;
                         border:1px solid rgba(153,153,153,1);
                         border-radius:22px;
@@ -187,6 +186,7 @@ export default {
                         font-size: 24px;
                         margin-top:14px;
                         float: right;
+                        padding: 0 20px;
                     }
                 }
                 
@@ -195,17 +195,18 @@ export default {
         .wuliu{
             margin-bottom: 14px;
             .wuliu-title{
-                height: 82px;
                 background-color: #fff;
-                line-height: 82px;
+                line-height: 50px;
                 padding: 0 40px;
                 .t1{
+                    display: block;
                     font-size:32px;
                     font-weight:bold;
                     color: #333;
                     margin-right:36px;
                 }
                 .t2{
+                    display: block;
                     font-size:20px;
                     color: #333;
                     font-weight:bold;
@@ -238,10 +239,12 @@ export default {
                 font-size:28px;
             }
             p{
-                height: 40px;
+                // height: 40px;
             }
             .p1{
                 font-size: 24px;
+                line-height: 32px;
+                margin-bottom: 10px;
             }
             .p2{
                 font-size: 20px;
@@ -258,13 +261,13 @@ export default {
         }
     }
     /deep/ .van-step--finish{
-        .van-step__line{
-            background-color: #FA5300;
+            .van-step__line{
+                background-color: #FA5300;
+            }
+            .van-step__circle{
+                background-color: #FA5300;
+            }
         }
-        .van-step__circle{
-            background-color: #FA5300;
-        }
-    }
     }
     
 }

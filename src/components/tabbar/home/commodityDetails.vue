@@ -6,7 +6,7 @@
         <div class="commodity-tab" v-if="true">
             <van-tabs v-model="active" class="tab-list" title-active-color="#FA5300" @change="changeTab">
                 <van-tab title="宝贝" ></van-tab>
-                <van-tab title="评价"></van-tab>
+                <!-- <van-tab title="评价"></van-tab> -->
                 <van-tab title="参数"></van-tab>
                 <van-tab title="详情"></van-tab>
                 <van-tab title="推荐"></van-tab>
@@ -63,7 +63,7 @@
                     </van-field>
                 </van-cell-group>
 
-                <div class="good-comment" @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})" ref="goodComment">
+                <div class="good-comment" @click="$router.push({name:'商品详情评价',query:{skuid:detailmData.skuId}})" ref="goodComment"  v-if="false">
                     <div v-if="detailmData.evaContent">
                         <div class="comment-top">
                             <span class="p1">评价</span>
@@ -251,15 +251,12 @@ export default {
                     this.$refs.wrapper.scrollTo(0,0,500)
                     break;
                 case 1:
-                    this.$refs.wrapper.scrollToElement(this.$refs.goodComment,500)
-                    break;
-                case 2:
                     this.$refs.wrapper.scrollToElement(this.$refs.guige,500)
                     break;
-                case 3:
+                case 2:
                     this.$refs.wrapper.scrollToElement(this.$refs.xiangqing,500)
                     break;
-                case 4:
+                case 3:
                     this.$refs.wrapper.scrollToElement(this.$refs.tjbb,500)
             }
         },
@@ -398,14 +395,13 @@ export default {
         margin-top: 14px;
         /deep/ .van-cell{
             height: 100px;
+            line-height: 80px;
             .van-cell__value{
                 border:0;
-                margin-left:45px;
+                margin-left:100px;
                 /deep/ .van-field__body{
                     width: 95%;
-                    line-height: 80px;
                     .van-field__control{
-                        margin-left:61px;
                         font-size: 20px;
                     }
                     .van-icon-arrow{

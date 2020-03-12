@@ -16,16 +16,16 @@
                 <span class="p1 clamp-2">{{product.supplyTitle}}</span><br>
             </div>
             <div class="country">
-                <div class="good-img">
-                    <img src="@/assets/img/confirmOrder/guojia@2x.png" alt="">
+                <div class="good-img" v-if="product.locationUrl">
+                    <img :src="$webUrl+product.locationUrl">
                 </div>
-                <div class="guojia">
+                <div class="guojia" v-if="product.locationName">
                      <span>{{product.locationName}}</span><br>
                 </div>
             </div>
             <div class="good-price" >
                 <span class="p1">{{jn}}{{product.discountPrice}}</span>
-                <span class="p3">已售{{product.skuSalesNum}}件</span>
+                <span class="p3">已售{{product.skuSalesNum ? product.skuSalesNum : 0}}件</span>
                 <span class="p2" @click="buyProduct(product)">购买</span>
             </div>
         </div>
@@ -47,7 +47,7 @@ export default {
             youlikeData:{
                 page:1,
                 limit:10,
-                seraname:''
+                categoryId:''
             },
             youlikeData2:{
                 page:1,
@@ -63,7 +63,7 @@ export default {
 
     },
     mounted() {
-        this.youlikeData.seraname = this.$route.query.skuName
+        this.youlikeData.categoryId = this.$route.query.categoryId
         this.guessyoulike(this.youlikeData)
         this.guessyoulike2(this.youlikeData2)
     },
@@ -91,6 +91,9 @@ export default {
                     this.footerData2 = res.Data
                 }
             })
+        },
+        jumpRouter(name){
+            this.$router.push({name})
         },
         //点击购买
         buyProduct(item){

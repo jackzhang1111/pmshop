@@ -4,10 +4,10 @@
         <search-head @onfocus="onfocus" @getInputVal="getInputVal" @onSearch="onSearch" :searName="searName"></search-head>
         <div v-if="noSearchStatus">
             <van-dropdown-menu active-color="#DB9000">
-                <van-dropdown-item v-model="value1" :options="option1" class="scj" @close="saleSort('zh',value1)"></van-dropdown-item>
-                <van-dropdown-item v-model="value2" :options="option2"  class="scj" @close="saleSort('xl')"/>
-                <van-dropdown-item v-model="value3" :options="option3"  class="scj" @close="saleSort('jg',value3)"/>
-                <van-icon name="apps-o" class="apps-o" @click="viewModel"/>
+                <van-dropdown-item v-model="value1" :options="option1" class="scj" @change="saleSort('zh',value1)"></van-dropdown-item>
+                <van-dropdown-item v-model="value2" :options="option2"  class="scj" @change="saleSort('xl')"/>
+                <van-dropdown-item v-model="value3" :options="option3"  class="scj" @change="saleSort('jg',value3)"/>
+                <van-icon :name="iconName" class="apps-o" @click="viewModel"/>
             </van-dropdown-menu>
             <div style="height:34px;"></div>
             <!-- 模式一 -->
@@ -21,10 +21,10 @@
                             <div class="good-desc">
                                 <span class="p1 clamp-2">{{good.supplyTitle}}</span>
                                 <div class="country">
-                                    <div class="country-img">
+                                    <div class="country-img" v-if="good.locationUrl">
                                         <img :src="$webUrl+good.locationUrl">
                                     </div>
-                                    <div class="guojia">
+                                    <div class="guojia" v-if="good.locationName">
                                         <span>{{good.locationName}}</span><br>
                                     </div>
                                     <van-rate v-model="good.starNumber" readonly class="rate"/>
@@ -103,11 +103,12 @@ export default {
             totalCount:0,
             noSearchStatus:true,
             nosear1:nosear1,
-            isgo:false
+            isgo:false,
+            iconName:'apps-o'
         };
     },
     computed: {
-
+        
     },
     created() {
 
@@ -129,7 +130,11 @@ export default {
         })
     },
     watch: {
-
+        goodsShow1:{
+            handler:function(newVal, oldVal){
+                this.iconName =  newVal ? 'apps-o': "bar-chart-o"
+            },
+        },
     },
     methods: {
         saleSort(name,value){

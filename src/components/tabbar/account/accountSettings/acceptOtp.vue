@@ -92,13 +92,13 @@ export default {
                 }else if(res.code == -130){
                     Toast('该手机号未注册')
                 }else if(res.code == -131){
-                    Toast('该手机号已被系统冻结')
+                    Toast('该手机号已被系统冻结,请联系后台客服')
                 }else if(res.code == -132){
-                    Toast('该手机号已被系统删除')
+                    Toast('该手机号已被系统删除,请联系后台客服')
                 }else if(res.code == -133){
-                    Toast('该手机号还在审核中')
+                    Toast('该手机号还在审核中,请联系后台客服')
                 }else if(res.code == -134){
-                    Toast('该手机号未通过审核')
+                    Toast('该手机号未通过审核,请联系后台客服')
                 }else{
                     Toast('error')
                 }

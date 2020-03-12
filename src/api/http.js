@@ -104,15 +104,13 @@ mainAxios.interceptors.response.use(function (response) {
     return response.data;
 }, function (error) {
     // 对响应错误做点什么
+    if(error.message == 'timeout of 180000ms exceeded'){
+        Toast('超时')
+    }else{
+        Toast('error');
+    }
     if (error.response) {
         console.log(error.response);
-        if (error.response.status == 401 ) {
-            console.log(401);
-            // redirect()
-        } else if (error.response.status == 402) {
-            console.log(402);
-            // redirect()
-        }
         Toast("网络繁忙，请稍后再试！");
     }
 
@@ -156,16 +154,13 @@ parkAxios.interceptors.response.use(function (response) {
     return response.data;
 }, function (error) {
     // 对响应错误做点什么
-    Toast('error');
+    if(error.message == 'timeout of 20000ms exceeded'){
+        Toast('超时')
+    }else{
+        Toast('error');
+    }
     if (error.response) {
         console.log(error.response);
-        if (error.response.status == 401 ) {
-            console.log(401);
-            // redirect()
-        } else if (error.response.status == 402) {
-            console.log(402);
-            // redirect()
-        }
         Toast("网络繁忙，请稍后再试！");
     }
 

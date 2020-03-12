@@ -368,6 +368,7 @@ export default {
             }
 
             batchmakeorderApi(obj).then(res => {
+                let orderIdArr = []
                 if(res.code == 0){
                     //支付方式为货到付款,直接跳转到我的订单(待发货)
                     if(this.zffs == 1){
@@ -377,8 +378,9 @@ export default {
                         //弹出支付弹框
                         this.showpaymen()
                         res.Data.forEach(item => {
-                            this.orderIdList.push({orderId:Number(item.orderId)})
+                            orderIdArr.push({orderId:Number(item.orderId)})
                         })
+                        this.orderIdList = orderIdArr
                     }
                 }else if(res.code == 1){
                     Toast('参数requestModel不能为空')

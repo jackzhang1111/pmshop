@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="clamp-2 miaoshu">{{searchgoodDao.supplyTitle}}</div>
                                 <div class="score">
-                                    <van-rate v-model="value" readonly  color="#FA5300"/>
+                                    <van-rate v-model="searchgoodDao.starNumber" readonly  color="#FA5300"/>
                                     <!-- <span>477</span> -->
                                 </div>
                                 <div class="price">
@@ -153,6 +153,7 @@
                                     <span class="price2" v-if="searchgoodDao.discountPrice">{{jn}}{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
                                 </div>
+                                <div class="sales-num">已售:{{searchgoodDao.skuSalesNum}}pcs</div>
                             </div>
                         </div>
                     </div>
@@ -179,7 +180,6 @@ export default {
     data() {
         return {
             active:0,
-            value:2,
             homeObj:{},
             globalProList:[],
             fineSaleList1:[],
@@ -888,7 +888,10 @@ export default {
                         right: 0;
                     }
                 }
-            
+                .sales-num{
+                    font-size: 24px;
+                    margin-top: 10px;
+                }
             }
         }
     }
