@@ -485,7 +485,7 @@ export default {
         height: 88px;
         background-color: #f2f3f5;
         text-align: center;
-        position: absolute;
+        position: fixed;
         z-index: 1;
         .header-t1{ 
             display: inline-block;

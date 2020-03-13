@@ -88,7 +88,6 @@ export default {
     },
     mounted() {
         this.backorderlist(this.formData,true)
-        console.log(this.dataList,'this.dataList');
     },
     watch: {
 

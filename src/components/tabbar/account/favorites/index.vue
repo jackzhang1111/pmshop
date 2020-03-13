@@ -141,8 +141,6 @@ export default {
             if(this.$refs.goodList){
                 this.$refs.goodList.onShowCheck()
             }
-            
-            console.log(this.$refs.goodList);
         },
         //点击视图图标
         iconView(){

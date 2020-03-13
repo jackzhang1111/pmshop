@@ -197,7 +197,6 @@ export default {
                 return
             }
             this.$emit('showPay',true,alldata)
-            console.log(alldata,'alldata');
         },
         //确认收货
         receiGood(alldata){

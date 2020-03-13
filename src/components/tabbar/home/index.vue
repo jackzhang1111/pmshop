@@ -153,7 +153,7 @@
                                     <span class="price2" v-if="searchgoodDao.discountPrice">{{jn}}{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
                                 </div>
-                                <div class="sales-num">已售:{{searchgoodDao.skuSalesNum}}pcs</div>
+                                <div class="sales-num c-orange">已售:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}pcs</div>
                             </div>
                         </div>
                     </div>

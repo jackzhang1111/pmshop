@@ -37,13 +37,13 @@
                         <template slot="right">
                             <van-button square type="danger" text="删除" @click="delItem(product,index)"/>
                         </template>
-                        <div class="good-detail-img" @click="jumpRouter('商品详情')">
+                        <div class="good-detail-img">
                             <img :src="$webUrl+product.skuImg">
                             <div class="img-nochange" v-if="product.stockEnough==0 || product.canSell == 0 || product.freightCode != 0">
                                 {{product.stockEnough==0 ? '库存不足': product.canSell == 0 ? "不可售": product.freightCode == 1 ? '地址不支持配送':'超重，不支持配送' }}
                             </div>
                         </div>
-                        <div class="good-detail-title" @click="jumpRouter('商品详情')">
+                        <div class="good-detail-title">
                             <span class="name">{{product.skuName}}</span>
                             <div class="guige">
                                 {{product.skuValuesTitle}}
@@ -208,7 +208,8 @@ export default {
             let arr = this.$store.state.selectionShopCar
             arr.forEach(shopCar => {
                 let shopCarObj = {
-                    shopcrtId:shopCar.shopcrtId
+                    shopcrtId:shopCar.shopcrtId,
+                    skuId:shopCar.skuId
                 } 
                 this.shopcrtList.push(shopCarObj)
             })
@@ -266,8 +267,6 @@ export default {
             })
             return name
         },
-
-        confirm(){},
         jumpRouter(name){
             this.$router.push({name})
         },
@@ -279,7 +278,7 @@ export default {
         showsucess(){
             this.$refs.sucess.showAction = true
             setTimeout(()=>{
-                this.$router.push({name:'我的订单',query:{active:2}})
+                this.$router.replace({name:'我的订单'})
                 sessionStorage.setItem("activeIndex", 2);
             },1000)
         },
@@ -340,11 +339,22 @@ export default {
         },
         //删除某个商品
         delItem(good,goodindex){
-            this.orderData.orderList.forEach(ele => {
-                ele.detailList.splice(goodindex,1)
+            this.orderData.orderList.forEach((ele,eleIndex) => {
+                ele.detailList.forEach(item => {
+                    if(item.skuId == good.skuId){
+                        ele.detailList.splice(goodindex,1)
+                        this.shopcrtList.forEach((shopcrt,shopcrtIndex) => {
+                            if(shopcrt.skuId == item.skuId){
+                                this.shopcrtList.splice(shopcrtIndex,1)
+                            }
+                        })
+                        if(ele.detailList.length == 0){
+                            this.orderData.orderList.splice(eleIndex,1)
+                        }
+                    }
+                })
             })
             this.changeNumber()
-            
         },
         //订单详情
         getconfirmorder(data){
@@ -372,7 +382,7 @@ export default {
                 if(res.code == 0){
                     //支付方式为货到付款,直接跳转到我的订单(待发货)
                     if(this.zffs == 1){
-                        this.$router.push({name:'我的订单',query:{active:2}})
+                        this.$router.replace({name:'我的订单'})
                         sessionStorage.setItem("activeIndex", 2);
                     }else{
                         //弹出支付弹框
