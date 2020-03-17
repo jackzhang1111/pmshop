@@ -349,7 +349,7 @@ export default {
     }
     .miaoshu{
         position: relative;
-        margin-bottom: 19px;
+        margin: 10px 0;
         .fenxiang{
             position: absolute;
             top:-50px;

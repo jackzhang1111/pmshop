@@ -153,7 +153,6 @@
                                     <span class="price2" v-if="searchgoodDao.discountPrice">{{jn}}{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
                                 </div>
-                                <div class="sales-num c-orange">已售:{{searchgoodDao.skuSalesNum ? searchgoodDao.skuSalesNum : 0}}pcs</div>
                             </div>
                         </div>
                     </div>
@@ -228,7 +227,6 @@ export default {
 
     },
     mounted() {
-        this.$fn.MyLocalStorage.Cache.get('homeObj')
         if(localStorage.homeObj){
             this.homeObj = this.$fn.MyLocalStorage.Cache.get('homeObj')
             this.globalProList = this.homeObj['producteFineBrand'].slice(3)
