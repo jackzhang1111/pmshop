@@ -25,7 +25,7 @@ Vue.prototype.jn = '₵'
 gethttpimgurlApi().then(res => {
   if(res.code == 0){
     Vue.prototype.jn = res.currency
-    Vue.prototype.$webUrl = res.webUrl
+    Vue.prototype.$webUrl = res.webUrl + 'thumb/'
   }
 })
 

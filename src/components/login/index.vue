@@ -53,9 +53,9 @@
                 <input type="checkbox" class="checkbox" v-model="checked">
                 <span class="c1 fs-24">
                     <span>同意</span>
-                    <span >《TOSPINO法律协议》</span>
+                    <span class="c-333" @click="yonghu=true">《用户协议》</span>
                     <span>和</span>
-                    <span @click="zhengce=true" class="c2">《隐私政策》</span>
+                    <span @click="zhengce=true" class="c-333">《隐私政策》</span>
                 </span>
             </div>
         </div>
@@ -73,6 +73,20 @@
                 </div>
             </div>
         </zhezhao>
+
+        <zhezhao v-if="yonghu">
+            <div class="tanchuang">
+                <div class="tanchuang-header">
+                    <span>《用户协议》</span>
+                    <div class="fl-right">
+                        <van-icon name="cross" @click="yonghu=false"/>
+                    </div>
+                </div>
+                <div class="tanchuang-content">
+                    <yonghu :showTitle="false"></yonghu>
+                </div>
+            </div>
+        </zhezhao>
         
     </div>
 </template>
@@ -82,6 +96,7 @@ import {loginApi} from '@/api/login/index';
 import {accReg,passReg} from '@/common/reg.js'
 import zhezhao from '@/multiplexing/zhezhao'
 import yinsi from '@/components/tabbar/account/accountSettings/aboutItem/privacyPolicy.vue'
+import yonghu from '@/components/tabbar/account/accountSettings/aboutItem/userAgreement.vue'
 import {Toast} from 'vant'
 export default {
     props: {
@@ -109,6 +124,7 @@ export default {
                
             },
             zhengce:false,
+            yonghu:false
         };
     },
     computed: {
@@ -174,7 +190,8 @@ export default {
     },
     components: {
         zhezhao,
-        yinsi
+        yinsi,
+        yonghu
     },
 };
 </script>

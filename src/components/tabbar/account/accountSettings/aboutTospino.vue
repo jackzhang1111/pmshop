@@ -6,7 +6,7 @@
             <div class="ewm-body">
                 <div class="ewm-img"></div>
                 <div>
-                    v1.0.2.3版本
+                    13.0版本
                 </div>
             </div>
             <div class="cell" @click="jumpRouter('隐私政策')">
