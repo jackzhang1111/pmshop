@@ -24,9 +24,7 @@
                 <div class="bottom-right">
                     <span class="name"> {{detailObj.consignee}}</span>
                     <span class="phone"> 86-{{detailObj.mobile}}</span>
-                    <div class="addre">
-                        {{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}
-                    </div>
+                    <div class="addre">{{detailObj.country}}{{detailObj.province}}{{detailObj.city}}{{detailObj.district}}{{detailObj.address}}</div>
                 </div>
             </div>
         </div>
@@ -126,7 +124,7 @@
 
                 <div class="btn-qxdd fl-right" @click="closeOverlay(true,detailObj.orderId)" v-if="detailObj.canRevoke == 1">取消订单</div>
                 <div class="btn-qzf fl-right c-orange" @click="toRefund" v-if="detailObj.canRefund == 1">退款</div>
-                <div class="btn-qzf fl-right c-orange" @click="showPay" v-if="detailObj.canComplete == 1">确认收货</div>
+                <div class="btn-qzf fl-right c-orange" @click="showPassWord(true,'确认收货')" v-if="detailObj.canComplete == 1">确认收货</div>
                 <div class="btn-xgdz fl-right" @click="toReturnRefund" v-if="dataList.length == 1 && detailObj.canReturn == 1">退货退款</div>
                 <div class="btn-xgdz fl-right" @click="toBatchRefund" v-if="dataList.length > 1 && detailObj.canReturn == 1">退货退款</div>
             </div>
@@ -143,15 +141,22 @@
             </zhezhao>
         </transition>
 
-        <action-sheet-password ref="actionSheetPassword"></action-sheet-password>
+        <!-- 支付成功弹窗 -->
+        <action-sheet-sucess ref="sucess" @showsucess="showsucess"></action-sheet-sucess>
+        <!-- 密码弹窗 -->
+        <action-sheet-password ref="actionSheetPassword" @getPassWord="getPassWord" :typeLeixing="typeLeixing"></action-sheet-password>
+        <!-- 付款方式弹窗 -->
+        <action-sheet-paymen ref="actionSheetPaymen" :moeny="moeny" @showPassWord="showPassWord"></action-sheet-paymen>
 
     </div>
 </template>
 
 <script>
-import {orderinfoApi} from '@/api/myOrder/index.js'
+import {orderlistApi,orderlaunchpayApi,completeorderApi,orderinfoApi} from '@/api/myOrder/index.js'
 import cancelOrder from './itemComponents/cancelOrder'
 import actionSheetPassword from '@/multiplexing/actionSheetPassword'
+import actionSheetPaymen from '@/multiplexing/actionSheetPaymen'
+import actionSheetSucess from '@/multiplexing/actionSheetSucess'
 import zhezhao from '@/multiplexing/zhezhao'
 import kefu from '@/multiplexing/kefu.vue'
 import balanceHeader from './itemComponents/balanceHeader'
@@ -163,6 +168,7 @@ export default {
     },
     data() {
         return {
+            moeny:0,
             show:false,
             show2:false,
             show3:false,
@@ -190,9 +196,10 @@ export default {
                 {type:3,name:'余额支付'},
             ],
             orderId:0,
-
             copyBtn: null, //存储初始化复制按钮事件
-            userinfoShop:{}
+            userinfoShop:{},
+            typeLeixing:'',
+            payTypeDetail:201,//余额支付ID,暂时写死
         };
     },
     computed: {
@@ -249,7 +256,8 @@ export default {
                 this.$router.push({name:'设置支付密码'})
                 return
             }
-            this.$refs.actionSheetPassword.showAction = true
+            this.$refs.actionSheetPaymen.showAction = true
+            this.moeny = this.detailObj.orderAmountWebsite
         },
         //修改地址
         toEditAddress(){
@@ -312,13 +320,114 @@ export default {
         toDetail(skuid){
             this.$router.push({name:'商品详情',query:{skuId:skuid}})
         },
+        //订单发起支付
+        orderlaunchpay(data){
+            orderlaunchpayApi(data).then(res => {
+                if(res.code == 0){
+                    this.showsucess()
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('参数支付方式不能为空')
+                }else if(res.code == 3){
+                    Toast('余额支付支付密码不能为空')
+                }else if(res.code == 4){
+                    Toast('参数订单列表orderList不能为空')
+                }else if(res.code == 5){
+                    Toast('参数订单Id必须大于0')
+                }else if(res.code == 21){
+                    Toast('请先设置支付密码')
+                    setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
+                }else if(res.code == 22){
+                    Toast('支付密码不正确')
+                }else if(res.code == 23){
+                    Toast('余额不足')
+                }else if(res.code == 31){
+                    Toast('提交的订单列表不能为空')
+                }else if(res.code == 32){
+                    Toast('存在订单不属于当前用户，不能进行操作')
+                }else if(res.code == 33){
+                    Toast('存在订单已经支付，不能重复支付')
+                }else if(res.code == 34){
+                    Toast('提交的订单列表包含状态不为待付款的订单')
+                }else if(res.code == 35){
+                    Toast('提交的订单列表包含已过支付有效期的订单')
+                }
+            })
+        },
+        //获取到密码,请求接口
+        getPassWord(value,type){
+            if(type == '支付'){
+                let orderList = []
+                orderList.push({orderId:this.detailObj.orderId})
+                let obj = {
+                    payTypeDetail:this.payTypeDetail,
+                    payPwd:value,
+                    orderList:orderList
+                }
+                this.orderlaunchpay(obj)
+            }else if(type == '确认收货'){
+                let obj = {
+                    orderId:this.detailObj.orderId,
+                    payPwd:value,
+                }
+                this.completeorder(obj)
+            }
+        },
+        //弹出支付成功
+        showsucess(){
+            this.$refs.sucess.showAction = true
+            setTimeout(()=>{
+                this.$refs.sucess.showAction = false
+                this.showPay(false)
+                this.showPassWord(false)
+                this.refreshOrder()
+            },1000)
+        },
+        //密码弹窗
+        showPassWord(flag,typeLeixing){
+            this.$refs.actionSheetPassword.showAction = flag
+            this.typeLeixing = typeLeixing
+        },
+        //确认收货
+        completeorder(data){
+            completeorderApi(data).then(res => {
+                if(res.code == 0){
+                    this.showPassWord(false)
+                    this.refreshOrder()
+                }else if(res.code == 1){
+                    Toast('参数requestModel不能为空')
+                }else if(res.code == 2){
+                    Toast('订单Id必须大于0')
+                }else if(res.code == 3){
+                    Toast('支付密码不能为空')
+                }else if(res.code == 21){
+                    Toast('请先设置支付密码')
+                    setTimeout(()=>{this.$router.push({name:'设置支付密码'})},1000)
+                }else if(res.code == 22){
+                    Toast('支付密码不正确')
+                }else if(res.code == 23){
+                    Toast('该订单不存在')
+                }else if(res.code == 24){
+                    Toast('该订单不属于当前用户，不能进行操作')
+                }else if(res.code == 25){
+                    Toast('该订单未支付，不能确认收货')
+                }else if(res.code == 26){
+                    Toast('该订单已完成，无需重复确认收货')
+                }else if(res.code == 27){
+                    Toast('该订单不是待收货状态，不能确认收货')
+                }
+            })
+        }
     },
     components: {
         cancelOrder,
         actionSheetPassword,
         zhezhao,
         kefu,
-        balanceHeader
+        balanceHeader,
+        actionSheetPaymen,
+        actionSheetSucess
     },
 };
 </script>
@@ -350,9 +459,6 @@ export default {
                 vertical-align: text-bottom;
                 margin-right:23px;
             }
-            .arrow-icon{
-                
-            }
         }
         .p2-bottom{
             height: 180px;
@@ -377,6 +483,8 @@ export default {
                 margin-top:32px;
                 font-size: 26px;
                 color: #333;
+                max-height: 108px;
+                overflow: hidden;
             }
         }
     }
