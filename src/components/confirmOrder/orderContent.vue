@@ -344,6 +344,10 @@ export default {
         },
         //删除某个商品
         delItem(good,goodindex){
+            if(this.orderData.orderList.length == 1 && this.orderData.orderList[0].detailList.length == 1){
+                Toast('不可以删除全部商品')
+                return
+            }
             this.orderData.orderList.forEach((ele,eleIndex) => {
                 ele.detailList.forEach(item => {
                     if(item.skuId == good.skuId){
