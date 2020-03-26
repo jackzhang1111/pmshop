@@ -51,7 +51,10 @@
                                 <span class="huobi">{{jn}}</span>
                                 <span>{{spc.price}}</span> 
                             </div>
-                            <div class="piece">{{spc.pcs}}件起</div>
+                            <div class="piece">
+                                <span>{{spc.pcs}}件</span>
+                                <span v-show="index == 0">起订</span>
+                            </div>
                         </div>
                     </div>
                     <div class="supplement" v-if="false">
@@ -199,6 +202,13 @@ export default {
     mounted() {
         this.productdetail(this.$route.query.skuId)
         this.adduserbrowhistory(this.$route.query.skuId)
+    },
+    beforeRouteLeave(to, from, next) {
+        // 设置下一个路由的 meta
+        if(to.name == '搜索商品1'){
+            to.meta.isBack = false;
+        }
+        next()
     },
     watch: {
 
@@ -385,7 +395,10 @@ export default {
         flex-direction:row;
         flex-wrap : wrap;
         .qujianjia-item{
-            margin:0 140px 10px 0;
+            margin:0 40px 10px 0;
+            &:nth-child(3){
+                margin-right:0
+            }
             .huobi{
                 font-size: 16px;
             }
