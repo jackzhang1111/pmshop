@@ -18,10 +18,10 @@
             <span>清除缓存</span>
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
-        <div class="cell bor-b-1">
+        <!-- <div class="cell bor-b-1">
             <span>法律条款</span>
             <van-icon name="arrow" class="arrow c-999"/>
-        </div>
+        </div> -->
         <div class="cell bor-b-1" @click="jumpRouter('关于TOSPINO')">
             <span>关于TOSPINO</span>
             <van-icon name="arrow" class="arrow c-999"/>

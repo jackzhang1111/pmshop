@@ -12,13 +12,13 @@
         </div>
         <!-- <div class="cell" @click="$router.push({name:'修改手机号码'})"> -->
         <div class="cell">
-            <span class="c-333">修改手机号码</span>
+            <span class="c-333">手机号码</span>
             <span class="ziliao c-999">{{userinfoShop.mobile}}</span>
             <!-- <van-icon name="arrow" class="arrow c-999"/> -->
         </div>
         <!-- <div class="cell" @click="$router.push({name:'修改邮箱'})"> -->
         <div class="cell">
-            <span class="c-333">修改电子邮件</span>
+            <span class="c-333">电子邮件</span>
             <span class="ziliao c-999">{{userinfoShop.email}}</span>
             <!-- <van-icon name="arrow" class="arrow c-999"/> -->
         </div>
@@ -31,10 +31,10 @@
             <van-icon name="arrow" class="arrow c-999"/>
         </div>
         <!-- <div class="cell" @click="$router.push({name:'公司信息'})"> -->
-        <div class="cell">
+        <!-- <div class="cell">
             <span class="c-333">公司信息</span>
-            <!-- <van-icon name="arrow" class="arrow c-999"/> -->
-        </div>
+            <van-icon name="arrow" class="arrow c-999"/>
+        </div> -->
     </div>
 </template>
 
