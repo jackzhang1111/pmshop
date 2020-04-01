@@ -128,7 +128,12 @@ export default {
             this.formData.brandId = this.$route.query.brandId ? this.$route.query.brandId : 0
             this.searName = this.$route.query.seraname
             this.refreshOrder()
-            this.$refs.wrapper.scrollTo(0,0)
+            try{
+                this.$refs.wrapper.scrollTo(0,0)
+            }
+            catch(err){
+                console.log(err.message);
+            }
         }
     },
     beforeRouteEnter (to, from, next) {

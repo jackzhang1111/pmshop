@@ -35,6 +35,7 @@
 <script>
 import searchHeader from '@/multiplexing/searchHeader'
 import {procategorylistApi} from '@/api/classify/index'
+import {mapState,mapActions} from 'vuex'
 export default {
     props: {
 
@@ -53,10 +54,27 @@ export default {
         };
     },
     computed: {
-
+        ...mapState({
+            classifyKeep:state=>state.classifyKeep
+        }),
     },
-    created() {
-
+    activated(){
+        if(this.classifyKeep){
+            this.activeKey = 0
+            if(localStorage.classifyData){
+                this.classifyData = this.$fn.MyLocalStorage.Cache.get('classifyData')
+                if(!this.classifyData){
+                    this.procategorylist()
+                }else{
+                    this.leftList = this.classifyData.leftdataList
+                    this.rightList = this.classifyData.righdataList
+                    this.leftImgSrc = this.classifyData.leftdataList[0].categoryImg
+                }
+            }else{
+                this.procategorylist()
+            }
+            this.classifykeep(false)
+        }
     },
     beforeRouteLeave(to, from, next) {
         // 设置下一个路由的 meta
@@ -83,6 +101,7 @@ export default {
 
     },
     methods: {
+        ...mapActions(['classifykeep']),
         procategorylist(){
             procategorylistApi(this.formData).then(res => {
                 if(res.code == 0){
