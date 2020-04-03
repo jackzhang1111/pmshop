@@ -135,7 +135,7 @@
                     <div class="footer-exhibition">
                         <div  class="exhibition-con">
                             <div class="exhibition-left" v-for="(searchgoodDao,index) in searchgoodDaolist" :key="index">
-                                <div class="shouwan" v-if="!searchgoodDao.canSalesNum">Out of Stock</div>
+                                <div class="shouwan" v-if="!searchgoodDao.canSalesNum">售罄</div>
                                 <img :src="$webUrl + searchgoodDao.imgUrl" @click="toDetail(searchgoodDao.skuId)">
                                 <div class="produced">
                                     <span class="icon" v-if="searchgoodDao.locationUrl">
@@ -167,6 +167,7 @@
 
 import searchHeader from '@/multiplexing/searchHeader'
 import {homePageApi,HomePagebottomApi,homeAdvertPictureApi} from '@/api/home/index.js'
+import {getuserinfoApi} from '@/api/accountSettings/index'
 var scan = null;
 export default {
     props: {
@@ -224,7 +225,10 @@ export default {
 
     },
     created() {
-
+        if(this.$route.query.token){
+            localStorage.token = this.$route.query.token
+            this.getuserinfo()
+        }
     },
     beforeRouteLeave(to, from, next) {
         // 设置下一个路由的 meta
@@ -313,6 +317,9 @@ export default {
         //轮播
         onChange(index) {
             this.current = index;
+            setTimeout(()=>{
+                this.swipeIndex = index
+            },300)
         },
         //上拉加载
         _pullup(){
@@ -369,6 +376,14 @@ export default {
         swipeClick(el){
             if(!el.linkUrl) return
             window.location.href = el.linkUrl
+        },
+        //获取用户信息
+        getuserinfo(){
+            getuserinfoApi().then(res => {
+                if(res.code == 0){
+                    localStorage.userinfoShop = JSON.stringify(res.user) 
+                }
+            })
         }
     },
     components: {

@@ -3,7 +3,7 @@
     <div class="footer-exhibition">
         <div class="exhibition-con clearfix">
             <div class="exhibition-left" @click="toProduDetail(good.skuId)" v-for="good in dataList" :key="good.skuId">
-                <div class="shouwan" v-if="!good.canSalesNum" @click.stop>Out of Stock</div>
+                <div class="shouwan" v-if="!good.canSalesNum" @click.stop>售罄</div>
                 <img :src="$webUrl+good.imgUrl">
                 <div class="produced">
                     <span class="icon">

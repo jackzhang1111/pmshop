@@ -3,7 +3,7 @@
     <div>
         <div class="search-header c-b-gray">
             <div class="logo">
-                <img src="@/assets/img/tabbar/home/logo@3x.png">
+                <img src="@/assets/img/tabbar/home/logo@3x.png" @click="$router.push({name:'语言'})">
             </div>
             <div class="search">
                 <van-search v-model="value" shape="round" @click="toSearch"/>

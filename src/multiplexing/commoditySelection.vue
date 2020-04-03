@@ -394,7 +394,7 @@ export default {
                     this.sectionPrice = this.makeItem.skuPrice
                     this.stock = this.makeItem.canSalesNum ? this.makeItem.canSalesNum : 0
                     if(this.goodNumber > this.makeItem.canSalesNum || !this.makeItem.canSalesNum){
-                        this.tips = 'Out of Stock'
+                        this.tips = '售罄'
                     }else{
                         this.tips = ''
                     }
@@ -433,7 +433,7 @@ export default {
                     this.sectionPrice = this.makeItem.skuPrice
                     this.stock = this.makeItem.canSalesNum ? this.makeItem.canSalesNum : 0
                     if(this.goodNumber > this.makeItem.canSalesNum || !this.makeItem.canSalesNum){
-                        this.tips = 'Out of Stock'
+                        this.tips = '售罄'
                     }else{
                         this.tips = ''
                     }

@@ -137,7 +137,7 @@
             </van-field>
         </van-cell-group>
         <van-cell-group class="border-0">
-            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled @click="jumpRouter('语言')" v-if="false">
+            <van-field v-model="username" clearable right-icon="arrow" placeholder="更换国家/地区" left-icon="arrow" disabled @click="toLanguage">
                 <div slot="left-icon" size="small" type="primary" class="icon-left">
                     <img src="@/assets/img/tabbar/my/account/genggaiguojiadiqu@2x.png">
                 </div>
@@ -224,6 +224,9 @@ export default {
     methods: {
         jumpRouter(name){
             this.$router.push({name})
+        },
+        toLanguage(){
+            this.$router.push({name:'语言',query:{type:0}})
         },
         toMyOrder(num){
             sessionStorage.setItem("activeIndex", num);

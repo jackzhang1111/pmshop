@@ -14,7 +14,7 @@
             <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pulldown="pulldown" :pullup="pullup" @pulldown="_pulldown" @pullup="_pullup">
                 <div v-show="goodsShow1" class="footprint-goods">
                     <div class="footprint-goods-content" v-for="good in dataList" :key="good.skuId" @click="toProduDetail(good.skuId)">
-                        <div class="shouwan" v-if="!good.canSalesNum" @click.stop>Out of Stock</div>
+                        <div class="shouwan" v-if="!good.canSalesNum" @click.stop>售罄</div>
                         <div>
                             <div class="good-img">
                                 <img :src='$webUrl+good.imgUrl'>
