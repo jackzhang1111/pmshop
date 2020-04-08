@@ -57,6 +57,7 @@
                             </div>
                         </div>
                     </div>
+                    <div>已售:{{detailmData.skuSalesNum}}件</div>
                     <div class="supplement" v-if="false">
                         <span class="t1">物流</span>
                         <span class="t2">

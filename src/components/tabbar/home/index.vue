@@ -5,7 +5,7 @@
         <scroll class="bscroll-wrapper" ref="wrapper" :data="recordGroup" :pullup="pullup" @pullup="_pullup" :pulldown="pulldown" @pulldown="_pulldown" :scrollX="true">
             <div>
                 <div class="commodity-swipe" v-if="topBananerList.length>0">
-                    <van-swipe @change="onChange" :stop-propagation="false" :autoplay="2000">
+                    <van-swipe @change="onChange" :stop-propagation="false" :autoplay="2000" :initial-swipe="swipeIndex">
                         <van-swipe-item v-for="(banner,index) in topBananerList" :key="index" @click="swipeClick(banner)">
                             <div class="w1">
                                 <img :src="$webUrl+banner.advertImg">
@@ -153,6 +153,7 @@
                                     <span class="price2" v-if="searchgoodDao.discountPrice">{{jn}}{{searchgoodDao.salePrice}}</span>
                                     <!-- <span class="poin">...</span> -->
                                 </div>
+                                <div>已售:{{searchgoodDao.skuSalesNum}}件</div>
                             </div>
                         </div>
                     </div>
@@ -175,6 +176,7 @@ export default {
     },
     data() {
         return {
+            swipeIndex:0,
             active:0,
             homeObj:{},
             globalProList:[],
@@ -225,7 +227,7 @@ export default {
 
     },
     created() {
-        if(this.$route.query.token){
+        if(this.$route.query.token && this.$route.query.token != 'undefined'){
             localStorage.token = this.$route.query.token
             this.getuserinfo()
         }
@@ -911,6 +913,7 @@ export default {
                 }
                 .price{
                     position: relative;
+                    margin-bottom: 14px;
                     .price1{
                         font-size:28px;
                         color: #FA5300;

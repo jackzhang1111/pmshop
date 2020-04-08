@@ -37,12 +37,12 @@
                         <div class="add-btn" @click="operation('jia')">十</div>
                     </div>
                 </div>
-                <div class="fl-right stock">In stock:{{stock}}</div>
+                <div class="fl-right stock">库存:{{stock}}</div>
                 <div class="footer">
                     <div class="success-btn"  v-if="btnStatus" @click="buyProduct" :style="{backgroundColor:btnbgc}">{{btnName}}</div>
                     <div class="success-btn" v-else>
-                        <div class="btn-jrgwc fl-left" @click="buyshoppingCar" :style="{backgroundColor:btncolor.bgc,color:btncolor.color}">Add to Cart</div>
-                        <div class="btn-qd fl-right" @click="buyProduct" :style="{backgroundColor:btnbuy}">Buy Now</div>
+                        <div class="btn-jrgwc fl-left" @click="buyshoppingCar" :style="{backgroundColor:btncolor.bgc,color:btncolor.color}">加入购物车</div>
+                        <div class="btn-qd fl-right" @click="buyProduct" :style="{backgroundColor:btnbuy}">立即购买</div>
                     </div>
                     <div class="ios-place" v-if="jixing=='ios'"></div>
                 </div>
@@ -213,8 +213,8 @@ export default {
                     makeupList.push(item.skuValues)
                 }
             })
-            this.oneTitle = this.selectionObj.Onedata[0].attrTitleEng ? this.selectionObj.Onedata[0].attrTitleEng : ''
-            this.twoTitle = this.selectionObj.Twodata[0] ? this.selectionObj.Twodata[0].attrTitleEng : ''
+            this.oneTitle = this.selectionObj.Onedata[0].attrTitle ? this.selectionObj.Onedata[0].attrTitle : ''
+            this.twoTitle = this.selectionObj.Twodata[0] ? this.selectionObj.Twodata[0].attrTitle : ''
 
             var makeOne = makeupList[0].split(',')
             this.checkList = makeOne.map(Number)
@@ -388,7 +388,7 @@ export default {
                 if(typeof(onefun(this.checkList,this.makeupdata)) == 'object'){
                     this.makeItem = Object.assign({},this.makeItem,onefun(this.checkList,this.makeupdata))
                     this.goodNumber = this.makeItem.canSalesNum ? this.makeItem.numIntervalStart : 0
-                    this.attrTitleEng =  this.makeItem.supplyTitle
+                    this.attrTitle =  this.makeItem.supplyTitle
                     this.titleImg = this.makeItem.imgUrl
                     this.tsinCode = this.makeItem.tsinCode
                     this.sectionPrice = this.makeItem.skuPrice
@@ -417,7 +417,7 @@ export default {
                         }
                     })
                     this.titleImg = this.selectionObj.Data.productImgList[0].imgUrl
-                    this.attrTitleEng = this.selectionObj.Data.supplyTitle
+                    this.attrTitle = this.selectionObj.Data.supplyTitle
                     this.tsinCode = this.selectionObj.Data.tsinCode
                     this.goodNumber = 0
                     this.stock = 0
@@ -427,7 +427,7 @@ export default {
                 if(typeof(we(this.checkList,this.makeupdata)) == 'object'){
                     this.makeItem = Object.assign({},this.makeItem,we(this.checkList,this.makeupdata))
                     this.goodNumber = this.makeItem.canSalesNum ? this.makeItem.numIntervalStart : 0
-                    this.attrTitleEng =  this.makeItem.supplyTitle
+                    this.attrTitle =  this.makeItem.supplyTitle
                     this.titleImg = this.makeItem.imgUrl
                     this.tsinCode = this.makeItem.tsinCode
                     this.sectionPrice = this.makeItem.skuPrice
@@ -456,7 +456,7 @@ export default {
                         }
                     })
                     this.titleImg = this.selectionObj.Data.productImgList[0].imgUrl
-                    this.attrTitleEng = this.selectionObj.Data.supplyTitle
+                    this.attrTitle = this.selectionObj.Data.supplyTitle
                     this.tsinCode = this.selectionObj.Data.tsinCode
                     this.goodNumber = 0
                     this.stock = 0

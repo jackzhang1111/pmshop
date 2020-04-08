@@ -235,6 +235,7 @@ export default {
         //登出
         logOut(){
             logoutApi().then(res => {
+                if(localStorage.token){localStorage.removeItem('token')}
                 this.$router.push({name:'登录'})
             })
         },
