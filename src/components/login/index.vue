@@ -207,8 +207,7 @@ export default {
     padding-top:127px;
     box-sizing: border-box;
     .logo{
-        width: 232px;
-        height:172px;
+        width: 281px;
         margin-left:50%;
         transform: translateX(-50%);
         padding-bottom:125px;
@@ -216,8 +215,8 @@ export default {
     .user-name{
         padding:0 85px;
         .name-icon{
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
         }
         .input-con{
             display: inline-block;
@@ -225,7 +224,7 @@ export default {
             height:60px;
             border-bottom: 1px solid #999;
             font-size: 26px;
-            margin-left:20px;
+            margin-left:10px;
         }
         .name-input{
             width: 300px;
@@ -235,8 +234,8 @@ export default {
     .pass-word{
         padding:53px 85px 36px;
         .name-icon{
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
         }
         .input-con{
             display: inline-block;
@@ -244,7 +243,7 @@ export default {
             height:60px;
             border-bottom: 1px solid #999;
             font-size: 26px;
-            margin-left:20px;
+            margin-left:10px;
         }
         .name-input{
             width: 420px;
